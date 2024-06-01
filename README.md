@@ -1,11 +1,17 @@
-
-```
 notifications
 ├─ .venv
 ├─ Dockerfile
-├─ app
-│  ├─ __init__.py
-│  └─ main.py
-└─ requirements.txt
+├─ Docs
+├─ README.md
+├─ requirements.txt
+└─ src
+   ├─ Docker
+   ├─ app
+   │  ├─ __init__.py
+   │  └─ main.py
+   ├─ domain
+   ├─ entrypoints
+   ├─ infrastructure
+   └─ tests
 
 ```
