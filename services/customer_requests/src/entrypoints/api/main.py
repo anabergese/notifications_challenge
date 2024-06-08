@@ -1,7 +1,6 @@
-from typing import Union
 from fastapi import FastAPI
-from src.entrypoints.fastapi.routes import customer_request_route
 import uvicorn
+from services.customer_requests.src.entrypoints.api.routes import customer_requests_route
 
 app = FastAPI(
     title="Customer Request Notification System",
@@ -9,11 +8,12 @@ app = FastAPI(
     version="1.0.0",
 )
 
-app.include_router(customer_request_route.router, prefix="/api/v1/customer-requests", tags=["Customer Requests"])
+app.include_router(customer_requests_route.router, prefix="/api/v1/customer-requests")
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to the Customer Request Notification System"}
+    """Server is up and running."""
+    return {"message": "Welcome to the Customer Requests Handler System"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=80)
