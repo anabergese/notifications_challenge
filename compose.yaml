@@ -1,0 +1,10 @@
+services:
+  customer_requests:
+    build: .
+    ports:
+      - "8000:80"
+
+  notifications:
+    build: .
+    ports:
+      - "8001:80"

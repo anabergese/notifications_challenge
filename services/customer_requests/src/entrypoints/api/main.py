@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
-from services.customer_requests.src.entrypoints.api.routes import customer_requests_route
+from services.customer_requests.src.entrypoints.api.routes import customer_requests_routes
 
 app = FastAPI(
     title="Customer Request Notification System",
@@ -8,7 +8,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-app.include_router(customer_requests_route.router, prefix="/api/v1/customer-requests")
+app.include_router(customer_requests_routes.router, prefix="/api/v1/customer-requests")
 
 @app.get("/")
 def read_root():

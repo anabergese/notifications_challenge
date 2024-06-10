@@ -1,29 +1,38 @@
 ```
 notifications
+├─ .venv
+├─ Dockerfile
 ├─ Docs
 ├─ README.md
+├─ compose.yaml
 ├─ requirements.txt
-└─ src
-   ├─ Docker
-   │  └─ Dockerfile.customer_request
-   ├─ app
+└─ services
+   ├─ customer_requests
    │  ├─ __init__.py
-   │  └─ main.py
-   ├─ domain
-   │  ├─ __init_.py
-   │  ├─ models
-   │  │  ├─ __init_.py
-   │  │  └─ customer_request.py
-   │  └─ services
+   │  └─ src
    │     ├─ __init__.py
-   │     └─ customer_request_service.py
-   ├─ entrypoints
-   │  ├─ __init__.py
-   │  └─ fastapi
-   │     ├─ __init__.py
-   │     └─ routes
-   │        └─ customer_request_route.py
-   ├─ infrastructure
-   └─ tests
+   │     ├─ domain
+   │     │  ├─ __init_.py
+   │     │  └─ models
+   │     │     ├─ __init_.py
+   │     │     └─ customer_request.py
+   │     ├─ entrypoints
+   │     │  ├─ __init__.py
+   │     │  └─ api
+   │     │     ├─ __init__.py
+   │     │     ├─ main.py
+   │     │     └─ routes
+   │     │        └─ customer_requests_routes.py
+   │     ├─ infrastructure
+   │     │  └─ repositories
+   │     │     ├─ __init__.py
+   │     │     └─ customer_request_repository.py
+   │     └─ seedwork
+   │        ├─ domain
+   │        └─ infrastructure
+   │           ├─ __init__.py
+   │           └─ repositories.py
+   └─ notifications
+      └─ __init__.py
 
 ```
