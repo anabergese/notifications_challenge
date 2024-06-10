@@ -3,6 +3,11 @@ services:
     build: .
     ports:
       - "8000:80"
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /code
 
   notifications:
     build: .

@@ -17,4 +17,4 @@ EXPOSE 80
 COPY . .
 
 # Define the command to run the service
-CMD ["uvicorn", "services.customer_requests.src.entrypoints:main", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "services.customer_requests.src.entrypoints.api:main", "--host", "0.0.0.0", "--port", "80"]
