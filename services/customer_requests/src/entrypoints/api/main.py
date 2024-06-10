@@ -13,7 +13,7 @@ app.include_router(customer_requests_routes.router, prefix="/api/v1/customer-req
 @app.get("/")
 def read_root():
     """Server is up and running."""
-    return {"message": "Welcome to the Customer Requests Handler System"}
+    return {"message": "Welcome to the Customer Requests App"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=80)

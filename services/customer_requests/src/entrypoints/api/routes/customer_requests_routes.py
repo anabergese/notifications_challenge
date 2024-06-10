@@ -19,4 +19,4 @@ router = APIRouter()
 @router.get("/")
 def read_root():
     """Server is up and running."""
-    return {"message": "Accessed get from routes folder"}
+    return {"message": "This is a route path"}
