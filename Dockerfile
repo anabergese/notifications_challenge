@@ -1,5 +1,5 @@
 # Use the official Python image as the base image
-FROM python:3.10-slim
+FROM python:3.10-alpine
 
 # Set the working directory in the container
 WORKDIR /code
@@ -17,4 +17,4 @@ EXPOSE 80
 COPY . .
 
 # Define the command to run the service
-CMD ["uvicorn", "services.customer_requests.src.entrypoints.api.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "services.customer_requests.src.entrypoints.api.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
