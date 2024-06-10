@@ -5,7 +5,7 @@ FROM python:3.10-slim
 WORKDIR /code
 
 # Copy the requirements file into the container
-COPY rrequirements.txt requirements.txt
+COPY requirements.txt requirements.txt
 
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
