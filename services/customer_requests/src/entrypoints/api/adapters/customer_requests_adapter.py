@@ -1,7 +1,9 @@
-from services.customer_requests.src.domain.models.customer_request import CustomerRequest
-
 class CustomerRequestsAdapter:
     def process_request(self, topic: str, description: str):
         # Create a customer request object
-        request = CustomerRequest(topic=topic, description=description)
-        return request
+        if topic == "Sales":
+            return {"topic": topic, "description": description, "channel": "Slack"}
+        elif topic == "Pricing":
+            return {"topic": topic, "description": description, "channel": "Email"}
+        else:
+            return { "error": "Unknown topic. Try again."}
