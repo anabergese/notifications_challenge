@@ -1,4 +1,4 @@
-from src.notification_services.domain.models import CreateRequestEvent
+from src.notification_services.entrypoints.domain.models import CreateRequestEvent
 
 class SlackService:
     def send_to_slack(self, event: CreateRequestEvent):

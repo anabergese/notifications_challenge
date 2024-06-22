@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from src.notification_services.domain.event_handlers import SlackService, EmailService
-from src.notification_services.domain.models import CreateRequestEvent
+from src.notification_services.entrypoints.domain.event_handlers import SlackService, EmailService
+from src.notification_services.entrypoints.domain.models import CreateRequestEvent
 
 router = APIRouter()
 slack_service = SlackService()
