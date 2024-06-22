@@ -14,7 +14,7 @@ async def receive_request(request: Request):
         raise HTTPException(status_code=400, detail="Invalid request")
 
     # Crear un evento
-    event = CreateRequestEvent(topic=request.topic, description=request.description, source="CustomerBot", status="Received")
+    event = CreateRequestEvent(topic=request.topic, description=request.description, source="CustomerBot", status="Received", id=1)
 
     # Registrar el evento
     logger.log_event(event)

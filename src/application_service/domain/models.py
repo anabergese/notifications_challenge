@@ -1,4 +1,3 @@
-from datetime import datetime, timezone
 from pydantic import BaseModel, Field
 
 class CreateRequestEvent(BaseModel):
@@ -7,4 +6,3 @@ class CreateRequestEvent(BaseModel):
     description: str
     source: str
     status: str
-    timestamp: datetime = datetime.now(timezone.utc)
