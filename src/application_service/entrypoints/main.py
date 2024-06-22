@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
-from application_service.entrypoints.routes import application_service_routes
+from src.application_service.entrypoints.routes import application_service_routes
 
 app = FastAPI(
     title="Application Service",
