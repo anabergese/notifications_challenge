@@ -1,20 +1,25 @@
 # Ignore virtual environment directories
 .venv
 venv
+.vscode
 
 # Ignore Python cache files
 __pycache__
 *.pyc
 *.pyo
+*.pyd
 
 # Ignore other common unwanted files
 .git
 .gitignore
 .DS_Store
 node_modules
+.Python
+.env
+.mypy_cache
+.pytest_cache
 
 # Ignore logs and temporary files
 *.log
 *.tmp
 *.bak
-

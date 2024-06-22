@@ -1,38 +1,48 @@
+
 ```
 notifications
+├─ .dockerignore
+├─ .pylintrc
 ├─ .venv
+│  ├─ ...
+├─ .vscode
+│  └─ settings.json
 ├─ Dockerfile
 ├─ Docs
 ├─ README.md
 ├─ compose.yaml
 ├─ requirements.txt
-└─ services
-   ├─ customer_requests
+└─ src
+   ├─ application_service
    │  ├─ __init__.py
-   │  └─ src
-   │     ├─ __init__.py
+   │  ├─ domain
+   │  │  ├─ __init_.py
+   │  │  ├─ event_handlers.py
+   │  │  └─ models.py
+   │  ├─ entrypoints
+   │  │  ├─ __init__.py
+   │  │  ├─ main.py
+   │  │  ├─ request_response_schema.py
+   │  │  └─ routes
+   │  │     └─ customer_requests_routes.py
+   │  ├─ infrastructure
+   │  │  └─ repositories
+   │  │     └─ __init__.py
+   │  └─ seedwork
    │     ├─ domain
-   │     │  ├─ __init_.py
-   │     │  └─ models
-   │     │     ├─ __init_.py
-   │     │     └─ customer_request.py
-   │     ├─ entrypoints
-   │     │  ├─ __init__.py
-   │     │  └─ api
-   │     │     ├─ __init__.py
-   │     │     ├─ main.py
-   │     │     └─ routes
-   │     │        └─ customer_requests_routes.py
-   │     ├─ infrastructure
-   │     │  └─ repositories
-   │     │     ├─ __init__.py
-   │     │     └─ customer_request_repository.py
-   │     └─ seedwork
-   │        ├─ domain
-   │        └─ infrastructure
-   │           ├─ __init__.py
-   │           └─ repositories.py
-   └─ notifications
-      └─ __init__.py
+   │     └─ infrastructure
+   │        └─ __init__.py
+   └─ notification_services
+      ├─ __init__.py
+      └─ entrypoints
+         ├─ __init__.py
+         ├─ domain
+         │  ├─ __init__.py
+         │  ├─ event_handlers.py
+         │  └─ models.py
+         ├─ main.py
+         └─ routes
+            ├─ __init__.py
+            └─ notifications_routes.py
 
 ```
