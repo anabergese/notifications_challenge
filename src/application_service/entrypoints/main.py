@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
-from src.application_service.entrypoints.routes import customer_requests_routes
+from application_service.entrypoints.routes import application_service_routes
 
 app = FastAPI(
     title="Application Service",
@@ -8,7 +8,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-app.include_router(customer_requests_routes.router, prefix="/application-service")
+app.include_router(application_service_routes.router, prefix="/application-service")
 
 @app.get("/")
 def read_root():

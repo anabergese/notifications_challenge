@@ -1,9 +1,10 @@
 from pydantic import BaseModel
 
-class Request(BaseModel):
+class RequestModel(BaseModel):
     topic: str
     description: str
+    
 
-class Response(BaseModel):
+class ResponseModel(BaseModel):
     status: int
     message: str
