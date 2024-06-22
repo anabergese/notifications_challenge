@@ -7,4 +7,4 @@ class CreateRequestEvent(BaseModel):
     description: str
     source: str
     status: str
-    timestamp: datetime = datetime.now(timezone.utc)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

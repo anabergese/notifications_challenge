@@ -13,7 +13,7 @@ app.include_router(notifications_routes.router, prefix="/notification-services")
 @app.get("/")
 def read_root():
     """Server is up and running."""
-    return {"message": "Notifications Services"}
+    return {"message": "Notification Services OK"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=88)

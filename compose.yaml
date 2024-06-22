@@ -6,7 +6,7 @@ services:
       - "8000:80"
     volumes:
       - .:/code
-    command: uvicorn src.application_service.entrypoints.main:app --host 0.0.0.0 --port 80
+    command: uvicorn src.application_service.entrypoints.main:app --host 0.0.0.0 --port 80 --reload
     depends_on:
       - notification_services
 
@@ -17,4 +17,4 @@ services:
       - "8001:88"
     volumes:
       - .:/code
-    command: uvicorn src.notification_services.entrypoints.main:app --host 0.0.0.0 --port 88
+    command: uvicorn src.notification_services.entrypoints.main:app --host 0.0.0.0 --port 88 --reload
