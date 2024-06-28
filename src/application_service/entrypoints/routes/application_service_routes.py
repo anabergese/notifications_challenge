@@ -23,11 +23,16 @@ def redis_db():
         db=0,
         decode_responses=True,
     )
-    db.ping()
+    try:
+        db.ping()
+        print("Connected to Redis")
+    except redis.ConnectionError:
+        print("Failed to connect to Redis")
     return db
 
 def redis_queue_push(db, message):
     db.lpush(queue_name, message)
+    print(f"Message pushed to Redis queue: {message}") 
 
 @router.post("/notify", response_model=ResponseModel)
 async def receive_request(request: RequestModel, event_provider: EventProvider = Depends(BotEventProvider)):
@@ -58,6 +63,8 @@ async def add_job_to_queue(request: RequestModel):
     }
 
     message_json = dumps(message)
+    print(f"Adding message to queue: {message_json}")  # Mensaje de depuración antes de agregar a la cola
     redis_queue_push(redis_conn, message_json)
+    print("Message successfully added to queue")  # Mensaje de confirmación después de agregar a la cola
 
     return ResponseModel(status=200, message="Job added to queue")

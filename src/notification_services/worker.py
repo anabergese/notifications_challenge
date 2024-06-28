@@ -3,17 +3,16 @@ from json import loads
 import redis
 import os
 
-print("Starting worker...")  # Mensaje de depuración inicial
+print("Starting worker...")
 
-# Configuración de Redis
 redis_host = os.getenv('REDIS_HOST', 'localhost')
 redis_port = int(os.getenv('REDIS_PORT', 6379))
-redis_db_number = 0  # Puedes ajustar según tus necesidades
-redis_password = None  # Ajusta si necesitas contraseña
+redis_db_number = 0
+redis_password = None
 redis_queue_name = "notification_queue"
 
 def redis_db():
-    print("Connecting to Redis...")  # Mensaje de depuración
+    print("Connecting to Redis...")
     db = redis.Redis(
         host=redis_host,
         port=redis_port,
@@ -23,22 +22,22 @@ def redis_db():
     )
     try:
         db.ping()
-        print("Connected to Redis")  # Mensaje de éxito
+        print("Connected to Redis")
     except redis.ConnectionError:
-        print("Failed to connect to Redis")  # Mensaje de error
+        print("Failed to connect to Redis")
     return db
 
 def redis_queue_push(db, message):
     db.lpush(redis_queue_name, message)
-    print("Message pushed to Redis queue")  # Mensaje de depuración
+    print("Message pushed to Redis queue")
 
 def redis_queue_pop(db):
-    print("Waiting to pop message from Redis queue...")  # Mensaje de depuración
+    print("Waiting to pop message from Redis queue...")
     _, message_json = db.brpop(redis_queue_name)
     return message_json
 
 def process_message(db, message_json: str):
-    print("Processing message...")  # Mensaje de depuración
+    print("Processing message...")
     message = loads(message_json)
     print(f"Message received: id={message['id']}, topic={message['topic']}, description={message['description']}")
 
@@ -51,11 +50,11 @@ def process_message(db, message_json: str):
         redis_queue_push(db, message_json)
 
 def main():
-    print("Starting main function...")  # Mensaje de depuración
+    print("Starting main function...")
     db = redis_db()
 
     while True:
-        print("Waiting for message...")  # Mensaje de depuración
+        print("Waiting for message...")
         message_json = redis_queue_pop(db)
         process_message(db, message_json)
 
