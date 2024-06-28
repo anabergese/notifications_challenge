@@ -17,8 +17,6 @@ services:
   notification_services:
     build: .
     container_name: notification_services
-    ports:
-      - "8001:88"
     volumes:
       - .:/code
     command: python src/notification_services/worker.py

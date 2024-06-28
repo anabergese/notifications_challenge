@@ -34,6 +34,7 @@ def process_message(db, message_json: str):
     processed_ok = random.choices((True, False), weights=(5, 1), k=1)[0]
     if processed_ok:
         print("Processed successfully")
+        print(f"Message ID: {message['id']}")
     else:
         print("Processing failed - requeuing...")
         redis_queue_push(db, message_json)
