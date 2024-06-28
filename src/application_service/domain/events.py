@@ -1,14 +1,6 @@
 from abc import ABC, abstractmethod
-from pydantic import BaseModel, Field
 from src.application_service.entrypoints.models import RequestModel
-
-class RequestEvent(BaseModel):
-    id: int = Field(default=None)
-    topic: str
-    description: str
-    source: str
-    status: str
-
+from src.application_service.domain.models import RequestEvent
 class EventProvider(ABC):
     @abstractmethod
     def create_event(self, request: RequestModel) -> RequestEvent:

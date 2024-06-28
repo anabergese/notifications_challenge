@@ -1,5 +1,5 @@
 import requests
-from src.application_service.domain.events import RequestEvent
+from src.application_service.domain.models import RequestEvent
 
 class EventLogger:
     def log_event(self, event: RequestEvent):
@@ -20,7 +20,7 @@ class EventForwarder:
         response = requests.post(slack_url, json=event.model_dump(), timeout=10)
         if response.status_code != 200:
             raise ValueError("Failed to send to Slack")
-        print(f"Sending eventitos to Slack: {event.topic} - {event.description}")
+        print(f"Sending events to Slack: {event.topic} - {event.description}")
 
     def send_to_email(self, event: RequestEvent):
         email_url = "http://notification_services:88/notification-services/email"
