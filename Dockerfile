@@ -16,7 +16,6 @@ COPY . .
 
 # Expose the ports for the FastAPI applications
 EXPOSE 80
-EXPOSE 88
 
 # Default command
 CMD ["uvicorn", "src.application_service.entrypoints.main:app", "--host", "0.0.0.0", "--port", "80"]
