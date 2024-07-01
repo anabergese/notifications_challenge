@@ -64,6 +64,7 @@ async def add_job_to_queue(request: RequestModel):
 
     message_json = dumps(message)
     print(f"Adding message to queue: {message_json}")  # Mensaje de depuración antes de agregar a la cola
+    db = redis_db()
     redis_queue_push(redis_conn, message_json)
     print("Message successfully added to queue")  # Mensaje de confirmación después de agregar a la cola
 
