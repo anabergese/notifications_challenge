@@ -1,13 +1,12 @@
 from uuid import uuid4
 from json import dumps
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException
 import uvicorn
-import redis
 from redis import Redis
-# from rq import Queue
+from rq import Queue
 from src.application_service.entrypoints.routes import application_service_routes
 from src.application_service.entrypoints.models import RequestModel, ResponseModel
-# from src.notification_services.worker import process_message
+from src.notification_services.worker import process_message
 
 app = FastAPI(
     title="Application Service",
@@ -16,20 +15,8 @@ app = FastAPI(
 )
 app.include_router(application_service_routes.router, prefix="/application-service")
 
-# redis_conn = Redis(host="redis", port=6379)
-# task_queue = Queue("task_queue", connection=redis_conn)
-def redis_db():
-    db = redis.Redis(
-        host="redis",
-        port=6379,
-        db=0,
-        decode_responses=True,
-    )
-
-    # make sure redis is up and running
-    db.ping()
-
-    return db
+redis_conn = Redis(host="redis", port=6379)
+task_queue = Queue("task_queue", connection=redis_conn)
 
 @app.get("/")
 def read_root():
@@ -37,7 +24,7 @@ def read_root():
     return {"message": "Application Service"}
 
 @app.post("/add-job", response_model=ResponseModel)
-async def add_job_to_queue(request: RequestModel, db: Redis = Depends(redis_db)):
+async def add_job_to_queue(request: RequestModel):
     if not request.topic or not request.description:
         raise HTTPException(status_code=400, detail="Invalid request")
     
@@ -49,8 +36,7 @@ async def add_job_to_queue(request: RequestModel, db: Redis = Depends(redis_db))
 
     message_json = dumps(message)
     print(f"Adding message to queue: {message_json}")  # Mensaje de depuración antes de agregar a la cola
-    # task_queue.enqueue(process_message, message_json)
-    db.lpush("task_queue", message_json)
+    task_queue.enqueue(process_message, message_json)
     print("Message successfully added to queue")  # Mensaje de confirmación después de agregar a la cola
 
     return ResponseModel(status=200, message="Job added to queue")

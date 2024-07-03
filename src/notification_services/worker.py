@@ -1,57 +1,30 @@
 import json
-import redis
+from redis import Redis
+from rq import Worker, Queue, Connection
 
-def redis_db():
+# Conexión a Redis
+redis_conn = Redis(host="localhost", port=6379)
+
+# Referenciar la cola de tareas
+task_queue = Queue("task_queue", connection=redis_conn)
+
+def process_message(message_json):
     """
-    Crea una conexión a la base de datos Redis y verifica que esté en funcionamiento.
+    Procesa el mensaje de la cola `task_queue`.
     """
     try:
-        db = redis.Redis(
-            host="redis",
-            port=6379,
-            db=0,
-            decode_responses=True,
-        )
-        
-        # Verificar que Redis esté en funcionamiento
-        db.ping()
-        
-        return db
-    except redis.ConnectionError as con_err:
-        print(f"Error al conectar con Redis: {con_err}")
-        raise
-
-def redis_queue_pop(db):
-    """
-    Extrae un elemento de la cola 'task_queue' en Redis de forma bloqueante.
-    """
-    try:
-        print("Processing message from worker...")
-        
-        # `brpop` es una llamada bloqueante que espera hasta que un elemento esté disponible
-        _, message_json = db.brpop("task_queue")
-        
-        # Decodificar el mensaje JSON
         message_data = json.loads(message_json)
-        
-        print(f"Message ID: {message_data['id']}")
+        print(f"Processing message with ID: {message_data['id']}")
         print(f"Topic: {message_data['topic']}")
         print(f"Description: {message_data['description']}")
-        
-        return message_json
-    except (redis.ConnectionError, json.JSONDecodeError) as e:
-        print(f"Error al procesar el mensaje: {e}")
-        raise
+    except json.JSONDecodeError as e:
+        print(f"Error al decodificar el mensaje: {e}")
 
 if __name__ == "__main__":
-    try:
-        db = redis_db()
-        
-        # Aquí puedes poner un bucle infinito para procesar continuamente los mensajes de la cola
-        while True:
-            redis_queue_pop(db)
-    except Exception as e_main:
-        print(f"Error en el worker: {e_main}")
+    with Connection(redis_conn):
+        # Iniciar el worker con nombre personalizado 'foo' y asociarlo a la cola `task_queue`
+        worker_foo = Worker([task_queue], connection=redis_conn, name='foo')
+        worker_foo.work()
 
 
 # import json
