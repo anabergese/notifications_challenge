@@ -9,7 +9,7 @@ services:
   application_service:
     build:
       context: ./src/application_service
-      dockerfile: Dockerfile.application_service
+      dockerfile: Dockerfile
     container_name: application_service
     ports:
       - "8000:80"
@@ -25,7 +25,7 @@ services:
   notification_services:
     build:
       context: ./src/notification_services
-      dockerfile: Dockerfile.notification_services
+      dockerfile: Dockerfile
     container_name: notification_services
     volumes:
       - .:/code
