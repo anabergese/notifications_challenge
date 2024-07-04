@@ -1,0 +1,23 @@
+# Ignore local development files for FastAPI and pipenv
+__pycache__/
+*.pyc
+*.env
+
+# Ignore Docker related files
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Ignore Redis RDB and AOF files
+*.rdb
+*.aof
+
+# Ignore Redis dump files
+dump.rdb
+
+# Ignore RQ worker logs
+.rq/
+
+# Ignore pipenv virtual environment
+/.venv/
+Pipfile.lock
