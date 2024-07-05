@@ -7,31 +7,31 @@ services:
         - "6379:6379"
 
   application_service:
-    build:
-      context: /notifications
-      dockerfile: src/application_service/Dockerfile
-    container_name: application_service
-    ports:
-      - "8000:80"
-    volumes:
-      - .:/app
-    command: uvicorn src.application_service.entrypoints.main:app --host 0.0.0.0 --port 80 --reload
-    depends_on:
-      - redis
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      build:
+        context: .
+        dockerfile: src/application_service/Dockerfile
+      container_name: application_service
+      ports:
+        - "8000:80"
+      volumes:
+        - ./src/application_service:/app
+      command: uvicorn src.application_service.entrypoints.main:app --host 0.0.0.0 --port 80 --reload
+      depends_on:
+        - redis
+      environment:
+        - REDIS_HOST=redis
+        - REDIS_PORT=6379
 
-  notification_services:
-    build:
-      context: /notifications
-      dockerfile: src/notification_services/Dockerfile
-    container_name: notification_services
-    volumes:
-      - .:/app
-    command: python src/notification_services/worker.py
-    depends_on:
-          - redis
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+    notification_services:
+      build:
+        context: .
+        dockerfile: src/notification_services/Dockerfile
+      container_name: notification_services
+      volumes:
+        - ./src/notification_services:/app
+      command: python src/notification_services/worker.py
+      depends_on:
+        - redis
+      environment:
+        - REDIS_HOST=redis
+        - REDIS_PORT=6379
