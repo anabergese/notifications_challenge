@@ -8,11 +8,11 @@ WORKDIR /app
 RUN apk add --no-cache gcc musl-dev linux-headers
 
 # Copy requirements.txt and install dependencies
-COPY src/application_service/requirements.txt requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Copy the current directory contents into the container at /code
-COPY src/application_service /app
+COPY . /app
 
 # Expose the ports for the FastAPI applications
 EXPOSE 80
