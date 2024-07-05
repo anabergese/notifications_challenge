@@ -8,13 +8,13 @@ services:
 
   application_service:
     build:
-      context: ./src/application_service
-      dockerfile: Dockerfile
+      context: /notifications
+      dockerfile: src/application_service/Dockerfile
     container_name: application_service
     ports:
       - "8000:80"
     volumes:
-      - .:/code
+      - .:/app
     command: uvicorn src.application_service.entrypoints.main:app --host 0.0.0.0 --port 80 --reload
     depends_on:
       - redis
@@ -24,11 +24,11 @@ services:
 
   notification_services:
     build:
-      context: ./src/notification_services
-      dockerfile: Dockerfile
+      context: /notifications
+      dockerfile: src/notification_services/Dockerfile
     container_name: notification_services
     volumes:
-      - .:/code
+      - .:/app
     command: python src/notification_services/worker.py
     depends_on:
           - redis

@@ -2,17 +2,17 @@
 FROM python:3.10-alpine
 
 # Set the working directory to /code
-WORKDIR /code
+WORKDIR /app
 
 # Install gcc and other dependencies
 RUN apk add --no-cache gcc musl-dev linux-headers
 
 # Copy requirements.txt and install dependencies
-COPY requirements.txt requirements.txt
+COPY src/application_service/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Copy the current directory contents into the container at /code
-COPY . .
+COPY src/application_service /app
 
 # Expose the ports for the FastAPI applications
 EXPOSE 80
