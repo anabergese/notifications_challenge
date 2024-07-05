@@ -5,9 +5,9 @@ FROM python:3.12
 WORKDIR /app
 
 # Copy the requirements file
-COPY requirements.txt .
+COPY src/notification_services/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY . /app
+COPY src/notification_services /app
 
 # Command to run the worker
 CMD ["python", "src/notification_services/worker.py"]
