@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from src.application_service.entrypoints.models import RequestModel
-from src.application_service.domain.models import RequestEvent
+from entrypoints.models import RequestModel
+from domain.models import RequestEvent
 class EventProvider(ABC):
     @abstractmethod
     def create_event(self, request: RequestModel) -> RequestEvent:

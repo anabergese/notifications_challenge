@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
-from src.application_service.entrypoints.models import RequestModel, ResponseModel
-from src.application_service.domain.events import EventProvider, BotEventProvider
-from src.application_service.domain.event_handlers import EventLogger, EventForwarder
+from entrypoints.models import RequestModel, ResponseModel
+from domain.events import EventProvider, BotEventProvider
+from domain.event_handlers import EventLogger, EventForwarder
 
 router = APIRouter()
 logger = EventLogger()

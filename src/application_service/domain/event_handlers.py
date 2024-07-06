@@ -1,5 +1,5 @@
 import requests
-from src.application_service.domain.models import RequestEvent
+from domain.models import RequestEvent
 
 class EventLogger:
     def log_event(self, event: RequestEvent):
