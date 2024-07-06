@@ -12,6 +12,9 @@ COPY src/application_service/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY src/application_service /app
 
+# Set PYTHONPATH
+ENV PYTHONPATH="/app"
+
 # Expose the ports for the FastAPI applications
 EXPOSE 80
 
