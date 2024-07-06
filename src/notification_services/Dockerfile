@@ -6,8 +6,8 @@ WORKDIR /app
 
 # Copy the requirements file
 COPY src/notification_services/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r src/notification_services/requirements.txt
 COPY src/notification_services /app
 
-# Command to run the worker
+# # Command to run the worker
 CMD ["python", "src/notification_services/worker.py"]
