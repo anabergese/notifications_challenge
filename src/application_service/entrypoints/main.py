@@ -37,7 +37,7 @@ async def add_job_to_queue(request: RequestModel):
 
     message_json = dumps(message)
     print(f"Adding message to queue: {message_json}")  # Mensaje de depuración antes de agregar a la cola
-    task_queue.enqueue("notification_services.worker.process_message", message_json)
+    task_queue.enqueue(process_message, message_json)
     print("Message successfully added to queue")  # Mensaje de confirmación después de agregar a la cola
 
     return ResponseModel(status=200, message="Job added to queue")
