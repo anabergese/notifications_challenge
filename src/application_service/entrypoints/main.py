@@ -6,7 +6,7 @@ from redis import Redis
 from rq import Queue
 from entrypoints.routes import application_service_routes
 from entrypoints.models import RequestModel, ResponseModel
-from notification_services.worker import process_message
+from entrypoints.process_message import process_message
 
 app = FastAPI(
     title="Application Service",
@@ -37,7 +37,7 @@ async def add_job_to_queue(request: RequestModel):
 
     message_json = dumps(message)
     print(f"Adding message to queue: {message_json}")  # Mensaje de depuración antes de agregar a la cola
-    task_queue.enqueue(process_message, message_json)
+    task_queue.enqueue("application_service.entrypoints.process_message.process_message", message_json)
     print("Message successfully added to queue")  # Mensaje de confirmación después de agregar a la cola
 
     return ResponseModel(status=200, message="Job added to queue")
