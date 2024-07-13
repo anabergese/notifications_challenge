@@ -1,15 +1,9 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
+from domain.value_objects import TopicEnum
+
 class TopicValidator(BaseModel):
-    topic: str = Field(..., description="Topic of the task")
-    description: str = Field(..., description="Description of the task")
-    
-    @field_validator('topic')
-    @classmethod
-    def validate_topic(cls, v):
-        allowed_topics = {"sales", "pricing"}
-        if v.lower() not in allowed_topics:
-            raise ValueError('Invalid topic. Allowed topics are: "sales" or "pricing".')
-        return v.lower()
+    topic: TopicEnum = Field(..., description="Topic of the message")
+    description: str = Field(..., description="Description of the message")
 
 class ResponseModel(BaseModel):
     status: int

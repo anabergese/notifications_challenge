@@ -1,12 +1,8 @@
 from fastapi import FastAPI, Depends
 import uvicorn
-import logging
 from entrypoints.models import TopicValidator, ResponseModel
 from domain.models import Message
-from entrypoints.config import get_redis_connection
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from entrypoints.dependencies import get_redis_connection, get_add_message_to_redis_queue
 
 app = FastAPI(
     title="Application Service",
@@ -28,7 +24,8 @@ def read_root():
 @app.post("/message", response_model=ResponseModel)
 async def add_message_to_queue(
     request: TopicValidator,
-    redis_conn = Depends(get_redis_connection)
+    redis_conn = Depends(get_redis_connection),
+    add_message_to_redis_queue = Depends(get_add_message_to_redis_queue)
     ):
     # message = {
     #     "id": str(uuid4()),
@@ -36,9 +33,10 @@ async def add_message_to_queue(
     #     "description": request.description
     # }
     message = Message.create(topic=request.topic, description=request.description)
-    message_json = message.model_dump_json()
-    redis_conn.lpush('task_queue', message_json)
-    logger.info("Message added to queue: %s", message_json)
+    add_message_to_redis_queue(message, redis_conn)
+    # message_json = message.model_dump_json()
+    # redis_conn.lpush('task_queue', message_json)
+    # logger.info("Message added to queue: %s", message_json)
     return ResponseModel(status=200, message="Your message was received. Thanks")
 
 
