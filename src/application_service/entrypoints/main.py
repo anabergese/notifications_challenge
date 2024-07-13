@@ -3,9 +3,7 @@ import json
 from fastapi import FastAPI, HTTPException
 import uvicorn
 import redis
-from entrypoints.routes import application_service_routes
 from entrypoints.models import RequestModel, ResponseModel
-from entrypoints.process_message import process_message
 
 app = FastAPI(
     title="Application Service",
@@ -13,10 +11,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-app.include_router(application_service_routes.router, prefix="/application-service")
-
 redis_conn = redis.Redis(host='redis', port=6379, db=0)
-
 
 @app.get("/")
 def read_root():

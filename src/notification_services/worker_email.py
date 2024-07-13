@@ -19,12 +19,12 @@ def worker():
             if task:
                 _, task_json = task
                 task_data = json.loads(task_json)
-                if task_data.get('topic') == 'Pricing':
+                if task_data.get('topic') == 'pricing':
                     process_task(task_json)
                 else:
                 # Optionally re-queue the task for another worker to process
                     redis_conn.lpush('task_queue', task_json)
-                    print(f"Task {task_data['id']} requeued as it does not have the topic 'sales'")
+                    print(f"Task {task_data['id']} requeued as it does not have the topic 'pricing'")
         except Exception as e:
             print(f"Error processing task: {e}")
             # Optionally re-queue the task for retry if an error occurs

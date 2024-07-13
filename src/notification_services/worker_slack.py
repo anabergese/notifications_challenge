@@ -35,7 +35,7 @@ def pricing_worker():
             if task:
                 _, task_json = task
                 task_data = json.loads(task_json)
-                if task_data.get('topic') == 'Sales':
+                if task_data.get('topic') == 'sales':
                     process_pricing_task(task_json)
                 else:
                     # Optionally re-queue the task for another worker to process
