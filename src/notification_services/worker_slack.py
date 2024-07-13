@@ -42,7 +42,7 @@ def pricing_worker():
                 else:
                     # Optionally re-queue the task for another worker to process
                     redis_conn.lpush('task_queue', task_json)
-                    print(f"Task {task_data['id']} requeued as it does not have the topic 'pricing'")
+                    print(f"Task {task_data['id']} requeued as it does not have the topic 'sales'")
         except Exception as e:
             print(f"Error processing task: {e}")
             # Optionally re-queue the task for retry if an error occurs

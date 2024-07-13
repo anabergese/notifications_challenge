@@ -15,7 +15,6 @@ services:
       - "8000:80"
     volumes:
       - ./src/application_service:/app
-      - ./src/notification_services:/app/notification_services 
     command: uvicorn entrypoints.main:app --host 0.0.0.0 --port 80 --reload
     depends_on:
       - redis
@@ -30,7 +29,6 @@ services:
     container_name: notification_services
     volumes:
       - ./src/notification_services:/app
-      - ./src/application_service:/app/application_service
     command: tail -f /dev/null
     depends_on:
       - redis

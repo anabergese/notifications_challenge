@@ -1,9 +1,8 @@
-from uuid import uuid4
-import json
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Depends
 import uvicorn
 import logging
-from entrypoints.models import RequestModel, ResponseModel, Error
+from entrypoints.models import TopicValidator, ResponseModel
+from domain.models import Message
 from entrypoints.config import get_redis_connection
 
 logging.basicConfig(level=logging.INFO)
@@ -14,34 +13,33 @@ app = FastAPI(
     description="API for handling customer requests and sending notifications to various channels.",
     version="1.0.0",
     responses={
-        404: {"description": "Not Found", "model": Error},
-        500: {"description": "Internal Server Error", "model": Error},
+        404: {"description": "Not Found"},
+        500: {"description": "Internal Server Error"},
     }
 )
 
-redis_conn = get_redis_connection()
+# redis_conn = get_redis_connection()
 
 @app.get("/")
 def read_root():
     """Server is up and running."""
     return {"message": "Application Service is up and running."}
 
-@app.post("/add-task", response_model=ResponseModel)
-async def add_task_to_queue(request: RequestModel):
-    if not request.topic or not request.description:
-        raise HTTPException(status_code=400, detail="Invalid request")
-    
-    message = {
-        "id": str(uuid4()),
-        "topic": request.topic,
-        "description": request.description
-    }
-
-    task_json = json.dumps(message)
-    redis_conn.lpush('task_queue', task_json)
-    logger.info("Task added to queue: %s", task_json)
-    return ResponseModel(status=200, message="Job added to queue")
-
+@app.post("/message", response_model=ResponseModel)
+async def add_message_to_queue(
+    request: TopicValidator,
+    redis_conn = Depends(get_redis_connection)
+    ):
+    # message = {
+    #     "id": str(uuid4()),
+    #     "topic": request.topic,
+    #     "description": request.description
+    # }
+    message = Message.create(topic=request.topic, description=request.description)
+    message_json = message.model_dump_json()
+    redis_conn.lpush('task_queue', message_json)
+    logger.info("Message added to queue: %s", message_json)
+    return ResponseModel(status=200, message="Your message was received. Thanks")
 
 
 if __name__ == "__main__":
