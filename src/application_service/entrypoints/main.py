@@ -3,7 +3,7 @@ import json
 from fastapi import FastAPI, HTTPException
 import uvicorn
 import logging
-from entrypoints.models import RequestModel, ResponseModel
+from entrypoints.models import RequestModel, ResponseModel, Error
 from entrypoints.config import get_redis_connection
 
 logging.basicConfig(level=logging.INFO)
@@ -13,6 +13,10 @@ app = FastAPI(
     title="Application Service",
     description="API for handling customer requests and sending notifications to various channels.",
     version="1.0.0",
+    responses={
+        404: {"description": "Not Found", "model": Error},
+        500: {"description": "Internal Server Error", "model": Error},
+    }
 )
 
 redis_conn = get_redis_connection()

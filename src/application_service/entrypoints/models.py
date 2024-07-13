@@ -15,3 +15,7 @@ class RequestModel(BaseModel):
 class ResponseModel(BaseModel):
     status: int
     message: str
+
+class Error(BaseModel):
+    code: str = Field(title="Error Details", description="Indicates the reason code to deny the operation", example="invalid_request")
+    message: str = Field(title="Description", description="A short result description of the error", example="One or more inputs are invalid")
