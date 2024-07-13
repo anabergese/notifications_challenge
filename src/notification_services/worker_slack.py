@@ -1,3 +1,4 @@
+import os
 import json
 import time
 import redis
@@ -5,7 +6,8 @@ from domain.models import CreateRequestEvent
 from domain.event_handlers import SlackService
 
 # Initialize Redis connection
-redis_conn = redis.Redis(host='localhost', port=6379, db=0)
+# redis_conn = redis.Redis(host='localhost', port=6379, db=0)
+redis_conn = redis.Redis(host=os.getenv('REDIS_HOST', 'localhost'), port=int(os.getenv('REDIS_PORT', 6379)), db=0)
 
 def process_pricing_task(task_json):
     task = json.loads(task_json)

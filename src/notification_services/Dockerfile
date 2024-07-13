@@ -13,4 +13,4 @@ COPY src/notification_services /app
 ENV PYTHONPATH="/app"
 
 # # Command to run the worker
-CMD ["python", "src/notification_services/worker.py"]
+# CMD ["python", "src/notification_services/worker.py"]

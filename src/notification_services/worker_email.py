@@ -1,9 +1,11 @@
+import os
 import json
 import time
 import redis
 
 # Initialize Redis connection
-redis_conn = redis.Redis(host='localhost', port=6379, db=0)
+# redis_conn = redis.Redis(host='localhost', port=6379, db=0)
+redis_conn = redis.Redis(host=os.getenv('REDIS_HOST', 'localhost'), port=int(os.getenv('REDIS_PORT', 6379)), db=0)
 
 def process_task(task_json):
     task = json.loads(task_json)

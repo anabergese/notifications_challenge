@@ -31,7 +31,7 @@ services:
     volumes:
       - ./src/notification_services:/app
       - ./src/application_service:/app/application_service
-    command: python worker.py
+    command: tail -f /dev/null
     depends_on:
       - redis
     environment:
