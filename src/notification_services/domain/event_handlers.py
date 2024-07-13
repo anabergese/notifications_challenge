@@ -1,9 +1,9 @@
-from src.notification_services.domain.models import CreateRequestEvent
+from domain.models import CreateRequestEvent
 
 class SlackService:
     def send_to_slack(self, event: CreateRequestEvent):
         # Código para enviar el evento a Slack
-        print(f"Event Handler: Sending to Slack from container: {event.description}")
+        print(f"Event Handler: Sending notification to Slack from container: {event.description}")
 
 
 class EmailService:

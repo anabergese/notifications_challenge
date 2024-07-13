@@ -1,9 +1,8 @@
 from uuid import uuid4
-from json import dumps
+import json
 from fastapi import FastAPI, HTTPException
 import uvicorn
-from redis import Redis
-from rq import Queue
+import redis
 from entrypoints.routes import application_service_routes
 from entrypoints.models import RequestModel, ResponseModel
 from entrypoints.process_message import process_message
@@ -16,16 +15,16 @@ app = FastAPI(
 
 app.include_router(application_service_routes.router, prefix="/application-service")
 
-redis_conn = Redis(host="redis", port=6379)
-task_queue = Queue("task_queue", connection=redis_conn)
+redis_conn = redis.Redis(host='redis', port=6379, db=0)
+
 
 @app.get("/")
 def read_root():
     """Server is up and running."""
     return {"message": "Application Service"}
 
-@app.post("/add-job", response_model=ResponseModel)
-async def add_job_to_queue(request: RequestModel):
+@app.post("/add-task", response_model=ResponseModel)
+async def add_task_to_queue(request: RequestModel):
     if not request.topic or not request.description:
         raise HTTPException(status_code=400, detail="Invalid request")
     
@@ -35,10 +34,9 @@ async def add_job_to_queue(request: RequestModel):
         "description": request.description
     }
 
-    message_json = dumps(message)
-    print(f"Adding message to queue: {message_json}")  # Mensaje de depuración antes de agregar a la cola
-    task_queue.enqueue("application_service.entrypoints.process_message.process_message", message_json)
-    print("Message successfully added to queue")  # Mensaje de confirmación después de agregar a la cola
+    task_json = json.dumps(message)
+    redis_conn.lpush('task_queue', task_json)
+    print(f"Task added to queue: {task_json}")
 
     return ResponseModel(status=200, message="Job added to queue")
 
