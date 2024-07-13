@@ -1,8 +1,8 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 class RequestModel(BaseModel):
-    topic: str
-    description: str
+    topic: str = Field(..., description="Topic of the task")
+    description: str = Field(..., description="Description of the task")
     
     @field_validator('topic')
     @classmethod

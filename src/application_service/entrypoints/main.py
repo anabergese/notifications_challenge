@@ -2,8 +2,12 @@ from uuid import uuid4
 import json
 from fastapi import FastAPI, HTTPException
 import uvicorn
-import redis
+import logging
 from entrypoints.models import RequestModel, ResponseModel
+from entrypoints.config import get_redis_connection
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Application Service",
@@ -11,12 +15,12 @@ app = FastAPI(
     version="1.0.0",
 )
 
-redis_conn = redis.Redis(host='redis', port=6379, db=0)
+redis_conn = get_redis_connection()
 
 @app.get("/")
 def read_root():
     """Server is up and running."""
-    return {"message": "Application Service"}
+    return {"message": "Application Service is up and running."}
 
 @app.post("/add-task", response_model=ResponseModel)
 async def add_task_to_queue(request: RequestModel):
@@ -31,8 +35,7 @@ async def add_task_to_queue(request: RequestModel):
 
     task_json = json.dumps(message)
     redis_conn.lpush('task_queue', task_json)
-    print(f"Task added to queue: {task_json}")
-
+    logger.info("Task added to queue: %s", task_json)
     return ResponseModel(status=200, message="Job added to queue")
 
 
