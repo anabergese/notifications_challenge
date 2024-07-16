@@ -1,19 +1,19 @@
-from fastapi import FastAPI
-import uvicorn
-from src.notification_services.entrypoints.routes import notifications_routes
+from config import create_redis_connection
+from worker import Worker
+from models import EmailNotifier, SlackNotifier
 
-app = FastAPI(
-    title="Notification Services",
-    description="API for handling customer requests and sending notifications to various channels.",
-    version="1.0.0",
-)
+def main():
+    redis_conn = create_redis_connection()
 
-app.include_router(notifications_routes.router, prefix="/notification-services")
+    notifiers = {
+        'pricing': EmailNotifier(),
+        'sales': SlackNotifier(),
+        # Add more notifiers as needed
+    }
 
-@app.get("/")
-def read_root():
-    """Server is up and running."""
-    return {"message": "Notification Services OK"}
+    worker = Worker(redis_conn, notifiers)
+    worker.run()
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=88)
+    main()
+    

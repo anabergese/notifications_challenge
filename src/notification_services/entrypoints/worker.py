@@ -1,10 +1,8 @@
-import os
 import json
-import time
-import redis
-from notification_services.entrypoints.models import EmailNotifier, SlackNotifier
+from redis import Redis
+
 class Worker:
-    def __init__(self, redis_conn, notifiers):
+    def __init__(self, redis_conn: Redis, notifiers: dict):
         self.redis_conn = redis_conn
         self.notifiers = notifiers
 
@@ -30,22 +28,3 @@ class Worker:
                 print(f"Error processing task: {e}")
                 # Optionally re-queue the task for retry if an error occurs
                 # self.redis_conn.lpush('task_queue', task_json)
-
-def create_redis_connection():
-    return redis.Redis(host=os.getenv('REDIS_HOST', 'localhost'), port=int(os.getenv('REDIS_PORT', 6379)), db=0)
-
-def main():
-    redis_conn = create_redis_connection()
-
-    notifiers = {
-        'pricing': EmailNotifier(),
-        'sales': SlackNotifier(),
-        # 'other_topic': SlackNotifier(),
-        # Add more notifiers as needed
-    }
-
-    worker = Worker(redis_conn, notifiers)
-    worker.run()
-
-if __name__ == "__main__":
-    main()
