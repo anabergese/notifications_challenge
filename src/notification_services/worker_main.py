@@ -2,7 +2,7 @@ import os
 import json
 import time
 import redis
-from notification_services.entrypoints.models import EmailNotifier, SlackNotifier
+from notification_services.domain.models import EmailNotifier, SlackNotifier
 class Worker:
     def __init__(self, redis_conn, notifiers):
         self.redis_conn = redis_conn

@@ -14,3 +14,4 @@ ENV PYTHONPATH="/app"
 
 # # Command to run the worker
 # CMD ["python", "src/notification_services/worker.py"]
+CMD ["python", "-m", "entrypoints.main"]
