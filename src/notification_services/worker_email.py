@@ -7,12 +7,12 @@ import redis
 # redis_conn = redis.Redis(host='localhost', port=6379, db=0)
 redis_conn = redis.Redis(host=os.getenv('REDIS_HOST', 'localhost'), port=int(os.getenv('REDIS_PORT', 6379)), db=0)
 
-def process_task(task_json):
+def email_notifier(task_json):
     task = json.loads(task_json)
     print(f"Processing task from worker: {task['id']}")
     # Simulate task processing
     time.sleep(3)
-    print(f"Task {task['topic']} processed successfully: {task['description']}")
+    print(f"Task {task['topic']} send to email successfully: {task['description']}")
 
 def worker():
     while True:
@@ -22,7 +22,7 @@ def worker():
                 _, task_json = task
                 task_data = json.loads(task_json)
                 if task_data.get('topic') == 'pricing':
-                    process_task(task_json)
+                    email_notifier(task_json)
                 else:
                 # Optionally re-queue the task for another worker to process
                     redis_conn.lpush('task_queue', task_json)
