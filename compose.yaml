@@ -24,12 +24,13 @@ services:
 
   notification_services:
     build:
-      context: .
-      dockerfile: src/notification_services/Dockerfile
+      context: ./src/notification_services
+      dockerfile: Dockerfile
     container_name: notification_services
+    ports:
+      - "8001:8001"
     volumes:
       - ./src/notification_services:/app
-    command: python -m package.module
     depends_on:
       - redis
     environment:

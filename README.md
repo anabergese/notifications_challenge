@@ -1,47 +1,5 @@
 ```
 notifications
-├─ .git
-│  ├─ COMMIT_EDITMSG
-│  ├─ HEAD
-│  ├─ ORIG_HEAD
-│  ├─ config
-│  ├─ description
-│  ├─ hooks
-│  │  ├─ applypatch-msg.sample
-│  │  ├─ commit-msg.sample
-│  │  ├─ fsmonitor-watchman.sample
-│  │  ├─ post-update.sample
-│  │  ├─ pre-applypatch.sample
-│  │  ├─ pre-commit.sample
-│  │  ├─ pre-merge-commit.sample
-│  │  ├─ pre-push.sample
-│  │  ├─ pre-rebase.sample
-│  │  ├─ pre-receive.sample
-│  │  ├─ prepare-commit-msg.sample
-│  │  ├─ push-to-checkout.sample
-│  │  └─ update.sample
-│  ├─ index
-│  ├─ info
-│  │  └─ exclude
-│  ├─ logs
-│  │  ├─ HEAD
-│  │  └─ refs
-│  │     ├─ heads
-│  │     │  ├─ customer-requests
-│  │     │  ├─ folders-organization
-│  │     │  └─ main
-│  │     └─ remotes
-│  │        └─ origin
-│  │           └─ main
-│  ├─ objects
-│  │  ├─ 00
-│  │  │  ├─ 1fa733afde0b8d2dd69620ace282b74b51dc4a
-│  │  │  ├─ 20402a8b839c30f09deccc2149bcf9cccda3f8
-│  │  │  ├─ 239b70e7c745f6d1584c5117a6d186137d0351
-│........
-│  └─ pyvenv.cfg
-├─ .vscode
-│  └─ settings.json
 ├─ Docs
 ├─ README.md
 ├─ compose.yaml

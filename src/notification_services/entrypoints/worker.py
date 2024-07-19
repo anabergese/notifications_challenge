@@ -9,22 +9,25 @@ class Worker:
     def process_task(self, task_json: str):
         task_data = json.loads(task_json)
         topic = task_data.get('topic')
-
         notifier = self.notifiers.get(topic)
         if notifier:
-            notifier.notify(task_json)
+            try:
+                notifier.notify(task_json)
+            except Exception as e:
+                print(f"Error notifying for task {task_data['id']}: {e}")
+                self.redis_conn.lpush('notifications_queue', task_json)  # Re-enqueue on error
         else:
-            self.redis_conn.lpush('task_queue', task_json)
+            self.redis_conn.rpush('notifications_queue', task_json) # Cambiar LPUSH a RPUSH
             print(f"Task {task_data['id']} requeued as it does not have a matching topic")
 
     def run(self):
         while True:
             try:
-                task = self.redis_conn.brpop('task_queue', timeout=0)
+                task = self.redis_conn.brpop('notifications_queue', timeout=0)
                 if task:
                     _, task_json = task
                     self.process_task(task_json)
             except Exception as e:
                 print(f"Error processing task: {e}")
                 # Optionally re-queue the task for retry if an error occurs
-                # self.redis_conn.lpush('task_queue', task_json)
+                # self.redis_conn.lpush('notifications_queue', task_json)
