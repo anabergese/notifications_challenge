@@ -17,15 +17,10 @@
 # src/notification_services/Dockerfile
 FROM python:3.9-slim
 
-# Establecer el directorio de trabajo
-WORKDIR /app
-
 # Copiar el archivo de requerimientos y instalar dependencias
-COPY requirements.txt .
+COPY ./src/notification_services/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Copiar el resto de la aplicación
-COPY . .
+COPY ./src/notification_services ./
 
 # Comando para ejecutar la aplicación
 CMD ["python", "entrypoints/main.py"]

@@ -25,7 +25,7 @@ services:
   notification_services:
     build:
       context: ./
-      dockerfile: src/notification_services/Dockerfile
+      dockerfile: ./src/notification_services/Dockerfile
     container_name: notification_services
     depends_on:
       - redis
