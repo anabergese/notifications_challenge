@@ -27,6 +27,8 @@ services:
       context: ./
       dockerfile: ./src/notification_services/Dockerfile
     container_name: notification_services
+    volumes:
+      - ./src/notification_services:/app/src/notification_services
     depends_on:
       - redis
     environment:
