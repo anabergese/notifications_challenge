@@ -16,10 +16,10 @@
 # CMD ["python", "src/notification_services/entrypoints/main.py"]
 # src/notification_services/Dockerfile
 # Usa una imagen base de Python (o cualquier otra según tu stack)
-FROM python:3.9-slim
+FROM python:3.12
 
 # Establece el directorio de trabajo en /app/src/notification_services
-WORKDIR /app/src/notification_services
+WORKDIR /app
 
 # Copia los requisitos del proyecto y los instala
 COPY ./src/notification_services/requirements.txt ./
