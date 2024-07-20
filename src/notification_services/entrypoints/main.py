@@ -1,6 +1,6 @@
 from config import create_redis_connection
 from worker import Worker
-from models import EmailNotifier, SlackNotifier
+from domain.models import EmailNotifier, SlackNotifier
 
 def main():
     redis_conn = create_redis_connection()
