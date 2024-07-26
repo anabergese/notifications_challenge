@@ -9,10 +9,10 @@ RUN apk add --no-cache gcc musl-dev linux-headers
 # Copy requirements.txt and install dependencies
 COPY src/application_service/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY src/application_service /app
+COPY src/application_service /app/application_service
 
 # Set PYTHONPATH
-ENV PYTHONPATH="/app"
+ENV PYTHONPATH="/app/application_service"
 
 # Expose the ports for the FastAPI applications
 EXPOSE 80

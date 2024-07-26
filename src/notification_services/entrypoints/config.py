@@ -1,7 +1,6 @@
 import os
 
 import redis
-from redis import Redis
 
 
 def create_redis_connection():

@@ -1,8 +1,7 @@
 from uuid import uuid4
 
+from domain.enums import Topic
 from pydantic import BaseModel, Field
-
-from .enums import Topic
 
 
 class Message(BaseModel):

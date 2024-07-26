@@ -5,7 +5,6 @@ import os
 import redis
 from domain.models import Message
 from fastapi import HTTPException
-from redis import Redis
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
