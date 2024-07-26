@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
-from domain.value_objects import TopicEnum
+from domain.enums import Topic
 
 class TopicValidator(BaseModel):
-    topic: TopicEnum = Field(..., description="Topic of the message")
+    topic: Topic = Field(..., description="Topic of the message")
     description: str = Field(..., description="Description of the message")
 
 class ResponseModel(BaseModel):

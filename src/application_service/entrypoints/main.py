@@ -27,16 +27,8 @@ async def add_message_to_queue(
     redis_conn = Depends(get_redis_connection),
     add_message_to_redis_queue = Depends(get_add_message_to_redis_queue)
     ):
-    # message = {
-    #     "id": str(uuid4()),
-    #     "topic": request.topic,
-    #     "description": request.description
-    # }
     message = Message.create(topic=request.topic, description=request.description)
     add_message_to_redis_queue(message, redis_conn)
-    # message_json = message.model_dump_json()
-    # redis_conn.lpush('task_queue', message_json)
-    # logger.info("Message added to queue: %s", message_json)
     return ResponseModel(status=200, message="Your message was received. Thanks")
 
 

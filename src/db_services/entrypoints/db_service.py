@@ -1,8 +1,5 @@
 import json
 from redis import Redis
-from config import create_redis_connection
-
-
 class DBService:
     def __init__(self, redis_conn: Redis):
         self.redis_conn = redis_conn
@@ -23,13 +20,3 @@ class DBService:
                     
             except Exception as e:
                 print(f"Error processing task: {e}")
-
-
-def main():
-    redis_conn = create_redis_connection()
-    db_service = DBService(redis_conn)
-    db_service.run()
-
-if __name__ == "__main__":
-    main()
-    

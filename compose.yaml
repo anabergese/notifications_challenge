@@ -34,3 +34,16 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+
+  db_services:
+    build:
+      context: ./
+      dockerfile: ./src/db_services/Dockerfile
+    container_name: db_services
+    volumes:
+      - ./src/db_services:/app
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
