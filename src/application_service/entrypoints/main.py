@@ -3,6 +3,17 @@ import uvicorn
 from entrypoints.models import TopicValidator, ResponseModel
 from domain.models import Message
 from entrypoints.dependencies import create_redis_connection, get_add_message_to_redis_queue
+import os
+import sys
+
+# Print current working directory
+print("Current Working Directory:", os.getcwd())
+
+# Print PYTHONPATH
+print("PYTHONPATH:", sys.path)
+
+# List files in the directory containing the module
+print("Files in 'domain':", os.listdir('domain'))
 
 app = FastAPI(
     title="Application Service",
