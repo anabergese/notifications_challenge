@@ -1,5 +1,8 @@
 import json
+
 from redis import Redis
+
+
 class DBService:
     def __init__(self, redis_conn: Redis):
         self.redis_conn = redis_conn
@@ -11,12 +14,14 @@ class DBService:
     def run(self):
         while True:
             try:
-                task = self.redis_conn.brpop('task_queue', timeout=0)
+                task = self.redis_conn.brpop("task_queue", timeout=0)
                 if task:
                     _, task_json = task
                     self.save_task(task_json)
-                    self.redis_conn.rpush('notifications_queue', task_json)  # Cambiar LPUSH a RPUSH
+                    self.redis_conn.rpush(
+                        "notifications_queue", task_json
+                    )  # Cambiar LPUSH a RPUSH
                     print(f"Task {task_json} requeued from DB")
-                    
+
             except Exception as e:
                 print(f"Error processing task: {e}")
