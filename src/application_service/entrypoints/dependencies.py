@@ -1,17 +1,19 @@
 from fastapi import HTTPException
+import os
 import logging
 from domain.models import Message
-from entrypoints.config import Config
+# from entrypoints.config import Config
 import redis
+from redis import Redis
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def get_redis_connection():
+def create_redis_connection():
     return redis.Redis(
-        host=Config.REDIS_HOST,
-        port=Config.REDIS_PORT,
-        db=Config.REDIS_DB
+        host=os.getenv('REDIS_HOST', 'localhost'), 
+        port=int(os.getenv('REDIS_PORT', 6379)), 
+        db=0
     )
 
 

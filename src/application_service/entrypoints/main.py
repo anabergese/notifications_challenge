@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 import uvicorn
 from entrypoints.models import TopicValidator, ResponseModel
 from domain.models import Message
-from entrypoints.dependencies import get_redis_connection, get_add_message_to_redis_queue
+from entrypoints.dependencies import create_redis_connection, get_add_message_to_redis_queue
 
 app = FastAPI(
     title="Application Service",
@@ -14,8 +14,6 @@ app = FastAPI(
     }
 )
 
-# redis_conn = get_redis_connection()
-
 @app.get("/")
 def read_root():
     """Server is up and running."""
@@ -24,7 +22,7 @@ def read_root():
 @app.post("/message", response_model=ResponseModel)
 async def add_message_to_queue(
     request: TopicValidator,
-    redis_conn = Depends(get_redis_connection),
+    redis_conn = Depends(create_redis_connection),
     add_message_to_redis_queue = Depends(get_add_message_to_redis_queue)
     ):
     message = Message.create(topic=request.topic, description=request.description)
