@@ -14,13 +14,11 @@ class DBService:
     def run(self):
         while True:
             try:
-                task = self.redis_conn.brpop("task_queue", timeout=0)
+                task = self.redis_conn.blpop("task_queue", timeout=0)
                 if task:
                     _, task_json = task
                     self.save_task(task_json)
-                    self.redis_conn.rpush(
-                        "notifications_queue", task_json
-                    )  # Cambiar LPUSH a RPUSH
+                    self.redis_conn.rpush("notifications_queue", task_json)
                     print(f"Task {task_json} requeued from DB")
 
             except Exception as e:

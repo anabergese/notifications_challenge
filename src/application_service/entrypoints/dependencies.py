@@ -21,7 +21,7 @@ def create_redis_connection():
 def add_message_to_redis_queue(message: Message, redis_conn):
     try:
         message_json = message.model_dump_json()
-        redis_conn.lpush("task_queue", message_json)
+        redis_conn.rpush("task_queue", message_json)
         logger.info("Message added to queue: %s", message_json)
     except Exception as e:
         logger.error("Failed to add message to queue: %s", e)

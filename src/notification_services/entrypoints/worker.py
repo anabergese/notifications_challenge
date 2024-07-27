@@ -17,13 +17,11 @@ class Worker:
                 notifier.notify(task_json)
             except Exception as e:
                 print(f"Error notifying for task {task_data['id']}: {e}")
-                self.redis_conn.lpush(
+                self.redis_conn.rpush(
                     "notifications_queue", task_json
                 )  # Re-enqueue on error
         else:
-            self.redis_conn.rpush(
-                "notifications_queue", task_json
-            )  # Cambiar LPUSH a RPUSH
+            self.redis_conn.rpush("notifications_queue", task_json)
             print(
                 f"Task {task_data['id']} requeued as it does not have a matching topic"
             )
@@ -31,7 +29,7 @@ class Worker:
     def run(self):
         while True:
             try:
-                task = self.redis_conn.brpop("notifications_queue", timeout=0)
+                task = self.redis_conn.blpop("notifications_queue", timeout=0)
                 if task:
                     _, task_json = task
                     self.process_task(task_json)
