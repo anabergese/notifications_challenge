@@ -17,13 +17,13 @@ async def psubscribe(channel):
 
 
 async def reader():
-    psub = await psubscribe("notifications_queue")
+    psub = await psubscribe("notifications_service")
     while True:
         message = psub.get_message(ignore_subscribe_messages=True)
         await asyncio.sleep(0)  # Permite que otros eventos de asyncio se procesen
         if message:
             # Imprime el contenido del mensaje
-            print(f"Mensaje recibido en notifications_queue: {message['data']}")
+            print(f"Mensaje recibido en notifications_service: {message['data']}")
 
 
 if __name__ == "__main__":

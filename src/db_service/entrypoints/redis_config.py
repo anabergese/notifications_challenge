@@ -14,7 +14,7 @@ pub = aioredis.Redis.from_url(
 
 async def reader():
     async with psub as p:
-        await p.subscribe("messages")
+        await p.subscribe("db_channel")
         while True:
             message = await p.get_message(ignore_subscribe_messages=True)
             await asyncio.sleep(0)  # Permite que otros eventos de asyncio se procesen

@@ -17,7 +17,7 @@ async def psubscribe(channel):
 
 
 async def reader():
-    psub = await psubscribe("task_queue")
+    psub = await psubscribe("db_service")
     while True:
         message = psub.get_message(ignore_subscribe_messages=True)
         await asyncio.sleep(0)  # Permite que otros eventos de asyncio se procesen
@@ -25,8 +25,8 @@ async def reader():
             # Imprime el contenido del mensaje
             print(f"Mensaje recibido: {message['data']}")
 
-            redis_client.publish("notifications_queue", message["data"])
-            print(f"Mensaje enviado a notifications_queue: {message['data']}")
+            redis_client.publish("notifications_service", message["data"])
+            print(f"Mensaje enviado a notifications_service: {message['data']}")
 
 
 if __name__ == "__main__":
