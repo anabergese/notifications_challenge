@@ -1,6 +1,7 @@
 {
     "python.analysis.typeCheckingMode": "off",
     "cSpell.words": [
+        "aioredis",
         "fastapi",
         "pydantic",
         "rpush",
