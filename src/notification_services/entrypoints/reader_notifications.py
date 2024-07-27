@@ -17,7 +17,7 @@ async def psubscribe(channel):
 
 
 async def reader():
-    psub = await psubscribe("notifications_service")
+    psub = await psubscribe("notification_services")
     while True:
         message = psub.get_message(ignore_subscribe_messages=True)
         await asyncio.sleep(0)  # Permite que otros eventos de asyncio se procesen

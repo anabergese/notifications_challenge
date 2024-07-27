@@ -1,3 +1,4 @@
+# file to delete
 import asyncio
 import os
 
@@ -26,7 +27,6 @@ async def reader():
             print(f"Mensaje recibido: {message['data']}")
 
             redis_client.publish("notifications_service", message["data"])
-            print(f"Mensaje enviado a notifications_service: {message['data']}")
 
 
 if __name__ == "__main__":

@@ -1,19 +1,12 @@
-from config import create_redis_connection
-from domain.notifiers import EmailNotifier, SlackNotifier
-from worker import Worker
+import asyncio
+
+from notifier import Notifier
 
 
-def main():
-    redis_conn = create_redis_connection()
-
-    notifiers = {
-        "pricing": EmailNotifier(),
-        "sales": SlackNotifier(),
-    }
-
-    worker = Worker(redis_conn, notifiers)
-    worker.run()
+async def main():
+    notification_services = Notifier()
+    await notification_services.connect_service("notification_services")
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
