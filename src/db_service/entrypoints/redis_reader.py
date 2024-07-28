@@ -1,13 +1,6 @@
-# file to delete
 import asyncio
 
 from config import get_redis_client
-
-# def get_redis_client():
-#     redis_host = os.getenv("REDIS_HOST", "localhost")
-#     redis_port = int(os.getenv("REDIS_PORT", 6379))
-#     return redis.Redis(host=redis_host, port=redis_port, db=0)
-
 
 redis_client = get_redis_client()
 
@@ -27,8 +20,4 @@ async def reader():
             # Imprime el contenido del mensaje
             print(f"Mensaje recibido: {message['data']}")
 
-            redis_client.publish("notifications_service", message["data"])
-
-
-if __name__ == "__main__":
-    asyncio.run(reader())
+            redis_client.publish("notification_services", message["data"])
