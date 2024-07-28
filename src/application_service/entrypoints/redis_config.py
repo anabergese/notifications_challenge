@@ -20,8 +20,8 @@ async def psubscribe(channel):
     return pubsub
 
 
-def publish_message(channel, message):
-    redis_client.publish(channel, message)
+# def publish_message(channel, message):
+#     redis_client.publish(channel, message)
 
 
 async def add_message_to_redis_channel(message, redis_conn):

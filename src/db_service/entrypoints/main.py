@@ -1,12 +1,7 @@
+# file to delete
 import asyncio
 
-from db_service import DBService
-
-
-async def main():
-    db_service = DBService()
-    await db_service.save_message("db_service", "notification_services")
-
+from db_service import db_service
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(db_service())

@@ -4,11 +4,14 @@ import os
 
 import redis
 
-redis_client = redis.Redis(
-    host=os.getenv("REDIS_HOST", "localhost"),
-    port=int(os.getenv("REDIS_PORT", 6379)),
-    db=0,
-)
+
+def get_redis_client():
+    redis_host = os.getenv("REDIS_HOST", "localhost")
+    redis_port = int(os.getenv("REDIS_PORT", 6379))
+    return redis.Redis(host=redis_host, port=redis_port, db=0)
+
+
+redis_client = get_redis_client()
 
 
 async def psubscribe(channel):

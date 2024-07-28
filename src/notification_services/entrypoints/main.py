@@ -1,11 +1,10 @@
 import asyncio
 
-from notifier import Notifier
+from notifier import notification_services
 
 
 async def main():
-    notification_services = Notifier()
-    await notification_services.connect_service("notification_services")
+    await notification_services("notification_services")
 
 
 if __name__ == "__main__":
