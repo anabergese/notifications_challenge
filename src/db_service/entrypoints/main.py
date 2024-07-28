@@ -1,7 +1,7 @@
 # file to delete
 import asyncio
 
-from db_service import db_service
+from redis_reader import reader
 
 if __name__ == "__main__":
-    asyncio.run(db_service())
+    asyncio.run(reader())

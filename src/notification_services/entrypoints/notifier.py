@@ -11,7 +11,7 @@ async def psubscribe(channel):
     return pubsub
 
 
-async def notification_services():
+async def notification_services(channel):
     psub = await psubscribe(channel)
     while True:
         message = psub.get_message(ignore_subscribe_messages=True)
