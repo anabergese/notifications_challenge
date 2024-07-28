@@ -20,4 +20,4 @@ async def db_service():
             # Imprime el contenido del mensaje
             print(f"Mensaje recibido: {message['data']}")
 
-            redis_client.publish("notifications_service", message["data"])
+            redis_client.publish("notification_services", message["data"])
