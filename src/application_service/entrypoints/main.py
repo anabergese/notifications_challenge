@@ -1,40 +1,27 @@
-import json
+import logging
 
 import uvicorn
-from domain.models import Message
-from fastapi import BackgroundTasks, Depends, FastAPI
+from entrypoints.routes.routes import router
+from fastapi import FastAPI
 
-from .dependencies import get_publish_to_channel, get_redis_connection
-from .models import ResponseModel, TopicValidator
+from .lifespan import lifespan
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 app = FastAPI(
-    title="Application Service",
+    title="Notification System",
     description="API for handling customer requests and sending notifications to various channels.",
     version="1.0.0",
-    responses={
-        404: {"description": "Not Found"},
-        500: {"description": "Internal Server Error"},
-    },
+    tags=["Notification System"],
+    lifespan=lifespan,
 )
 
-
-@app.get("/")
-def read_root():
-    """Server is up and running."""
-    return {"message": "Application Service is up and running."}
-
-
-@app.post("/notification", response_model=ResponseModel)
-async def add_message_to_queue(
-    request: TopicValidator,
-    background_tasks: BackgroundTasks,
-    redis_conn=Depends(get_redis_connection),
-    publish_to_channel=Depends(get_publish_to_channel),
-):
-    message = Message(topic=request.topic, description=request.description)
-    background_tasks.add_task(publish_to_channel, message, redis_conn)
-    return ResponseModel(status=200, message="Your message was received. Thanks")
-
+app.include_router(router)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=80)
+    try:
+        uvicorn.run(app, host="0.0.0.0", port=80)
+    except RuntimeError as runtime_error:
+        logger.critical("Application startup failed: %s", runtime_error)
