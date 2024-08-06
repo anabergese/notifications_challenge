@@ -2,6 +2,7 @@ import asyncio
 import json
 
 from config import get_redis_client
+from domain.enums import Topic
 from domain.notifiers import EmailNotifier, SlackNotifier
 
 redis_client = get_redis_client()
@@ -24,9 +25,9 @@ async def notification_services(channel):
         if message:
             data = json.loads(message["data"])
             topic = data.get("topic")
-            if topic == "sales":
+            if topic == Topic.SALES:
                 slack_notifier.notify(message["data"])
-            elif topic == "pricing":
+            elif topic == Topic.PRICING:
                 email_notifier.notify(message["data"])
             else:
                 print(f"Unknown topic: {topic}")
