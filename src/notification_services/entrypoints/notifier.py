@@ -1,8 +1,13 @@
 import asyncio
+import json
 
 from config import get_redis_client
+from domain.notifiers import EmailNotifier, SlackNotifier
 
 redis_client = get_redis_client()
+
+email_notifier = EmailNotifier()
+slack_notifier = SlackNotifier()
 
 
 async def psubscribe(channel):
@@ -17,4 +22,11 @@ async def notification_services(channel):
         message = psub.get_message(ignore_subscribe_messages=True)
         await asyncio.sleep(0)  # Permite que otros eventos de asyncio se procesen
         if message:
-            print(f"notificación enviada a slack: {message['data']}")
+            data = json.loads(message["data"])
+            topic = data.get("topic")
+            if topic == "sales":
+                slack_notifier.notify(message["data"])
+            elif topic == "pricing":
+                email_notifier.notify(message["data"])
+            else:
+                print(f"Unknown topic: {topic}")
