@@ -20,5 +20,6 @@ async def db_service():
         if message:
             # Imprime el contenido del mensaje
             print(f"Mensaje recibido: {message['data']}")
-
+            # Falta crear new row en DB aquí
+            # Antes o despues de crear la new row en DB necesito pasar a class Notification?
             redis_client.publish(RedisChannels.NOTIFICATION_SERVICES, message["data"])
