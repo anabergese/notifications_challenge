@@ -1,6 +1,6 @@
 import logging
 
-from entrypoints.dependencies import get_channel, get_publish_to_channel
+from entrypoints.dependencies import get_notification_service
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 
 from .models import NotificationRequest
@@ -16,16 +16,14 @@ def read_root():
     return {"message": "Notification System is up and running."}
 
 
-@router.post("/notification")
-async def add_notification_to_channel(
-    request: NotificationRequest,
+@router.post("/notify")
+async def create_notification(
+    notification: NotificationRequest,
     background_tasks: BackgroundTasks,
-    channel_connection=Depends(get_channel),
-    publish_to_channel=Depends(get_publish_to_channel),
+    notification_service=Depends(get_notification_service),
 ):
     try:
-        notification = request.create_notification()
-        background_tasks.add_task(publish_to_channel, notification, channel_connection)
+        background_tasks.add_task(notification_service.send_notification, notification)
         return {"message": "Your message was received. Thanks"}
     except Exception as ex:
         raise HTTPException(status_code=500, detail=str(ex)) from ex
