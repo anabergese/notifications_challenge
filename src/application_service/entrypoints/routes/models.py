@@ -1,5 +1,4 @@
 from domain.enums import Topic
-from domain.models import Notification
 from pydantic import BaseModel, Field
 
 
@@ -8,6 +7,3 @@ class NotificationRequest(BaseModel):
     description: str = Field(
         title="Description", description="Description of the message"
     )
-
-    def create_notification(self) -> Notification:
-        return Notification(topic=self.topic, description=self.description)

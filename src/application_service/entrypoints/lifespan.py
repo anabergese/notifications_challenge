@@ -1,12 +1,9 @@
-# lifespan.py
 import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from .redis import (
-    start_redis,  # Import the function that initializes the Redis connection
-)
+from .dependencies import get_message_broker
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +12,7 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     try:
         # Initialize the Redis connection at startup
-        channel = await start_redis()
+        channel = await get_message_broker()
         app.state.channel = channel
         yield
     except Exception as exc:

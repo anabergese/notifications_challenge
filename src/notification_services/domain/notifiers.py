@@ -20,6 +20,6 @@ class EmailNotifier(Notifier):
 class SlackNotifier(Notifier):
     def notify(self, task_json: str):
         task = json.loads(task_json)
-        print(f"Processing task from SlackNotifier: {task['id']}")
+        print(f"Processing task from SlackNotifier: {task}")
         time.sleep(3)
         print(f"Task {task['topic']} sent to Slack successfully: {task['description']}")

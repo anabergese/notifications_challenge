@@ -1,5 +1,7 @@
-```
-notifications
+
+│  └─ pyvenv.cfg
+├─ .vscode
+│  └─ settings.json
 ├─ Docs
 ├─ README.md
 ├─ compose.yaml
@@ -7,38 +9,52 @@ notifications
 │  ├─ application_service
 │  │  ├─ __init__.py
 │  │  ├─ domain
-│  │  │  ├─ __init_.py
-│  │  │  ├─ event_handlers.py
-│  │  │  ├─ events.py
+│  │  │  ├─ __init__.py
+│  │  │  ├─ enums.py
 │  │  │  └─ models.py
 │  │  ├─ entrypoints
 │  │  │  ├─ __init__.py
+│  │  │  ├─ dependencies.py
+│  │  │  ├─ lifespan.py
 │  │  │  ├─ main.py
-│  │  │  ├─ models.py
+│  │  │  ├─ redis.py
 │  │  │  └─ routes
-│  │  │     └─ application_service_routes.py
+│  │  │     ├─ __init__.py
+│  │  │     ├─ models.py
+│  │  │     └─ routes.py
 │  │  ├─ infrastructure
 │  │  │  └─ repositories
 │  │  │     └─ __init__.py
 │  │  ├─ requirements.txt
-│  │  └─ seedwork
-│  │     ├─ domain
-│  │     └─ infrastructure
-│  │        └─ __init__.py
+│  │  └─ service_layer
+│  │     ├─ __init__.py
+│  │     ├─ channels.py
+│  │     ├─ redis_channel.py
+│  │     └─ service.py
+│  ├─ db_service
+│  │  ├─ __init__.py
+│  │  ├─ domain
+│  │  │  ├─ __init__.py
+│  │  │  ├─ enums.py
+│  │  │  └─ models.py
+│  │  ├─ entrypoints
+│  │  │  ├─ __init__.py
+│  │  │  ├─ config.py
+│  │  │  ├─ db_service.py
+│  │  │  └─ main.py
+│  │  └─ requirements.txt
 │  └─ notification_services
 │     ├─ __init__.py
 │     ├─ domain
 │     │  ├─ __init__.py
-│     │  ├─ event_handlers.py
-│     │  └─ models.py
+│     │  ├─ enums.py
+│     │  └─ notifiers.py
 │     ├─ entrypoints
 │     │  ├─ __init__.py
+│     │  ├─ config.py
 │     │  ├─ main.py
-│     │  └─ routes
-│     │     ├─ __init__.py
-│     │     └─ notifications_routes.py
-│     ├─ requirements.txt
-│     └─ worker.py
+│     │  └─ notifier.py
+│     └─ requirements.txt
 └─ tests
 
 ```
