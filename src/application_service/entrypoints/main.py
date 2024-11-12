@@ -9,7 +9,6 @@ from .lifespan import lifespan
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 app = FastAPI(
     title="Notification System",
     description="API for handling customer requests and sending notifications to various channels.",
@@ -17,6 +16,7 @@ app = FastAPI(
     tags=["Notification System"],
     lifespan=lifespan,
 )
+
 
 app.include_router(router)
 

@@ -14,6 +14,6 @@ class DomainEvent(Event):
     pass
 
 
-@dataclass(frozen=True)
-class NotificationFailed(DomainEvent):
-    reason: str
+# @dataclass(frozen=True)
+# class NotificationFailed(DomainEvent):
+#     reason: str
