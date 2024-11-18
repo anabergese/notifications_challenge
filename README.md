@@ -1,60 +1,7 @@
+*Notification System Architecture*
+The product department requires a system to notify them when a customer requests assistance from a bot. The bot will send an HTTP request containing the topic (either "sales" or "pricing") and a description of the problem. The system needs to expose an API endpoint to receive this request and forward it to the appropriate channel (Slack or Email). The architecture must support future expansion to include more topics and channels.
 
-│  └─ pyvenv.cfg
-├─ .vscode
-│  └─ settings.json
-├─ Docs
-├─ README.md
-├─ compose.yaml
-├─ src
-│  ├─ application_service
-│  │  ├─ __init__.py
-│  │  ├─ domain
-│  │  │  ├─ __init__.py
-│  │  │  ├─ enums.py
-│  │  │  └─ models.py
-│  │  ├─ entrypoints
-│  │  │  ├─ __init__.py
-│  │  │  ├─ dependencies.py
-│  │  │  ├─ lifespan.py
-│  │  │  ├─ main.py
-│  │  │  ├─ redis.py
-│  │  │  └─ routes
-│  │  │     ├─ __init__.py
-│  │  │     ├─ models.py
-│  │  │     └─ routes.py
-│  │  ├─ infrastructure
-│  │  │  └─ repositories
-│  │  │     └─ __init__.py
-│  │  ├─ requirements.txt
-│  │  └─ service_layer
-│  │     ├─ __init__.py
-│  │     ├─ channels.py
-│  │     ├─ redis_channel.py
-│  │     └─ service.py
-│  ├─ db_service
-│  │  ├─ __init__.py
-│  │  ├─ domain
-│  │  │  ├─ __init__.py
-│  │  │  ├─ enums.py
-│  │  │  └─ models.py
-│  │  ├─ entrypoints
-│  │  │  ├─ __init__.py
-│  │  │  ├─ config.py
-│  │  │  ├─ db_service.py
-│  │  │  └─ main.py
-│  │  └─ requirements.txt
-│  └─ notification_services
-│     ├─ __init__.py
-│     ├─ domain
-│     │  ├─ __init__.py
-│     │  ├─ enums.py
-│     │  └─ notifiers.py
-│     ├─ entrypoints
-│     │  ├─ __init__.py
-│     │  ├─ config.py
-│     │  ├─ main.py
-│     │  └─ notifier.py
-│     └─ requirements.txt
-└─ tests
 
-```
+*How to run the app* 
+    Go to the main folder of the project.
+    Run: `docker compose up`.
