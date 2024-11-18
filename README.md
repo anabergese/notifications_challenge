@@ -5,11 +5,14 @@ The product department requires a system to notify them when a customer requests
 See more here: https://app.eraser.io/workspace/71vqPEdk9ueJvUE0mJ0r
 
 
+
 *How to run the app* 
 
-    Go to the main folder of the project.
-    Run: `docker compose up`.
+Go to the main folder of the project.
+Run: 'docker compose up'.
 
 
-* Trello Dashboard *
+
+*Trello Dashboard*
+
 https://trello.com/b/PfWLSu5I/notification-system
