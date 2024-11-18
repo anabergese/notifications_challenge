@@ -8,8 +8,8 @@ services:
 
   application_service:
     build:
-      context: .
-      dockerfile: src/application_service/Dockerfile
+      context: ./
+      dockerfile: ./src/application_service/Dockerfile
     container_name: application_service
     ports:
       - "8000:80"
