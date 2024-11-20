@@ -6,7 +6,7 @@ from domain.system_events import (
     ServiceConnectionFailed,
     ServiceStopped,
 )
-from redis_publisher import redis_publisher
+from redis_publisher import publish
 from service_layer.event_handlers import (
     send_notification_failed_to_slack,
     send_service_status_notification,
@@ -15,7 +15,7 @@ from service_layer.message_bus import MessageBus
 
 
 def bootstrap(
-    publish: Callable = redis_publisher.publish,
+    publish: Callable = publish,
 ) -> MessageBus:
 
     # Dependencias

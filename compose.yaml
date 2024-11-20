@@ -8,8 +8,8 @@ services:
 
   application_service:
     build:
-      context: ./
-      dockerfile: ./src/application_service/Dockerfile
+      context: .
+      dockerfile: infra/app/Dockerfile
     container_name: application_service
     ports:
       - "8000:80"
@@ -24,8 +24,8 @@ services:
 
   notification_services:
     build:
-      context: ./
-      dockerfile: ./src/notification_services/Dockerfile
+      context: .
+      dockerfile: infra/notif/Dockerfile
     container_name: notification_services
     volumes:
       - ./src/notification_services:/app
@@ -37,8 +37,8 @@ services:
 
   db_service:
     build:
-      context: ./
-      dockerfile: ./src/db_service/Dockerfile
+      context: ./src/db_service/
+      dockerfile: Dockerfile
     container_name: db_service
     volumes:
       - ./src/db_service:/app
