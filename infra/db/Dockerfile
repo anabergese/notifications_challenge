@@ -1,7 +1,9 @@
-FROM python:3.12
+FROM python:alpine
 
 # Establece el directorio de trabajo en /app
 WORKDIR /app
+# Install gcc and other dependencies
+RUN apk add --no-cache gcc musl-dev linux-headers
 
 # Copia los requisitos del proyecto y los instala
 COPY ./infra/db/requirements.txt .
