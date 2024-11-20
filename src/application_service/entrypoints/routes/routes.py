@@ -1,7 +1,7 @@
 import logging
 
-from entrypoints.dependencies import get_notification_service
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
+from redis_publisher import publish
 
 from .models import NotificationRequest
 
@@ -19,11 +19,17 @@ def read_root():
 @router.post("/notify")
 async def create_notification(
     notification: NotificationRequest,
-    background_tasks: BackgroundTasks,
-    notification_service=Depends(get_notification_service),
 ):
     try:
-        background_tasks.add_task(notification_service.send_notification, notification)
-        return {"message": "Your message was received. Thanks"}
+        channel = "db_service"
+        event = {
+            "topic": f"{notification.topic}",
+            "description": f"{notification.description}",
+        }
+        publish(channel, event)
+
+        return {
+            "message": f"Your message was received. Topic:{notification.topic}. Thanks"
+        }
     except Exception as ex:
         raise HTTPException(status_code=500, detail=str(ex)) from ex

@@ -37,8 +37,8 @@ services:
 
   db_service:
     build:
-      context: ./src/db_service/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: infra/db/Dockerfile
     container_name: db_service
     volumes:
       - ./src/db_service:/app

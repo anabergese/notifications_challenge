@@ -5,8 +5,6 @@ __pycache__/
 
 # Ignore Docker related files
 .dockerignore
-#Dockerfile
-#docker-compose.yml
 
 # Ignore Redis RDB and AOF files
 *.rdb

@@ -10,10 +10,6 @@ class Event:
 
 
 @dataclass(frozen=True)
-class DomainEvent(Event):
-    pass
-
-
-# @dataclass(frozen=True)
-# class NotificationFailed(DomainEvent):
-#     reason: str
+class DomainEvent:
+    timestamp: datetime
+    event_data: Any = None
