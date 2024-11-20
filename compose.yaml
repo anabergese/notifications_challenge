@@ -9,7 +9,7 @@ services:
   application_service:
     build:
       context: .
-      dockerfile: infra/app/Dockerfile
+      dockerfile: infra/develop/Dockerfile
     container_name: application_service
     ports:
       - "8000:80"
@@ -25,8 +25,9 @@ services:
   notification_services:
     build:
       context: .
-      dockerfile: infra/notif/Dockerfile
+      dockerfile: infra/develop/Dockerfile
     container_name: notification_services
+    command: ["python", "entrypoints/main.py"]
     volumes:
       - ./src/notification_services:/app
     depends_on:
@@ -38,8 +39,9 @@ services:
   db_service:
     build:
       context: .
-      dockerfile: infra/db/Dockerfile
+      dockerfile: infra/develop/Dockerfile
     container_name: db_service
+    command: ["python", "entrypoints/main.py"]
     volumes:
       - ./src/db_service:/app
     depends_on:

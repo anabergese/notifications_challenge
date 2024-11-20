@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia el contenido del proyecto al directorio de trabajo
 COPY src/db_service .
-#ENV PYTHONPATH="/app"
+ENV PYTHONPATH="/app"
 
 # Comando para ejecutar la aplicación
 CMD ["python", "entrypoints/main.py"]
