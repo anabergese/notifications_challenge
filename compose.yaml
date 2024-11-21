@@ -27,7 +27,7 @@ services:
       context: .
       dockerfile: infra/notif/Dockerfile
     container_name: notification_services
-    command: ["python", "entrypoints/main.py"]
+    #command: ["python", "entrypoints/main.py"]
     volumes:
       - ./src/notification_services:/app
     depends_on:
@@ -35,13 +35,15 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+    tty: true
+    stdin_open: true
 
   db_service:
     build:
       context: .
       dockerfile: infra/db/Dockerfile
     container_name: db_service
-    command: ["python", "entrypoints/main.py"]
+    command: python entrypoints/main.py
     volumes:
       - ./src/db_service:/app
     depends_on:
@@ -49,3 +51,5 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+    tty: true
+    stdin_open: true

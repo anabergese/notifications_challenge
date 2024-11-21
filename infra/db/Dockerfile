@@ -12,6 +12,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copia el contenido del proyecto al directorio de trabajo
 COPY src/db_service .
 ENV PYTHONPATH="/app"
-
+RUN touch /var/log/main.log
 # Comando para ejecutar la aplicación
-CMD ["python", "entrypoints/main.py"]
+CMD ["sh", "-c", "python entrypoints/main.py > /var/log/main.log & tail -f /var/log/main.log"]
