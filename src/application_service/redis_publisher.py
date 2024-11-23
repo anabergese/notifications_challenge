@@ -1,12 +1,11 @@
 import json
 import logging
 
-import redis
-from config import get_redis_host_and_port
+from config import get_redis_client
 
 logger = logging.getLogger(__name__)
 
-r = redis.Redis(**get_redis_host_and_port())
+r = get_redis_client()
 
 
 def publish(channel: str, event: dict):
