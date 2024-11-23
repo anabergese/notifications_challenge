@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apk add --no-cache gcc musl-dev linux-headers
 
 # Copia los requisitos del proyecto y los instala
-COPY ./infra/notif/requirements.txt .
+COPY ./src/notification_services/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia el contenido del proyecto al directorio de trabajo
