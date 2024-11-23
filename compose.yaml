@@ -9,13 +9,12 @@ services:
   application_service:
     build:
       context: .
-      dockerfile: infra/app/Dockerfile
+      dockerfile: src/application_service/Dockerfile
     container_name: application_service
     ports:
       - "8000:80"
     volumes:
       - ./src/application_service:/app
-    command: uvicorn entrypoints.main:app --host 0.0.0.0 --port 80 --reload
     depends_on:
       - redis
     environment:
@@ -25,9 +24,8 @@ services:
   notification_services:
     build:
       context: .
-      dockerfile: infra/notif/Dockerfile
+      dockerfile: src/notification_services/Dockerfile
     container_name: notification_services
-    #command: ["python", "entrypoints/main.py"]
     volumes:
       - ./src/notification_services:/app
     depends_on:
@@ -41,9 +39,8 @@ services:
   db_service:
     build:
       context: .
-      dockerfile: infra/db/Dockerfile
+      dockerfile: src/db_service/Dockerfile
     container_name: db_service
-    command: python entrypoints/main.py
     volumes:
       - ./src/db_service:/app
     depends_on:
