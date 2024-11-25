@@ -13,21 +13,20 @@ slack_notifier = SlackNotifier()
 
 async def psubscribe(channel):
     pubsub = redis_client.pubsub()
-    pubsub.subscribe(channel)
+    await pubsub.subscribe(channel)
     return pubsub
 
 
 async def notification_services(channel):
     psub = await psubscribe(channel)
-    while True:
-        message = psub.get_message(ignore_subscribe_messages=True)
-        await asyncio.sleep(0)  # Permite que otros eventos de asyncio se procesen
-        if message:
-            data = json.loads(message["data"])
+
+    async for message in psub.listen():  # Use async for to handle messages
+        if message["type"] == "message":  # Filter only "message" events
+            data = json.loads(message["data"])  # Decode the message
             topic = data.get("topic")
-            if topic == "Topic.SALES":
-                slack_notifier.notify(message["data"])
-            elif topic == "Topic.PRICING":
-                email_notifier.notify(message["data"])
+            if topic == Topic.SALES:
+                await slack_notifier.notify(json.dumps(data))  # Ensure notify is async
+            elif topic == Topic.PRICING:
+                await email_notifier.notify(json.dumps(data))  # Ensure notify is async
             else:
-                print(f"Unknown topic: {topic}")
+                print(f"Unknown topic: {topic}, type: {type(topic)}")

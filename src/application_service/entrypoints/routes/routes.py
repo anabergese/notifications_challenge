@@ -1,12 +1,7 @@
-import logging
-
 from fastapi import APIRouter, HTTPException
-from redis_publisher import publish
+from service_layer.service import NotificationService
 
 from .models import NotificationRequest
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -17,19 +12,13 @@ def read_root():
 
 
 @router.post("/notify")
-async def create_notification(
-    notification: NotificationRequest,
-):
+async def create_notification(notification: NotificationRequest):
     try:
-        channel = "db_service"
-        event = {
-            "topic": f"{notification.topic}",
-            "description": f"{notification.description}",
-        }
-        publish(channel, event)
-
-        return {
-            "message": f"Your message was received. Topic:{notification.topic}. Thanks"
-        }
-    except Exception as ex:
-        raise HTTPException(status_code=500, detail=str(ex)) from ex
+        # Delegar la lógica de negocio al servicio
+        event = await NotificationService.create_notification(
+            topic=notification.topic, description=notification.description
+        )
+        print(f"DEBUG: Received event in endpoint: {event}")
+        return {"message": f"Notification created for topic: {event.topic}"}
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve)) from ve

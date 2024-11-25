@@ -8,18 +8,20 @@ redis_client = get_redis_client()
 
 async def psubscribe(channel):
     pubsub = redis_client.pubsub()
-    pubsub.subscribe(channel)
+    await pubsub.subscribe(channel)
     return pubsub
 
 
 async def db_service():
     psub = await psubscribe(RedisChannels.DB_SERVICE)
-    while True:
-        message = psub.get_message(ignore_subscribe_messages=True)
-        await asyncio.sleep(0)  # Permite que otros eventos de asyncio se procesen
-        if message:
-            # Imprime el contenido del mensaje
-            print(f"Mensaje recibido: {message['data']}")
-            # Falta crear new row en DB aquí
-            # Antes o despues de crear la new row en DB necesito pasar a class Notification?
-            redis_client.publish(RedisChannels.NOTIFICATION_SERVICES, message["data"])
+    async for message in psub.listen():  # Usa el listener asíncrono
+        if message["type"] == "message":  # Filtrar solo mensajes
+            data = message["data"]
+            print(f"Mensaje recibido por DB_SERVICE: {data}")
+
+            # Aquí puedes procesar el mensaje en la base de datos
+            # Por ejemplo:
+            # await save_to_db(data)
+
+            # Re-publicar el mensaje a NOTIFICATION_SERVICES
+            await redis_client.publish(RedisChannels.NOTIFICATION_SERVICES, data)

@@ -13,3 +13,9 @@ class Event:
 class DomainEvent:
     timestamp: datetime
     event_data: Any = None
+
+
+@dataclass
+class NotificationCreated:
+    topic: str
+    description: str

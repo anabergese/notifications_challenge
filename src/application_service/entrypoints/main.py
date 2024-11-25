@@ -1,8 +1,11 @@
 import logging
 
 import uvicorn
+from domain.events import NotificationCreated
 from entrypoints.routes.routes import router
 from fastapi import FastAPI
+from service_layer.handlers import handle_notification_created
+from service_layer.messagebus import register_handler
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -13,6 +16,10 @@ app = FastAPI(
     version="1.0.0",
     tags=["Notification System"],
 )
+
+# Registrar handlers en el MessageBus
+register_handler(NotificationCreated, handle_notification_created)
+
 
 app.include_router(router)
 
