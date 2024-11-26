@@ -11,7 +11,7 @@ class NotificationService:
         event = NotificationCreated(
             topic=topic,
             description=description,
-            timestamp=datetime.now(timezone.utc),  # Timestamp actual
+            timestamp=datetime.now(timezone.utc),
         )
         # Pasar el evento al MessageBus
         await handle(event)

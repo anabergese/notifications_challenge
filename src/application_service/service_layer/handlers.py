@@ -1,3 +1,4 @@
+from domain.enums import RedisChannels
 from domain.events import NotificationCreated
 from redis_publisher import publish
 
@@ -5,7 +6,7 @@ from redis_publisher import publish
 async def handle_notification_created(event: NotificationCreated):
     """Handler para procesar el evento NotificationCreated."""
     # Publica el evento a Redis
-    channel = "db_service"
+    channel = RedisChannels.DB_SERVICE.value
     data = {
         "topic": event.topic,
         "description": event.description,
