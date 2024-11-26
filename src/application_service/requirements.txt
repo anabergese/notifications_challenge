@@ -9,3 +9,5 @@ ujson==5.10.0
 urllib3==2.2.2
 uuid==1.30
 uvicorn==0.30.0
+pytest==7.4.1
+pytest-mock==3.10.0 
