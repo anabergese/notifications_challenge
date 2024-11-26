@@ -19,7 +19,7 @@ async def db_service():
             data = message["data"]
             print(f"Mensaje recibido por DB_SERVICE: {data}")
 
-            # Aquí puedes procesar el mensaje en la base de datos
+            # Aquí procesar el mensaje en la base de datos
             # Por ejemplo:
             # await save_to_db(data)
 
