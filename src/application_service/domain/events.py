@@ -9,6 +9,8 @@ class Event:
 
 @dataclass(frozen=True)
 class DomainEvent(Event):
+    topic: str
+    description: str
     version: str = "1.0"
 
 

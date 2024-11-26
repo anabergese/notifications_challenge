@@ -19,6 +19,6 @@ async def create_notification(notification: NotificationRequest):
             topic=notification.topic, description=notification.description
         )
         print(f"DEBUG: Received event in endpoint: {event}")
-        return {"message": f"Notification created for topic: {event.topic}"}
+        return {"message": f"Notification created for topic: {event.topic.value}"}
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve)) from ve
