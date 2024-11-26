@@ -10,10 +10,8 @@ def get_redis_client():
     redis_host = os.getenv("REDIS_HOST", "localhost")
     redis_port = int(os.getenv("REDIS_PORT", "6379"))
 
-    # Backoff exponencial según la implementación predeterminada
     retry_strategy = Retry(ExponentialBackoff(), retries=3)
 
-    # Crear el cliente Redis con estrategia de retry
     return Redis(
         host=redis_host,
         port=redis_port,
