@@ -1,5 +1,4 @@
 import asyncio
-from inspect import iscoroutinefunction
 from typing import Callable, Dict, List, Type
 
 # Diccionario que mapea tipos de eventos a sus handlers
@@ -10,11 +9,7 @@ async def handle(event):
     """Invoca los handlers registrados para un evento dado."""
     event_type = type(event)
     for handler in HANDLERS.get(event_type, []):
-        # Si el handler es asíncrono, usamos await
-        if iscoroutinefunction(handler):
-            await handler(event)
-        else:
-            handler(event)
+        await handler(event)
 
 
 def register_handler(event_type: Type, handler: Callable):
