@@ -50,3 +50,19 @@ services:
       - REDIS_PORT=6379
     tty: true
     stdin_open: true
+
+  tests:
+    build:
+      context: .
+      dockerfile: tests/Dockerfile 
+    container_name: test_runner
+    volumes:
+      - ./tests:/tests
+      - ./src:/src
+    depends_on:
+      - application_service
+      - notification_services
+      - db_service
+      - redis
+    profiles:
+      - testing  # Este servicio solo se ejecutará con el perfil "testing"

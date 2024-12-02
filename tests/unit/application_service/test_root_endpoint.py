@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from src.application_service.entrypoints.routes.main import app
+from src.application_service.entrypoints.main import app
 
 client = TestClient(app)
 
