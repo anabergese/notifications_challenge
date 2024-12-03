@@ -1,7 +1,7 @@
 import json
 import logging
 
-from config import get_redis_client
+from infrastructure.redis_client import get_redis_client
 
 logger = logging.getLogger(__name__)
 
