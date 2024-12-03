@@ -4,7 +4,8 @@ import logging
 from domain.enums import RedisChannels
 from domain.events import NotificationCreated
 from redis.exceptions import ConnectionError, TimeoutError
-from redis_publisher import publish
+
+from .redis_publisher import publish
 
 logger = logging.getLogger(__name__)
 
