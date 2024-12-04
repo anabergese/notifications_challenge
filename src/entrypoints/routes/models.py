@@ -1,10 +1,8 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from domain.enums import Topic
 
 
 class NotificationRequest(BaseModel):
-    topic: Topic = Field(title="Topic", description="Topic of the message")
-    description: str = Field(
-        title="Description", description="Description of the message"
-    )
+    topic: Topic
+    description: str
