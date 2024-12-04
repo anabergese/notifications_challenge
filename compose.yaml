@@ -6,50 +6,30 @@ services:
     ports:
       - "6379:6379"
 
-  application_service:
+  application:
     build:
       context: .
-      dockerfile: src/application_service/Dockerfile
-    container_name: application_service
+      dockerfile: Dockerfile
+    container_name: application
     ports:
       - "8000:80"
     volumes:
-      - ./src/application_service:/app
+      - ./src:/app/src
     depends_on:
       - redis
     environment:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-
-  notification_services:
-    build:
-      context: .
-      dockerfile: src/notification_services/Dockerfile
-    container_name: notification_services
-    volumes:
-      - ./src/notification_services:/app
-    depends_on:
-      - redis
-    environment:
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=${REDIS_PORT}
+      - PYTHONPATH=/app/src
+    command: >
+      bash -c "
+      uvicorn src.entrypoints.main:app --host 0.0.0.0 --port 80 --reload &
+      python /app/src/application/db_main.py &
+      python /app/src/application/notifier_main.py
+      "
     tty: true
     stdin_open: true
 
-  db_service:
-    build:
-      context: .
-      dockerfile: src/db_service/Dockerfile
-    container_name: db_service
-    volumes:
-      - ./src/db_service:/app
-    depends_on:
-      - redis
-    environment:
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=${REDIS_PORT}
-    tty: true
-    stdin_open: true
 
   tests:
     build:
@@ -60,9 +40,11 @@ services:
       - ./tests:/tests
       - ./src:/src
     depends_on:
-      - application_service
-      - notification_services
-      - db_service
+      - application
       - redis
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - PYTHONPATH=/app/src
     profiles:
       - testing  # Este servicio solo se ejecutará con el perfil "testing"

@@ -1,8 +1,9 @@
 import asyncio
 import json
 
+from notifiers import EmailNotifier, SlackNotifier
+
 from domain.enums import Topic
-from domain.notifiers import EmailNotifier, SlackNotifier
 from infrastructure.redis_client import get_redis_client
 
 redis_client = get_redis_client()

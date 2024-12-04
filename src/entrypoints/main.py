@@ -1,11 +1,13 @@
 import logging
 
 import uvicorn
-from domain.events import NotificationCreated
-from entrypoints.routes.routes import router
 from fastapi import FastAPI
+
+from domain.events import NotificationCreated
 from service_layer.handlers import handle_notification_created
 from service_layer.messagebus import register_handler
+
+from .routes.routes import router
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

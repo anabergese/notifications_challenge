@@ -1,9 +1,10 @@
 import asyncio
 import logging
 
+from redis.exceptions import ConnectionError, TimeoutError
+
 from domain.enums import RedisChannels
 from domain.events import NotificationCreated
-from redis.exceptions import ConnectionError, TimeoutError
 
 from .redis_publisher import publish
 

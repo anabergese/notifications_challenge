@@ -1,8 +1,9 @@
-from config import REDIS_DB, REDIS_HOST, REDIS_PORT
 from redis.asyncio import Redis
 from redis.backoff import ExponentialBackoff
 from redis.exceptions import BusyLoadingError, ConnectionError, TimeoutError
 from redis.retry import Retry
+
+from config import REDIS_DB, REDIS_HOST, REDIS_PORT
 
 
 def get_redis_client():
