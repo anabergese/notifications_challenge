@@ -8,10 +8,9 @@ from config import REDIS_DB, REDIS_HOST, REDIS_PORT
 
 def get_redis_client():
     retry_strategy = Retry(ExponentialBackoff(), retries=3)
-
     return Redis(
         host=REDIS_HOST,
-        port=REDIS_PORT,
+        port=3333,
         db=REDIS_DB,
         retry=retry_strategy,
         retry_on_error=[

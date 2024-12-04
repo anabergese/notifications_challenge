@@ -22,7 +22,7 @@ async def handle_notification_created(event: NotificationCreated):
     max_retries = 3
     for attempt in range(1, max_retries + 1):
         try:
-            await publish(channel, data)
+            await publish(channel, data)  # si hay error aqui va para DLQ
             logging.info("Event published %s: %s", channel, data)
             break  # Sal del bucle si la publicación es exitosa
         except (ConnectionError, TimeoutError) as redis_error:

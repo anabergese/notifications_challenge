@@ -13,6 +13,7 @@ class NotificationService:
             description=description,
             timestamp=datetime.now(timezone.utc),
         )
+
         # Pasar el evento al MessageBus
         await handle(event)
 

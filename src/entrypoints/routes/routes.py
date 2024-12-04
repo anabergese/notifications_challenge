@@ -23,5 +23,6 @@ async def create_notification(notification: NotificationRequest):
         )
         logging.info("Event received: %s", event)
         return {"message": f"Notification created for topic: {event.topic.value}"}
-    except ValueError as ve:
-        raise HTTPException(status_code=400, detail=str(ve)) from ve
+    except Exception as e:
+        logging.error("Unexpected error: %s", e)
+        raise HTTPException(status_code=500, detail="Internal Server Error") from e
