@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from domain.enums import RedisChannels
 from infrastructure.redis_client import get_redis_client
@@ -17,7 +18,7 @@ async def db_service():
     async for message in psub.listen():  # Usa el listener asíncrono
         if message["type"] == "message":  # Filtrar solo mensajes
             data = message["data"]
-            print(f"Mensaje recibido por DB_SERVICE: {data}")
+            logging.info("Event received: %s", data)
 
             # Aquí procesar el mensaje en la base de datos
             # Por ejemplo:

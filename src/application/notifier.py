@@ -1,5 +1,6 @@
 import asyncio
 import json
+import logging
 
 from notifiers import EmailNotifier, SlackNotifier
 
@@ -30,4 +31,4 @@ async def notification_services(channel):
             elif topic == Topic.PRICING:
                 await email_notifier.notify(json.dumps(data))  # Ensure notify is async
             else:
-                print(f"Unknown topic: {topic}, type: {type(topic)}")
+                logging.info("Unknown topic: %s, type: %s", topic, type(topic))

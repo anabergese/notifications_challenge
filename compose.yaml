@@ -27,9 +27,6 @@ services:
       python /app/src/application/db_main.py &
       python /app/src/application/notifier_main.py
       "
-    tty: true
-    stdin_open: true
-
 
   tests:
     build:

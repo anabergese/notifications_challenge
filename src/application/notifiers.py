@@ -1,5 +1,6 @@
 import asyncio
 import json
+import logging
 from abc import ABC, abstractmethod
 
 
@@ -12,14 +13,22 @@ class Notifier(ABC):
 class EmailNotifier(Notifier):
     async def notify(self, task_json: str):
         task = json.loads(task_json)
-        print(f"Processing task from EmailNotifier: {task}")
+        logging.info("Processing event...: %s", task)
         await asyncio.sleep(3)
-        print(f"Task {task['topic']} sent to email successfully: {task['description']}")
+        logging.info(
+            "Event %s sent to Email successfully: %s",
+            task["topic"],
+            task["description"],
+        )
 
 
 class SlackNotifier(Notifier):
     async def notify(self, task_json: str):
         task = json.loads(task_json)
-        print(f"Processing task from SlackNotifier: {task}")
+        logging.info("Processing event...: %s", task)
         await asyncio.sleep(3)
-        print(f"Task {task['topic']} sent to Slack successfully: {task['description']}")
+        logging.info(
+            "Event %s sent to Slack successfully: %s",
+            task["topic"],
+            task["description"],
+        )

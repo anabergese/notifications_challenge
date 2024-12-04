@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, HTTPException
 
 from service_layer.service import NotificationService
@@ -19,7 +21,7 @@ async def create_notification(notification: NotificationRequest):
         event = await NotificationService.create_notification(
             topic=notification.topic, description=notification.description
         )
-        print(f"DEBUG: Received event in endpoint: {event}")
+        logging.info("Event received: %s", event)
         return {"message": f"Notification created for topic: {event.topic.value}"}
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve)) from ve
