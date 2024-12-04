@@ -42,6 +42,6 @@ services:
     environment:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - PYTHONPATH=/app/src
+      - PYTHONPATH=/src
     profiles:
       - testing  # Este servicio solo se ejecutará con el perfil "testing"

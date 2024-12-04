@@ -1,12 +1,11 @@
-FROM python:alpine
+FROM python:3.9
 
-RUN apk add --no-cache gcc musl-dev linux-headers
+WORKDIR /tests
 
 COPY ./tests/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY ./tests .
-COPY ./src /src
 
-WORKDIR /tests
+COPY ./src /src
+COPY ./tests .
 
 CMD ["ptw", "--runner", "pytest --maxfail=5 --disable-warnings"]
