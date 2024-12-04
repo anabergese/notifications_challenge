@@ -1,7 +1,7 @@
 import asyncio
 
-from config import get_redis_client
 from domain.enums import RedisChannels
+from infrastructure.redis_client import get_redis_client
 
 redis_client = get_redis_client()
 
