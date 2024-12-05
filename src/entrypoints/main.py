@@ -32,7 +32,4 @@ app.include_router(router)
 
 
 if __name__ == "__main__":
-    try:
-        uvicorn.run(app, host="0.0.0.0", port=80)
-    except RuntimeError as runtime_error:
-        logging.critical("Application startup failed: %s", runtime_error)
+    uvicorn.run(app, host="0.0.0.0", port=80)
