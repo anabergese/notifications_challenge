@@ -10,7 +10,7 @@ def get_redis_client():
     retry_strategy = Retry(ExponentialBackoff(), retries=3)
     return Redis(
         host=REDIS_HOST,
-        port=3333,
+        port=REDIS_PORT,
         db=REDIS_DB,
         retry=retry_strategy,
         retry_on_error=[
