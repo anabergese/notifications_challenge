@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -27,6 +29,15 @@ def invalid_payload_missing_topic():
 @pytest.fixture
 def invalid_payload_missing_description():
     return {"topic": "sales"}
+
+
+@pytest.fixture
+def invalid_payload_short_description():
+    return {
+        "topic": "pricing",
+        "description": "123",  # Too short
+        "timestamp": datetime.now(),
+    }
 
 
 @pytest.fixture(

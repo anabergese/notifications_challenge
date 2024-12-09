@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+from pydantic import Field
 from pydantic.dataclasses import dataclass
 
 from .enums import Topic
@@ -19,5 +20,5 @@ class DomainEvent(Event):
 @dataclass(frozen=True)
 class NotificationCreated(DomainEvent):
     topic: Topic
-    description: str
+    description: str = Field(min_length=10, max_length=200)
     version: str = "1.0"
