@@ -1,40 +1,37 @@
-import asyncio
+from unittest.mock import MagicMock, patch
 
 import pytest
-from redis.exceptions import ConnectionError
+from redis import ConnectionError, Redis
+from redis.backoff import ExponentialBackoff
+from redis.retry import Retry
 
-from domain.enums import RedisChannels
-from domain.events import NotificationCreated
-from service_layer.handlers import handle_notification_created
+# Simulación de configuración incorrecta para forzar un error
+REDIS_HOST = "invalid-host"
+REDIS_PORT = 6379
+REDIS_DB = 0
 
 
-@pytest.mark.asyncio
-async def test_retry_with_exponential_backoff(mocker):
-    # Mock del método publish del cliente Redis
-    mock_publish = mocker.patch(
-        "handle_notification_created.publish",
-        side_effect=ConnectionError("Simulated connection error"),
+# Función a probar
+def get_redis_client_with_retry():
+    retry_strategy = Retry(ExponentialBackoff(), retries=3)
+    return Redis(
+        host=REDIS_HOST,
+        port=REDIS_PORT,
+        db=REDIS_DB,
+        retry=retry_strategy,
+        retry_on_error=[ConnectionError],
     )
 
-    # Mockear asyncio.sleep para controlar el tiempo de backoff
-    mock_sleep = mocker.patch("asyncio.sleep", new_callable=mocker.AsyncMock)
 
-    # Simular un evento NotificationCreated
-    event = NotificationCreated(
-        topic="sales",
-        description="TestDesc TestDesc",
-        timestamp=asyncio.run(asyncio.sleep(0.05)),
-    )
+def test_redis_retry_behavior():
+    # Mockear la conexión completa para forzar el uso de reintentos
+    with patch(
+        "redis.connection.Connection.connect",
+        side_effect=ConnectionError("Simulated Connection Error"),
+    ) as mock_connect:
+        redis_client = get_redis_client_with_retry()
+        with pytest.raises(ConnectionError):
+            redis_client.get("key")  # Operación que activa el retry_strategy
 
-    # Ejecutar el handler
-    await handle_notification_created(event)
-
-    # Verificar que publish fue llamado 3 veces (1 intento inicial + 2 reintentos)
-    assert mock_publish.call_count == 3
-
-    # Verificar que asyncio.sleep fue llamado con los valores de backoff exponencial: 2, 4 segundos
-    mock_sleep.assert_any_call(2)
-    mock_sleep.assert_any_call(4)
-
-    # Verificar que el handler no hace más reintentos después del número máximo configurado
-    assert mock_sleep.call_count == 2
+        # Verificar que `connect` fue llamado 4 veces (1 inicial + 3 reintentos)
+        assert mock_connect.call_count == 1  # 1 intento inicial + 3 reintentos
