@@ -55,6 +55,13 @@ def invalid_topic_inputs(request):
         {"topic": "pricing", "description": ""},
         {"topic": "pricing", "description": " "},
         {"topic": "pricing", "description": "a" * 10000},
+        {"topic": "pricing", "description": True},
+        {"topic": "pricing", "description": {"key": "value"}},
+        {"topic": "pricing", "description": ["sales", "pricing"]},
+        {"topic": "pricing", "description": None},
+        {"topic": "pricing", "description": 0},
+        {"topic": "pricing", "description": -1},
+        {"topic": "pricing", "description": 1.5},
     ]
 )
 def invalid_description_inputs(request):

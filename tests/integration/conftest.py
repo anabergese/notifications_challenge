@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pytest
 from fastapi.testclient import TestClient
 
@@ -31,15 +29,6 @@ def invalid_payload_missing_description():
     return {"topic": "sales"}
 
 
-@pytest.fixture
-def invalid_payload_short_description():
-    return {
-        "topic": "pricing",
-        "description": "123",  # Too short
-        "timestamp": datetime.now(),
-    }
-
-
 @pytest.fixture(
     params=[
         # Invalid formats
@@ -69,7 +58,32 @@ def invalid_payload_short_description():
         {"topic": "pricing ", "description": "Valid topic with trailing space"},
     ]
 )
-def invalid_payload(request):
+def invalid_payload_topics(request):
+    return {
+        "topic": request.param["topic"],
+        "description": request.param["description"],
+    }
+
+
+@pytest.fixture(
+    params=[
+        # Invalid formats
+        {"topic": "pricing", "description": ""},
+        {"topic": "pricing", "description": " "},
+        {"topic": "pricing", "description": True},
+        {"topic": "pricing", "description": {"key": "value"}},
+        {"topic": "pricing", "description": ["sales", "pricing"]},
+        {"topic": "pricing", "description": None},
+        # Extreme values
+        {"topic": "pricing", "description": "a" * 1000},
+        # Numbers
+        {"topic": "pricing", "description": 0},
+        {"topic": "pricing", "description": -1},
+        {"topic": "pricing", "description": 1.5},
+        {"topic": "pricing", "description": 2e10},
+    ]
+)
+def invalid_payload_descriptions(request):
     return {
         "topic": request.param["topic"],
         "description": request.param["description"],
