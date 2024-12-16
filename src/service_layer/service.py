@@ -2,7 +2,8 @@ import logging
 from datetime import datetime, timezone
 
 from domain.events import NotificationCreated
-from service_layer.messagebus import handle
+
+from . import messagebus
 
 
 class NotificationService:
@@ -17,7 +18,7 @@ class NotificationService:
 
         # Pasar el evento al MessageBus
         try:
-            await handle(event)
+            await messagebus.handle(event)
         except Exception as e:
             logging.error("Error handling event: %s. Event: %s", e, event)
         return event

@@ -29,7 +29,7 @@ def mocked_service_failures(request, mocker):
 )
 def mocked_handle_failures(request, mocker):
     mock_handle = mocker.patch(
-        "service_layer.service.handle",
+        "service_layer.service.messagebus.handle",
         side_effect=request.param,
     )
     return mock_handle
