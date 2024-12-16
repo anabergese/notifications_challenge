@@ -3,7 +3,7 @@ import logging
 import uvicorn
 from fastapi import FastAPI
 
-from logging_config import setup_logging
+from config import setup_logging
 
 from .exception_handlers.handlers import add_error_handlers
 from .routes.routes import router

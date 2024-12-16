@@ -4,9 +4,8 @@ import logging
 
 from notifiers import EmailNotifier, SlackNotifier
 
+from config import get_redis_client
 from domain.enums import Topic
-
-from ..config import get_redis_client
 
 redis_client = get_redis_client()
 

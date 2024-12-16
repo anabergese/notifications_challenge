@@ -1,7 +1,7 @@
 import json
 import logging
 
-from src.config import get_redis_client
+from config import get_redis_client
 
 r = get_redis_client()
 
