@@ -1,20 +1,18 @@
-import asyncio
-import logging
+import pytest
 
 from config import get_redis_client
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
-
-def test_redis_connection():
+@pytest.mark.asyncio
+async def test_redis_ping():
+    redis_client = get_redis_client()
     try:
-        redis_client = get_redis_client()
-        logger.info("Connecting to Redis...")
-        redis_client.pingsssss()  # Pingssss no es un valid metodo, el test deberia fallar
-        logger.info("Successfully connected to Redis!")
-    except Exception as e:
-        logger.error("Error connecting to Redis: %s", e)
+        assert (
+            await redis_client.ping()
+        ), "Redis connection failed: ping returned False."
+        assert redis_client.connection_pool.connection_kwargs["host"] == "redis"
+        assert redis_client.connection_pool.connection_kwargs["port"] == 6379
+        assert redis_client.connection_pool.connection_kwargs["db"] == 0
     finally:
-        redis_client.close()
+        await redis_client.close()
         redis_client.connection_pool.disconnect()
