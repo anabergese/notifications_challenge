@@ -4,3 +4,4 @@ starlette==0.37.2
 ujson==5.10.0
 uuid==1.30
 uvicorn==0.30.0
+mypy

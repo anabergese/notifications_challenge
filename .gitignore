@@ -19,3 +19,6 @@ dump.rdb
 # Ignore pipenv virtual environment
 /.venv/
 Pipfile.lock
+
+# mypy
+.mypy_cache/
