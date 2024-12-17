@@ -43,4 +43,4 @@ async def handle_notification_created(event: NotificationCreated):
             logging.critical(
                 "Unexpected error in Redis operation: %s", unexpected_error
             )
-            breako
+            break
