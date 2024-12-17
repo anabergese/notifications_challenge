@@ -1,7 +1,9 @@
 import asyncio
 import logging
 
-from redis.exceptions import BusyLoadingError, ConnectionError, TimeoutError
+from redis.exceptions import BusyLoadingError
+from redis.exceptions import ConnectionError as RedisConnectionError
+from redis.exceptions import TimeoutError as RedisTimeoutError
 
 from domain.enums import RedisChannels
 from domain.events import NotificationCreated
@@ -24,8 +26,12 @@ async def handle_notification_created(event: NotificationCreated):
         try:
             await publish(channel, data)  # si hay error aqui va para DLQ
             logging.info("Event published %s: %s", channel, data)
-            break  # Sal del bucle si la publicación es exitosa
-        except (ConnectionError, TimeoutError, BusyLoadingError) as redis_error:
+            break
+        except (
+            RedisConnectionError,
+            RedisTimeoutError,
+            BusyLoadingError,
+        ) as redis_error:
             logging.warning("Attempt %d failed to publish: %s", attempt, redis_error)
             if attempt < max_retries:
                 await asyncio.sleep(2**attempt)  # Backoff exponencial: 2, 4, 8 segundos
@@ -37,4 +43,4 @@ async def handle_notification_created(event: NotificationCreated):
             logging.critical(
                 "Unexpected error in Redis operation: %s", unexpected_error
             )
-            break  # Sal del bucle si ocurre un error no esperado
+            breako

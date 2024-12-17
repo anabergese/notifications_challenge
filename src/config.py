@@ -3,7 +3,9 @@ import os
 
 from redis.asyncio import Redis
 from redis.backoff import ExponentialBackoff
-from redis.exceptions import BusyLoadingError, ConnectionError, TimeoutError
+from redis.exceptions import BusyLoadingError
+from redis.exceptions import ConnectionError as RedisConnectionError
+from redis.exceptions import TimeoutError as RedisTimeoutError
 from redis.retry import Retry
 
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
@@ -20,8 +22,8 @@ def get_redis_client():
         retry=retry_strategy,
         retry_on_error=[
             BusyLoadingError,
-            ConnectionError,
-            TimeoutError,
+            RedisConnectionError,
+            RedisTimeoutError,
         ],
     )
 
