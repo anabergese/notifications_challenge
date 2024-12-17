@@ -7,8 +7,7 @@ from redis.exceptions import TimeoutError as RedisTimeoutError
 
 from domain.enums import RedisChannels
 from domain.events import NotificationCreated
-
-from .redis_publisher import publish
+from seedwork.application.redis_publisher import publish
 
 
 async def handle_notification_created(event: NotificationCreated):
