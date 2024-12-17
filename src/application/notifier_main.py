@@ -1,10 +1,25 @@
 import asyncio
+import logging
 
-from notifier import notification_services
+from notifier import NotificationService
+from notifiers import EmailNotifier, SlackNotifier
 
 from config import setup_logging
+from domain.enums import Topic
 
 setup_logging()
 
+notifiers_mapping = {
+    Topic.SALES: SlackNotifier(),
+    Topic.PRICING: EmailNotifier(),
+}
+
+
+async def main():
+    service = NotificationService(notifiers_mapping)
+    await service.start()
+
+
 if __name__ == "__main__":
-    asyncio.run(notification_services())
+    logging.info("Starting Notification Service...")
+    asyncio.run(main())
