@@ -6,5 +6,6 @@
         "pydantic",
         "rpush",
         "uvicorn"
-    ]
+    ],
+    "mypy-type-checker.importStrategy": "fromEnvironment"
 }

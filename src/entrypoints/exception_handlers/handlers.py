@@ -1,16 +1,16 @@
 import logging
 
-from fastapi import status
+from fastapi import FastAPI, Request, Response, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 
-def add_error_handlers(app):
+def add_error_handlers(app: FastAPI) -> None:
     """Registra los handlers de errores personalizados en la aplicación FastAPI."""
-    app.add_exception_handler(RequestValidationError, custom_422_error_handler)
+    app.add_exception_handler(RequestValidationError, custom_422_error_handler)  # type: ignore
 
 
-async def custom_422_error_handler(request, exc: RequestValidationError):
+async def custom_422_error_handler(_: Request, exc: RequestValidationError) -> Response:
     """Maneja los errores de validación personalizados."""
     errors = exc.errors()
 
@@ -26,35 +26,35 @@ async def custom_422_error_handler(request, exc: RequestValidationError):
     return handle_generic_error()
 
 
-def handle_invalid_topic():
+def handle_invalid_topic() -> Response:
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={"detail": "Invalid topic."},
     )
 
 
-def handle_missing_topic():
+def handle_missing_topic() -> Response:
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={"detail": "Topic is required."},
     )
 
 
-def handle_missing_description():
+def handle_missing_description() -> Response:
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={"detail": "Description is required."},
     )
 
 
-def handle_invalid_description():
+def handle_invalid_description() -> Response:
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={"detail": "Invalid description."},
     )
 
 
-def handle_generic_error():
+def handle_generic_error() -> Response:
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={"detail": "Invalid request data."},

@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 
 from service_layer.service import NotificationService
 
@@ -10,12 +10,15 @@ router = APIRouter()
 
 
 @router.get("/")
-def read_root():
-    return {"message": "Notification System is up and running."}
+def read_root() -> Response:
+    return Response(
+        content='{"message": "Notification System is up and running."}',
+        media_type="application/json",
+    )
 
 
 @router.post("/notify")
-async def create_notification(notification: NotificationRequest):
+async def create_notification(notification: NotificationRequest) -> Response:
     try:
         # Delegar la lógica de negocio al servicio
         event = await NotificationService.create_notification(
