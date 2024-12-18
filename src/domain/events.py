@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from pydantic import Field
 from pydantic.dataclasses import dataclass
 
@@ -8,7 +6,7 @@ from .enums import Topic
 
 @dataclass(frozen=True)
 class Event:
-    timestamp: datetime
+    pass
 
 
 @dataclass(frozen=True)

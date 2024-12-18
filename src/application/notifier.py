@@ -16,7 +16,7 @@ class NotificationService:
         """
         self.notifiers = notifiers
 
-    async def start(self):
+    async def start(self) -> None:
         """
         Inicia la escucha en el canal de Redis para manejar las notificaciones.
         """

@@ -6,7 +6,7 @@ from domain import events
 from .handlers import handle_notification_created
 
 
-async def handle(event):
+async def handle(event: events.Event) -> None:
     """Invoca los handlers registrados para un evento dado."""
     for handler in HANDLERS[type(event)]:
         await handler(event)

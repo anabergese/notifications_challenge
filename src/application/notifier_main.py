@@ -15,7 +15,7 @@ notifiers_mapping = {
 }
 
 
-async def main():
+async def main() -> None:
     service = NotificationService(notifiers_mapping)
     await service.start()
 
