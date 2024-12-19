@@ -1,6 +1,7 @@
-from service_layer.messagebus import INITIAL_HANDLERS, MessageBus
+from entrypoints.bootstrap import bootstrap
+from service_layer.messagebus import MessageBus
 
-message_bus = MessageBus(handlers=INITIAL_HANDLERS)
+message_bus: MessageBus = bootstrap()
 
 
 def get_message_bus() -> MessageBus:
