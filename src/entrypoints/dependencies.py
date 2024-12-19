@@ -1,5 +1,6 @@
 from entrypoints.bootstrap import bootstrap
-from service_layer.messagebus import MessageBus
+
+from ..service_layer.messagebus import MessageBus
 
 message_bus: MessageBus = bootstrap()
 

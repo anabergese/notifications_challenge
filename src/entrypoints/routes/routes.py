@@ -3,8 +3,8 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException, Response
 
 from domain.events import NotificationCreated
-from service_layer.dependencies import get_message_bus
 from service_layer.messagebus import MessageBus
+from src.entrypoints.dependencies import get_message_bus
 
 from .models import NotificationRequest
 
