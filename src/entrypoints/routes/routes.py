@@ -2,7 +2,8 @@ import logging
 
 from fastapi import APIRouter, HTTPException, Response
 
-from service_layer.service import NotificationService
+from domain.events import NotificationCreated
+from service_layer import messagebus
 
 from .models import NotificationRequest
 
@@ -20,11 +21,11 @@ def read_root() -> Response:
 @router.post("/notify")
 async def create_notification(notification: NotificationRequest) -> Response:
     try:
-        # Delegar la lógica de negocio al servicio
-        event = await NotificationService.create_notification(
+        event = NotificationCreated(
             topic=notification.topic, description=notification.description
         )
         logging.info("Event received: %s", event)
+        await messagebus.handle(event)
         return Response(
             content=f'{{"message": "Notification created for topic: {event.topic.value}"}}',
             media_type="application/json",
