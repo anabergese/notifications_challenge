@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+from typing import Union
 
 from notification_channels import Notifier
 
@@ -31,7 +32,7 @@ class NotificationOrchestrator:
             if message["type"] == "message":
                 await self._process_message(message)
 
-    async def _process_message(self, message):
+    async def _process_message(self, message: dict[str, Union[str, bytes]]) -> None:
         """
         Procesa un mensaje recibido del canal Redis.
         :param message: Mensaje en formato Redis.

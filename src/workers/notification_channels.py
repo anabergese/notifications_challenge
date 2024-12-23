@@ -6,12 +6,12 @@ from abc import ABC, abstractmethod
 
 class Notifier(ABC):
     @abstractmethod
-    async def notify(self, task_json: str):
+    async def notify(self, task_json: str) -> None:
         pass
 
 
 class EmailNotifier(Notifier):
-    async def notify(self, task_json: str):
+    async def notify(self, task_json: str) -> None:
         task = json.loads(task_json)
         logging.info("Processing event...: %s", task)
         await asyncio.sleep(3)
@@ -23,7 +23,7 @@ class EmailNotifier(Notifier):
 
 
 class SlackNotifier(Notifier):
-    async def notify(self, task_json: str):
+    async def notify(self, task_json: str) -> None:
         task = json.loads(task_json)
         logging.info("Processing event...: %s", task)
         await asyncio.sleep(3)
