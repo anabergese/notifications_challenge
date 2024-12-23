@@ -7,7 +7,7 @@ from domain.events import NotificationCreated  # Asegúrate de importar la clase
 from seedwork.application import redis_consumer, redis_publisher
 
 
-async def db_service() -> None:
+async def db_handler() -> None:
     psub = await redis_consumer.subscribe_channel(RedisChannels.DB_SERVICE)
     async for message in psub.listen():
         if message["type"] == "message":

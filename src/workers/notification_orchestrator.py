@@ -2,13 +2,13 @@ import asyncio
 import json
 import logging
 
-from notifiers import Notifier
+from notification_channels import Notifier
 
 from domain.enums import RedisChannels
 from seedwork.application import redis_consumer
 
 
-class NotificationService:
+class NotificationOrchestrator:
     def __init__(self, notifiers: dict[str, Notifier]):
         """
         Inicializa el servicio de notificaciones con un diccionario de notifiers.

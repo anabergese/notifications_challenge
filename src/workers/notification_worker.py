@@ -1,8 +1,8 @@
 import asyncio
 import logging
 
-from notifier import NotificationService
-from notifiers import EmailNotifier, SlackNotifier
+from notification_channels import EmailNotifier, SlackNotifier
+from notification_orchestrator import NotificationOrchestrator
 
 from config import setup_logging
 from domain.enums import Topic
@@ -16,7 +16,7 @@ notifiers_mapping = {
 
 
 async def main() -> None:
-    service = NotificationService(notifiers_mapping)
+    service = NotificationOrchestrator(notifiers_mapping)
     await service.start()
 
 

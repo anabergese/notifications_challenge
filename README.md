@@ -15,3 +15,60 @@ Run: 'docker compose up'.
 Trello Dashboard
 
 https://trello.com/b/PfWLSu5I/notification-system
+
+```
+notifications
+├─ .dockerignore
+├─ Dockerfile
+├─ Docs
+├─ README.md
+├─ compose.yaml
+├─ mypy.ini
+├─ requirements.txt
+├─ src
+│  ├─ __init__.py
+│  ├─ application
+│  │  ├─ __init__.py
+│  │  ├─ db_main.py
+│  │  ├─ db_service.py
+│  │  ├─ notifier.py
+│  │  ├─ notifier_main.py
+│  │  └─ notifiers.py
+│  ├─ config.py
+│  ├─ domain
+│  │  ├─ __init__.py
+│  │  ├─ enums.py
+│  │  ├─ events.py
+│  │  └─ models.py
+│  ├─ entrypoints
+│  │  ├─ __init__.py
+│  │  ├─ bootstrap.py
+│  │  ├─ dependencies.py
+│  │  ├─ exception_handlers
+│  │  │  ├─ __init__.py
+│  │  │  └─ handlers.py
+│  │  ├─ main.py
+│  │  └─ routes
+│  │     ├─ __init__.py
+│  │     ├─ models.py
+│  │     └─ routes.py
+│  ├─ infrastructure
+│  │  ├─ __init__.py
+│  │  └─ repositories
+│  │     └─ __init__.py
+│  ├─ seedwork
+│  │  ├─ __init__.py
+│  │  ├─ application
+│  │  │  ├─ __init__.py
+│  │  │  ├─ redis_consumer.py
+│  │  │  └─ redis_publisher.py
+│  │  ├─ domain
+│  │  │  └─ __init__.py
+│  │  └─ intrastructure
+│  │     └─ __init__.py
+│  └─ service_layer
+│     ├─ __init__.py
+│     ├─ handlers.py
+│     └─ messagebus.py
+└─ tests
+```
