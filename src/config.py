@@ -2,24 +2,24 @@ import logging
 import os
 
 from redis.asyncio import Redis
+from redis.asyncio.retry import Retry
 from redis.backoff import ExponentialBackoff
 from redis.exceptions import BusyLoadingError
 from redis.exceptions import ConnectionError as RedisConnectionError
 from redis.exceptions import TimeoutError as RedisTimeoutError
-from redis.retry import Retry
 
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
 REDIS_DB = int(os.getenv("REDIS_DB", "0"))
 
 
-def get_redis_client():
-    retry_strategy = Retry(ExponentialBackoff(), retries=3)
+def get_redis_client() -> Redis:
+    retry = Retry(ExponentialBackoff(), retries=3)  # type: ignore
     return Redis(
         host=REDIS_HOST,
         port=REDIS_PORT,
         db=REDIS_DB,
-        retry=retry_strategy,
+        retry=retry,
         retry_on_error=[
             BusyLoadingError,
             RedisConnectionError,
@@ -28,7 +28,7 @@ def get_redis_client():
     )
 
 
-def setup_logging():
+def setup_logging() -> None:
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - - %(module)s - %(message)s",
