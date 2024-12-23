@@ -20,6 +20,7 @@ def get_redis_client() -> Redis:
         port=REDIS_PORT,
         db=REDIS_DB,
         retry=retry,
+        decode_responses=True,
         retry_on_error=[
             BusyLoadingError,
             RedisConnectionError,

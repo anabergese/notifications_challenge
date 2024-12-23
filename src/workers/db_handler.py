@@ -12,14 +12,12 @@ async def db_handler() -> None:
     async for message in psub.listen():
         if message["type"] == "message":
             data = message["data"]
-            if isinstance(data, bytes):
-                data = data.decode("utf-8")
-
+            logging.info("Tipo de dato recibido: %s", type(data))
             logging.info("Data received: %s", data)
 
             try:
                 data_dict = json.loads(data)
-                logging.info("Deserialized data: %s", data_dict)
+                logging.info("Deserialized data: %s", data)
 
                 event = NotificationCreated(**data_dict)
                 logging.info("Reconstructed event: %s", event)

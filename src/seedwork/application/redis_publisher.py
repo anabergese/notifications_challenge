@@ -9,6 +9,7 @@ r = get_redis_client()
 
 
 async def publish(channel: str, event: events.Event):  # type: ignore
+    logging.info("Tipo de dato a ser publicado: %s", type(event))
     serialized_event = json.dumps(asdict(event))
     logging.info(
         "Publishing serialized event: %s to channel: %s", serialized_event, channel
