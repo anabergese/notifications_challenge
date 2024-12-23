@@ -1,14 +1,17 @@
 import asyncio
 import logging
-from typing import Callable, Dict, List, Type
+from typing import Any, Callable, Coroutine, Dict, List, Type
 
 from domain import events
 
-from .handlers import handle_notification_created
-
 
 class MessageBus:
-    def __init__(self, handlers: Dict[Type[events.Event], List[Callable]]):
+    def __init__(
+        self,
+        handlers: Dict[
+            Type[events.Event], List[Callable[..., Coroutine[Any, Any, None]]]
+        ],
+    ):
         """
         Inicializa el MessageBus con un diccionario de handlers.
 
@@ -34,8 +37,3 @@ class MessageBus:
                     "Exception handling event %s with handler %s", event, handler
                 )
                 continue
-
-
-INITIAL_HANDLERS: Dict[Type[events.Event], List[Callable]] = {
-    events.NotificationCreated: [handle_notification_created],
-}

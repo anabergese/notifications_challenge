@@ -1,25 +1,42 @@
-from typing import Callable, Dict, List, Type
+import inspect
+from typing import Any, Callable, Coroutine
 
-from domain import events
-from service_layer.handlers import handle_notification_created
+from seedwork.application import redis_publisher
+from service_layer.handlers import INITIAL_HANDLERS
 from service_layer.messagebus import MessageBus
 
 
 def bootstrap(
-    handlers: Dict[Type[events.Event], List[Callable]] = None,
+    publish: Callable[[str, Any], Coroutine[Any, Any, None]] = redis_publisher.publish,
 ) -> MessageBus:
     """
-    Initializes the application, injects dependencies, and returns the MessageBus.
-
-    :param handlers: Optional custom handlers to override the defaults.
-    :return: An initialized MessageBus.
+    Inicializa el MessageBus con handlers y dependencias inyectadas.
     """
-    default_handlers = {
-        events.NotificationCreated: [handle_notification_created],
+    # Define las dependencias
+    dependencies = {
+        "publish": publish,
     }
 
-    handlers = handlers or default_handlers
+    # Inyecta dependencias en los handlers
+    injected_event_handlers = {
+        event_type: [
+            inject_dependencies(handler, dependencies) for handler in event_handlers
+        ]
+        for event_type, event_handlers in INITIAL_HANDLERS.items()
+    }
 
-    message_bus = MessageBus(handlers=handlers)
+    # Crea el MessageBus con los handlers inyectados
+    return MessageBus(handlers=injected_event_handlers)
 
-    return message_bus
+
+def inject_dependencies(
+    handler: Callable[..., Any], dependencies: dict[str, Any]
+) -> Callable[[Any], Any]:
+    """
+    Crea un wrapper que inyecta las dependencias necesarias al handler.
+    """
+    params = inspect.signature(handler).parameters
+    deps = {
+        name: dependency for name, dependency in dependencies.items() if name in params
+    }
+    return lambda event: handler(event, **deps)

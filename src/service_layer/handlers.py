@@ -1,26 +1,27 @@
 import asyncio
 import logging
+from typing import Any, Callable, Coroutine, Dict, List, Type
 
 from redis.exceptions import BusyLoadingError
 from redis.exceptions import ConnectionError as RedisConnectionError
 from redis.exceptions import TimeoutError as RedisTimeoutError
 
 from domain.enums import RedisChannels
-from domain.events import NotificationCreated
-from seedwork.application import redis_publisher
+from domain.events import Event, NotificationCreated
 
 
-async def handle_notification_created(event: NotificationCreated) -> None:
+async def handle_notification_created(
+    event: NotificationCreated,
+    publish: Callable[[str, NotificationCreated], Coroutine[Any, Any, None]],
+) -> None:
     """Handler para procesar el evento NotificationCreated."""
 
-    channel = RedisChannels.DB_SERVICE.value
+    channel: str = RedisChannels.DB_SERVICE.value
 
-    max_retries = 3
+    max_retries: int = 3
     for attempt in range(1, max_retries + 1):
         try:
-            await redis_publisher.publish(
-                channel, event
-            )  # si hay error aqui va para DLQ
+            await publish(channel, event)  # si hay error aqui va para DLQ
             logging.info("Event published %s: %s", channel, event)
             break
         except (
@@ -40,3 +41,11 @@ async def handle_notification_created(event: NotificationCreated) -> None:
                 "Unexpected error in Redis operation: %s", unexpected_error
             )
             break
+
+
+INITIAL_HANDLERS: Dict[
+    Type[Event],
+    List[Callable[..., Coroutine[Any, Any, None]]],
+] = {
+    NotificationCreated: [handle_notification_created],
+}
