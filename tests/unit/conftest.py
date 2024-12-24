@@ -8,7 +8,6 @@ def valid_inputs():
     return {
         "topic": "pricing",
         "description": "New pricing update available.",
-        "timestamp": datetime.now(),
     }
 
 

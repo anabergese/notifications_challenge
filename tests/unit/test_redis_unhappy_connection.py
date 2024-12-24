@@ -22,6 +22,7 @@ async def test_get_redis_client_timeout_error(mocker):
         host="redis",
         port=6379,
         db=0,
+        decode_responses=True,
         retry=mocker.ANY,
         retry_on_error=[BusyLoadingError, RedisConnectionError, RedisTimeoutError],
     )
@@ -43,6 +44,7 @@ async def test_get_redis_client_busy_loading_error(mocker):
         host="redis",
         port=6379,
         db=0,
+        decode_responses=True,
         retry=mocker.ANY,
         retry_on_error=[BusyLoadingError, RedisConnectionError, RedisTimeoutError],
     )

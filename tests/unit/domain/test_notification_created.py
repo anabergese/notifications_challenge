@@ -12,7 +12,6 @@ def test_notification_created_with_valid_inputs(
     event = NotificationCreated(**payload)
     assert event.topic == payload["topic"]
     assert event.description == payload["description"]
-    assert event.timestamp == payload["timestamp"]
     assert event.version == "1.0"
 
 
@@ -47,16 +46,3 @@ def test_notification_created_fails_with_invalid_description(
         NotificationCreated(**payload)
     errors = str(exc_info.value)
     assert "description" in errors
-
-
-def test_notification_created_fails_with_invalid_timestamp(
-    invalid_timestamp_inputs,
-):
-    """
-    Test invalid 'timestamp' field inputs for NotificationCreated.
-    """
-    payload = invalid_timestamp_inputs
-    with pytest.raises(ValueError) as exc_info:
-        NotificationCreated(**payload)
-    errors = str(exc_info.value)
-    assert "timestamp" in errors

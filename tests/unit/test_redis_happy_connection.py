@@ -4,12 +4,15 @@ from config import get_redis_client
 
 
 @pytest.mark.asyncio
-async def test_redis_ping():
+async def test_default_connection():
+    client = get_redis_client()
+    assert await client.ping() is True
+
+
+@pytest.mark.asyncio
+async def test_custom_configuration():
     redis_client = get_redis_client()
     try:
-        assert (
-            await redis_client.ping()
-        ), "Redis connection failed: ping returned False."
         assert redis_client.connection_pool.connection_kwargs["host"] == "redis"
         assert redis_client.connection_pool.connection_kwargs["port"] == 6379
         assert redis_client.connection_pool.connection_kwargs["db"] == 0
