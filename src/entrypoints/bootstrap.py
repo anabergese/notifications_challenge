@@ -1,6 +1,7 @@
 import inspect
 from typing import Any, Callable, Coroutine
 
+from domain.enums import RedisChannels
 from seedwork.application import redis_publisher
 from service_layer.handlers import INITIAL_HANDLERS
 from service_layer.messagebus import MessageBus
@@ -12,6 +13,7 @@ def bootstrap(
 
     dependencies = {
         "publish": publish,
+        "channel": RedisChannels,
     }
 
     injected_event_handlers = {
