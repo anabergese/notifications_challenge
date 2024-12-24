@@ -17,6 +17,8 @@ async def db_handler() -> None:
                 data_dict = json.loads(data)
                 logging.info("Deserialized data: %s", data)
 
+                # Here Messagebus redirect data_dict to a Database Service.
+                # and then it sends a NotificationSaved event to Notification Service channel.
                 event = NotificationSaved(**data_dict)
                 logging.info("Reconstructed event: %s", event)
 
