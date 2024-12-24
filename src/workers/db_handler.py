@@ -1,9 +1,8 @@
-import asyncio
 import json
 import logging
 
 from domain.enums import RedisChannels
-from domain.events import NotificationCreated  # Asegúrate de importar la clase
+from domain.events import NotificationSaved
 from seedwork.application import redis_consumer, redis_publisher
 
 
@@ -13,13 +12,12 @@ async def db_handler() -> None:
         if message["type"] == "message":
             data = message["data"]
             logging.info("Tipo de dato recibido: %s", type(data))
-            logging.info("Data received: %s", data)
 
             try:
                 data_dict = json.loads(data)
                 logging.info("Deserialized data: %s", data)
 
-                event = NotificationCreated(**data_dict)
+                event = NotificationSaved(**data_dict)
                 logging.info("Reconstructed event: %s", event)
 
                 await redis_publisher.publish(

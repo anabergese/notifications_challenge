@@ -19,3 +19,10 @@ class NotificationCreated(DomainEvent):
     topic: Topic
     description: str = Field(min_length=10, max_length=200)
     version: str = "1.0"
+
+
+@dataclass(frozen=True)
+class NotificationSaved(DomainEvent):
+    topic: Topic
+    description: str = Field(min_length=10, max_length=200)
+    version: str = "1.0"

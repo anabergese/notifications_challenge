@@ -6,14 +6,11 @@ from fastapi.responses import JSONResponse
 
 
 def add_error_handlers(app: FastAPI) -> None:
-    """Registra los handlers de errores personalizados en la aplicación FastAPI."""
     app.add_exception_handler(RequestValidationError, custom_422_error_handler)  # type: ignore
 
 
 async def custom_422_error_handler(_: Request, exc: RequestValidationError) -> Response:
-    """Maneja los errores de validación personalizados."""
     errors = exc.errors()
-
     for error in errors:
         field = error["loc"][-1]
         error_type = error["type"]
@@ -61,7 +58,6 @@ def handle_generic_error() -> Response:
     )
 
 
-# === Mapeo de errores específicos a handlers personalizados ===
 error_handlers = {
     ("topic", "enum"): handle_invalid_topic,
     ("topic", "missing"): handle_missing_topic,

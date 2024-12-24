@@ -1,5 +1,4 @@
 import asyncio
-import logging
 
 from notification_channels import EmailNotifier, SlackNotifier
 from notification_orchestrator import NotificationOrchestrator
@@ -21,5 +20,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    logging.info("Starting Notification Service...")
     asyncio.run(main())

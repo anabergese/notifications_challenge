@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from typing import Any, Callable, Coroutine, Dict, List, Type
 
@@ -12,17 +11,9 @@ class MessageBus:
             Type[events.Event], List[Callable[..., Coroutine[Any, Any, None]]]
         ],
     ):
-        """
-        Inicializa el MessageBus con un diccionario de handlers.
-
-        :param handlers: Un diccionario que asocia tipos de eventos con listas de handlers.
-        """
         self.handlers = handlers
 
     async def handle(self, event: events.Event) -> None:
-        """
-        Maneja un evento invocando los handlers registrados para ese tipo de evento.
-        """
         event_type = type(event)
         if event_type not in self.handlers:
             logging.error("No handlers registered for event type: %s", event_type)

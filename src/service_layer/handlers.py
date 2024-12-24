@@ -7,7 +7,7 @@ from redis.exceptions import ConnectionError as RedisConnectionError
 from redis.exceptions import TimeoutError as RedisTimeoutError
 
 from domain.enums import RedisChannels
-from domain.events import Event, NotificationCreated
+from domain.events import Event, NotificationCreated, NotificationSaved
 
 
 async def handle_notification_created(
@@ -43,9 +43,14 @@ async def handle_notification_created(
             break
 
 
+async def handle_notification_saved(event: NotificationSaved) -> None:
+    logging.info("NOTIFICATION SAVED IN DATABASE YEAH: %s", event)
+
+
 INITIAL_HANDLERS: Dict[
     Type[Event],
     List[Callable[..., Coroutine[Any, Any, None]]],
 ] = {
     NotificationCreated: [handle_notification_created],
+    NotificationSaved: [handle_notification_saved],
 }
