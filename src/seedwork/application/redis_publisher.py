@@ -14,4 +14,7 @@ async def publish(channel: str, event: events.Event):  # type: ignore
     logging.info(
         "Publishing serialized event: %s to channel: %s", serialized_event, channel
     )
+    # Guardar el evento en una lista en Redis
+    await r.rpush(f"{channel}", serialized_event)
+
     await r.publish(channel, serialized_event)

@@ -1,5 +1,5 @@
 {
-    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.typeCheckingMode": "strict",
     "cSpell.words": [
         "aioredis",
         "fastapi",
@@ -7,5 +7,9 @@
         "rpush",
         "uvicorn"
     ],
-    "mypy-type-checker.importStrategy": "fromEnvironment"
+    "mypy-type-checker.importStrategy": "fromEnvironment",
+    "mypy-type-checker.ignorePatterns": [
+        "${workspaceFolder:tests}",
+        "${notifications:tests}"
+    ]
 }

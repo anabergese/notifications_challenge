@@ -21,6 +21,8 @@ def get_redis_client() -> Redis:
         db=REDIS_DB,
         retry=retry,
         decode_responses=True,
+        username="default",
+        password="lBu4JibhnyIT4iyjfqhqJc6lLlqLmdgT",
         retry_on_error=[
             BusyLoadingError,
             RedisConnectionError,
