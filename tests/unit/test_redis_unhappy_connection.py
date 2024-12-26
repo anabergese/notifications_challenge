@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from redis.exceptions import BusyLoadingError
 from redis.exceptions import ConnectionError as RedisConnectionError
@@ -19,14 +21,14 @@ async def test_get_redis_client_timeout_error(mocker):
         await client.ping()
 
     mock_redis.assert_called_once_with(
-        host="redis-12147.c17.us-east-1-4.ec2.redns.redis-cloud.com",
-        port=12147,
+        host=os.getenv("REDIS_HOST"),
+        port=int(os.getenv("REDIS_PORT")),
         db=0,
         decode_responses=True,
         retry=mocker.ANY,
         retry_on_error=[BusyLoadingError, RedisConnectionError, RedisTimeoutError],
-        username="default",  # Asegúrate de incluir esto
-        password="lBu4JibhnyIT4iyjfqhqJc6lLlqLmdgT",
+        username=os.getenv("REDIS_USERNAME"),
+        password=os.getenv("REDIS_PASSWORD"),
     )
 
 
@@ -43,12 +45,12 @@ async def test_get_redis_client_busy_loading_error(mocker):
         await client.ping()
 
     mock_redis.assert_called_once_with(
-        host="redis-12147.c17.us-east-1-4.ec2.redns.redis-cloud.com",
-        port=12147,
+        host=os.getenv("REDIS_HOST"),
+        port=int(os.getenv("REDIS_PORT")),
         db=0,
         decode_responses=True,
         retry=mocker.ANY,
         retry_on_error=[BusyLoadingError, RedisConnectionError, RedisTimeoutError],
-        username="default",
-        password="lBu4JibhnyIT4iyjfqhqJc6lLlqLmdgT",
+        username=os.getenv("REDIS_USERNAME"),
+        password=os.getenv("REDIS_PASSWORD"),
     )
