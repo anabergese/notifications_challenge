@@ -11,6 +11,8 @@ from redis.exceptions import TimeoutError as RedisTimeoutError
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
 REDIS_DB = int(os.getenv("REDIS_DB", "0"))
+REDIS_USERNAME = os.getenv("REDIS_USERNAME", "default")
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", "")
 
 
 def get_redis_client() -> Redis:
@@ -21,8 +23,8 @@ def get_redis_client() -> Redis:
         db=REDIS_DB,
         retry=retry,
         decode_responses=True,
-        username="default",
-        password="lBu4JibhnyIT4iyjfqhqJc6lLlqLmdgT",
+        username=REDIS_USERNAME,
+        password=REDIS_PASSWORD,
         retry_on_error=[
             BusyLoadingError,
             RedisConnectionError,

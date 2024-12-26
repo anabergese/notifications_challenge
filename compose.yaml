@@ -20,6 +20,8 @@ services:
     environment:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
+      - REDIS_USERNAME=${REDIS_USERNAME}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - PYTHONPATH=/app/src
     command: >
       bash -c "
@@ -42,6 +44,8 @@ services:
     environment:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
+      - REDIS_USERNAME=${REDIS_USERNAME}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - PYTHONPATH=/src
     profiles:
       - testing  # Este servicio solo se ejecutará con el perfil "testing"

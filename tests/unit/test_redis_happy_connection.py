@@ -13,8 +13,11 @@ async def test_default_connection():
 async def test_custom_configuration():
     redis_client = get_redis_client()
     try:
-        assert redis_client.connection_pool.connection_kwargs["host"] == "redis"
-        assert redis_client.connection_pool.connection_kwargs["port"] == 6379
+        assert (
+            redis_client.connection_pool.connection_kwargs["host"]
+            == "redis-12147.c17.us-east-1-4.ec2.redns.redis-cloud.com"
+        )
+        assert redis_client.connection_pool.connection_kwargs["port"] == 12147
         assert redis_client.connection_pool.connection_kwargs["db"] == 0
     finally:
         await redis_client.close()
