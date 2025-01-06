@@ -15,7 +15,9 @@ notifiers_mapping = {
 
 
 async def main() -> None:
-    service = NotificationOrchestrator(notifiers_mapping)
+    service = NotificationOrchestrator(
+        notifiers_mapping, "notifications", "notifications_group", "notification_worker"
+    )
     await service.start()
 
 

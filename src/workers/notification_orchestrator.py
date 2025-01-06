@@ -1,40 +1,74 @@
 import json
 import logging
-from typing import Union
 
 from notification_channels import Notifier
 
-from domain.enums import RedisChannels
-from seedwork.application import redis_consumer
+from config import get_redis_client
 
 
 class NotificationOrchestrator:
-    def __init__(self, notifiers: dict[str, Notifier]):
+    def __init__(
+        self,
+        notifiers: dict[str, Notifier],
+        stream_key: str,
+        group: str,
+        consumer_name: str,
+    ):
         self.notifiers = notifiers
+        self.stream_key = stream_key
+        self.group = group
+        self.consumer_name = consumer_name
+        self.redis = get_redis_client()
 
     async def start(self) -> None:
+        """
+        Empieza a leer mensajes del Redis Stream como parte de un grupo de consumidores.
+        """
         logging.info(
-            "Subscribing to Redis channel: %s", RedisChannels.NOTIFICATION_SERVICES
-        )
-        psub = await redis_consumer.subscribe_channel(
-            RedisChannels.NOTIFICATION_SERVICES
+            "Starting Notification Orchestrator on stream: %s", self.stream_key
         )
 
-        async for message in psub.listen():
-            if message["type"] == "message":
-                data = message["data"]
-                logging.info("Tipo de dato recibido en orchestrator: %s", type(data))
-                await self._process_message(message)
+        from_id = ">"  # Leer nuevos mensajes
+        count = 10  # Leer hasta 10 mensajes por iteración
+        block = 5000  # Bloquea por hasta 5 segundos esperando mensajes
 
-    async def _process_message(self, message: dict[str, Union[str, bytes]]) -> None:
+        while True:
+            try:
+                # Leer mensajes del grupo
+                messages = await self.redis.xreadgroup(
+                    self.group,
+                    self.consumer_name,
+                    {self.stream_key: from_id},
+                    count=count,
+                    block=block,
+                )
+                if messages:
+                    for stream, entries in messages:
+                        for message_id, message_data in entries:
+                            await self._process_message(message_data)
+                            # Acknowledge the message
+                            await self.redis.xack(
+                                self.stream_key, self.group, message_id
+                            )
+                else:
+                    logging.info("No new messages in stream: %s", self.stream_key)
+            except Exception as e:
+                logging.error("Error processing stream: %s", str(e))
+
+    async def _process_message(self, message_data: dict[bytes, bytes]) -> None:
+        """
+        Procesa un mensaje del stream.
+        """
         try:
-            data = json.loads(message["data"])
-            topic = data.get("topic")
+            logging.info("Tipo de dato recibido por stream: %s", type(message_data))
+            logging.info("El dato recibido por stream: %s", message_data)
+
+            topic = message_data.get("topic", "")
             notifier = self.notifiers.get(topic)
             if notifier:
                 logging.info("Processing notification for topic: %s", topic)
-                await notifier.notify(json.dumps(data))
+                await notifier.notify(json.dumps(message_data))
             else:
                 logging.warning("No notifier found for topic: %s", topic)
-        except (json.JSONDecodeError, KeyError) as e:
+        except Exception as e:
             logging.error("Error processing message: %s", str(e))

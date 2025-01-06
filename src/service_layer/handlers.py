@@ -2,23 +2,20 @@ import asyncio
 import logging
 from typing import Any, Callable, Coroutine, Dict, List, Literal, Type
 
-from domain.enums import RedisChannels
 from domain.events import Event, NotificationCreated, NotificationSaved
 
 
 async def handle_notification_created(
     event: NotificationCreated,
     publish: Callable[[str, NotificationCreated], Coroutine[Any, Any, None]],
-    channel: RedisChannels,
+    stream_key: str = "notifications",
 ) -> None:
-
-    channel_value = channel.DB_SERVICE.value
 
     max_retries: int = 3
     for attempt in range(1, max_retries + 1):
         try:
-            await publish(channel_value, event)
-            logging.info("Event published %s: %s", channel_value, event)
+            await publish(stream_key, event)
+            logging.info("Event published %s: %s", stream_key, event)
             break
         except (AttributeError, TypeError, ValueError) as data_error:
             logging.error("Data-related error during publish: %s", data_error)

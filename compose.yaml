@@ -6,11 +6,11 @@ services:
     ports:
       - "6379:6379"
 
-  workers:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: workers
+    container_name: api
     ports:
       - "8000:80"
     volumes:
@@ -23,9 +23,26 @@ services:
       - REDIS_USERNAME=${REDIS_USERNAME}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - PYTHONPATH=/app/src
+    command: uvicorn src.entrypoints.main:app --host 0.0.0.0 --port 80 --reload
+
+  workers:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: workers
+    depends_on:
+      - api  # Asegura que FastAPI esté listo antes de iniciar los workers
+      - redis
+    volumes:
+      - ./src:/app/src
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_USERNAME=${REDIS_USERNAME}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - PYTHONPATH=/app/src
     command: >
       bash -c "
-      uvicorn src.entrypoints.main:app --host 0.0.0.0 --port 80 --reload &
       python /app/src/workers/db_worker.py &
       python /app/src/workers/notification_worker.py
       "
