@@ -31,7 +31,7 @@ services:
       dockerfile: Dockerfile
     container_name: workers
     depends_on:
-      - api  # Asegura que FastAPI esté listo antes de iniciar los workers
+      - api
       - redis
     volumes:
       - ./src:/app/src
@@ -41,11 +41,7 @@ services:
       - REDIS_USERNAME=${REDIS_USERNAME}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - PYTHONPATH=/app/src
-    command: >
-      bash -c "
-      python /app/src/workers/db_worker.py &
-      python /app/src/workers/notification_worker.py
-      "
+    command: python /app/src/workers/notification_worker.py
 
   tests:
     build:
