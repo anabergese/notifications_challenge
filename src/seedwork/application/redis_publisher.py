@@ -2,12 +2,12 @@ import logging
 from dataclasses import asdict
 
 from config import get_redis_client
-from domain import events
+from domain import enums, events
 
 r = get_redis_client()
 
 
-async def publish(stream_key: str, event: events.Event):  # type: ignore
+async def publish(stream_key: enums.RedisStreams.NOTIFICATIONS, event: events.Event):  # type: ignore
     try:
         logging.info("Tipo de dato a ser publicado: %s", type(event))
         serialized_event = asdict(event)

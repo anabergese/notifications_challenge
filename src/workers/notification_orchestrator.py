@@ -4,15 +4,16 @@ import logging
 from notification_channels import Notifier
 
 from config import get_redis_client
+from domain import enums
 
 
 class NotificationOrchestrator:
     def __init__(
         self,
         notifiers: dict[str, Notifier],
-        stream_key: str,
-        group: str,
-        consumer_name: str,
+        stream_key: enums.RedisStreams.NOTIFICATIONS,
+        group: enums.RedisStreams.NOTIFICATIONS.NOTIFICATIONS_GROUP,
+        consumer_name: enums.RedisStreams.NOTIFICATIONS.NOTIFICATIONS_CONSUMER,
     ):
         self.notifiers = notifiers
         self.stream_key = stream_key

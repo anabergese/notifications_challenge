@@ -6,6 +6,7 @@ class Topic(str, Enum):
     PRICING = "pricing"
 
 
-class RedisChannels(str, Enum):
-    DB_SERVICE = "db_service"
-    NOTIFICATION_SERVICES = "notification_services"
+class RedisStreams(str, Enum):
+    NOTIFICATIONS = "notifications"
+    NOTIFICATIONS_GROUP = "notifications_group"
+    NOTIFICATIONS_CONSUMER = "notifications_consumer"

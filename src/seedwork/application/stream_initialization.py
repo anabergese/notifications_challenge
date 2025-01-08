@@ -1,9 +1,13 @@
 from config import get_redis_client
+from domain import enums
 
 redis = get_redis_client()
 
 
-async def initialize_redis_stream(stream_key: str, consumer_group: str):
+async def initialize_redis_stream(
+    stream_key: enums.RedisStreams.NOTIFICATIONS,
+    consumer_group: enums.RedisStreams.NOTIFICATIONS.NOTIFICATIONS_GROUP,
+):
     """
     Crea el Stream y el Grupo de Consumidores en Redis si no existen.
 

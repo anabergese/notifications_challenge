@@ -4,6 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from config import setup_logging
+from domain import enums
 from seedwork.application import stream_initialization
 
 from .bootstrap import bootstrap
@@ -15,7 +16,8 @@ from .routes.routes import router
 async def lifespan(app: FastAPI):
     print("Initializing Streams...")
     await stream_initialization.initialize_redis_stream(
-        "notifications", "notifications_group"
+        enums.RedisStreams.NOTIFICATIONS,
+        enums.RedisStreams.NOTIFICATIONS_GROUP,
     )
     print("Streams initialized successfully.")
     yield
