@@ -52,6 +52,7 @@ services:
       - ./tests:/tests
       - ./src:/src
     depends_on:
+      - api
       - workers
       - redis
     environment:
