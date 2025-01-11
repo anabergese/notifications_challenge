@@ -25,13 +25,9 @@ async def create_notification(
     message_bus: MessageBus = Depends(get_message_bus),
 ) -> Response:
     try:
-        event = NotificationCreated(
-            topic=notification.topic, description=notification.description
-        )
-        logging.info("Event received: %s", event)
-        await message_bus.handle(event)
+        await message_bus.handle(notification.map_to())
         return Response(
-            content=f'{{"message": "Notification created for topic: {event.topic.value}"}}',
+            content=f'{{"message": "Notification created for topic: {notification.topic}"}}',
             media_type="application/json",
         )
     except Exception as e:
