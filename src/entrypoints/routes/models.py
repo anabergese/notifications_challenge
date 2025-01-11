@@ -10,3 +10,12 @@ class NotificationRequest(BaseModel):
 
     def map_to(self) -> NotificationCreated:
         return NotificationCreated(topic=self.topic, description=self.description)
+
+
+class NotificationCreatedResponse(BaseModel):
+    message: str
+    topic: str
+
+
+class ErrorResponse(BaseModel):
+    detail: str

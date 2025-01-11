@@ -1,12 +1,9 @@
-import logging
+from fastapi import APIRouter, Depends, Response, status
 
-from fastapi import APIRouter, Depends, HTTPException, Response
-
-from domain.events import NotificationCreated
 from entrypoints.dependencies import get_message_bus
 from service_layer.messagebus import MessageBus
 
-from .models import NotificationRequest
+from .models import ErrorResponse, NotificationCreatedResponse, NotificationRequest
 
 router = APIRouter()
 
@@ -19,17 +16,32 @@ def read_root() -> Response:
     )
 
 
-@router.post("/notify")
+@router.post(
+    "/notify",
+    name="Create a new notification",
+    summary="Create a new notification for a specific topic.",
+    description="Allows creating a new notification for a specific topic by the bot, that will be redirected to different channels.",
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_201_CREATED: {
+            "description": "Notification created successfully.",
+            "model": NotificationCreatedResponse,
+        },
+        status.HTTP_422_UNPROCESSABLE_ENTITY: {
+            "description": "Validation error in the request.",
+            "model": ErrorResponse,
+        },
+        status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "Internal server error.",
+            "model": ErrorResponse,
+        },
+    },
+)
 async def create_notification(
     notification: NotificationRequest,
     message_bus: MessageBus = Depends(get_message_bus),
-) -> Response:
-    try:
-        await message_bus.handle(notification.map_to())
-        return Response(
-            content=f'{{"message": "Notification created for topic: {notification.topic}"}}',
-            media_type="application/json",
-        )
-    except Exception as e:
-        logging.error("Unexpected error: %s", e)
-        raise HTTPException(status_code=500, detail="Internal Server Error") from e
+) -> NotificationCreatedResponse:
+    await message_bus.handle(notification.map_to())
+    return NotificationCreatedResponse(
+        message="Notification created successfully.", topic=notification.topic
+    )
