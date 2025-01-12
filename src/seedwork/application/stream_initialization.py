@@ -1,19 +1,19 @@
 from config import get_redis_client
-from domain import enums
+from domain.enums import RedisStreams
 
 redis = get_redis_client()
 
 
 async def initialize_redis_stream(
-    stream_key: enums.RedisStreams.NOTIFICATIONS,
-    consumer_group: enums.RedisStreams.NOTIFICATIONS.NOTIFICATIONS_GROUP,
+    stream_key: RedisStreams.NOTIFICATIONS,
+    consumer_group: RedisStreams.NOTIFICATIONS_GROUP,
 ):
     """
-    Crea el Stream y el Grupo de Consumidores en Redis si no existen.
+    Creates the stream and consumer group in Redis if they do not exist.
 
-    Args:
-        stream_key: Nombre del stream.
-        consumer_group: Nombre del grupo de consumidores.
+    Arguments:
+        stream_key: stream name.
+        consumer_group: consumer group name.
     """
     try:
         # Crear el grupo de consumidores si no existe

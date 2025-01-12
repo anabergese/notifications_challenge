@@ -9,14 +9,8 @@ r = get_redis_client()
 
 async def publish(stream_key: enums.RedisStreams.NOTIFICATIONS, event: events.Event):  # type: ignore
     try:
-        logging.info("Tipo de dato a ser publicado: %s", type(event))
+        logging.info("Data type received by redis before publishing: %s", type(event))
         serialized_event = asdict(event)
-        logging.info(
-            "Publishing serialized event: %s to stream: %s",
-            serialized_event,
-            stream_key,
-        )
-        # Publicar el evento en el stream
         await r.xadd(stream_key, serialized_event)
     except Exception as e:
         logging.error("Error publishing to stream: %s", str(e))
