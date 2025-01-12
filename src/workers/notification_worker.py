@@ -14,15 +14,21 @@ notifiers_mapping = {
     Topic.PRICING: EmailNotifier(),
 }
 
-
-async def main() -> None:
-    orchestrator = NotificationOrchestrator(notifiers_mapping)
-    await start_redis_consumer(
+# Diccionario de estrategias con funciones (sin ejecutarlas)
+consumer_strategies = {
+    "redis": lambda orchestrator: start_redis_consumer(
         stream_key=RedisStreams.NOTIFICATIONS,
         group=RedisStreams.NOTIFICATIONS_GROUP,
         consumer=RedisStreams.NOTIFICATIONS_CONSUMER,
         orchestrator=orchestrator,
-    )
+    ),
+}
+
+
+async def main() -> None:
+    orchestrator = NotificationOrchestrator(notifiers_mapping)
+    consumer = consumer_strategies.get("redis")
+    await consumer(orchestrator)
 
 
 if __name__ == "__main__":
