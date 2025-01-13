@@ -3,15 +3,12 @@ from typing import Any, Callable, Coroutine
 
 from domain.enums import RedisStreams
 from domain.events import NotificationCreated
-from seedwork.application import redis_publisher
 from service_layer.handlers import INITIAL_HANDLERS
 from service_layer.messagebus import MessageBus
 
 
 def bootstrap(
-    publish: Callable[
-        [RedisStreams, NotificationCreated], Coroutine[Any, Any, None]
-    ] = redis_publisher.publish
+    publish: Callable[[RedisStreams, NotificationCreated], Coroutine[Any, Any, None]]
 ) -> MessageBus:
 
     dependencies = {
