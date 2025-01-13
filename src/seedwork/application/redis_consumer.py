@@ -28,7 +28,9 @@ async def start_redis_consumer(
                 for stream, entries in messages:
                     for message_id, message_data in entries:
                         await orchestrator.process_message(message_data)
-                        await redis_client.xack(stream_key, group, message_id)
+                        await redis_client.xack(
+                            stream_key.value, group.value, message_id
+                        )
             else:
                 logging.info("No new messages in stream: %s", stream_key)
         except Exception as e:

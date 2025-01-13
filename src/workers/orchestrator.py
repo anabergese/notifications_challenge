@@ -11,7 +11,7 @@ class NotificationOrchestrator:
     ):
         self.notifiers = notifiers
 
-    async def process_message(self, message_data):
+    async def process_message(self, message_data: dict[str, str]):
         try:
             logging.info("Tipo de dato recibido por stream: %s", type(message_data))
             logging.info("El dato recibido por stream: %s", message_data)
