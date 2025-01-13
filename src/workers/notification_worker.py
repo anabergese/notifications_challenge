@@ -15,7 +15,7 @@ notifiers_mapping: dict[str, Notifier] = {
     Topic.PRICING: EmailNotifier(),
 }
 
-# Dict of strategies with functions, withuout starting them.
+# Dict of strategies with functions, without starting them.
 consumer_strategies: dict[str, Callable[[NotificationOrchestrator], Awaitable[Any]]] = {
     "redis": lambda orchestrator: start_redis_consumer(
         stream_key=RedisStreams.NOTIFICATIONS,
