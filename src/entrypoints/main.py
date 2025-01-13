@@ -7,7 +7,6 @@ from config import setup_logging
 from domain.enums import RedisStreams
 from seedwork.application import stream_initialization
 
-from .bootstrap import bootstrap
 from .exception_handlers.handlers import add_error_handlers
 from .routes.routes import router
 
@@ -32,8 +31,6 @@ app = FastAPI(
 )
 
 setup_logging()
-
-message_bus = bootstrap()
 
 add_error_handlers(app)
 

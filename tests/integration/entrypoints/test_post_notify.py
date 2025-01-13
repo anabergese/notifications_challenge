@@ -1,20 +1,26 @@
 import pytest
 
 
-def test_create_notification_with_valid_topic_pricing_returns_200(
+def test_create_notification_with_valid_topic_pricing_returns_201(
     valid_payload_pricing, client
 ):
     response = client.post("/notify", json=valid_payload_pricing)
-    assert response.status_code == 200
-    assert response.json() == {"message": "Notification created for topic: pricing"}
+    assert response.status_code == 201
+    assert response.json() == {
+        "message": "Notification created successfully.",
+        "topic": "pricing",
+    }
 
 
-def test_create_notification_with_valid_topic_sales_returns_200(
+def test_create_notification_with_valid_topic_sales_returns_201(
     valid_payload_sales, client
 ):
     response = client.post("/notify", json=valid_payload_sales)
-    assert response.status_code == 200
-    assert response.json() == {"message": "Notification created for topic: sales"}
+    assert response.status_code == 201
+    assert response.json() == {
+        "message": "Notification created successfully.",
+        "topic": "sales",
+    }
 
 
 def test_create_notification_returns_422_invalid_topic(invalid_payload_topics, client):
