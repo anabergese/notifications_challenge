@@ -2,14 +2,14 @@ import asyncio
 import logging
 from typing import Any, Callable, Coroutine, Dict, List, Type
 
-from domain import enums
+from domain.enums import RedisStreams
 from domain.events import Event, NotificationCreated, NotificationSaved
 
 
 async def handle_notification_created(
     event: NotificationCreated,
-    publish: Callable[[str, NotificationCreated], Coroutine[Any, Any, None]],
-    stream_key: str = enums.RedisStreams.NOTIFICATIONS,
+    publish: Callable[[RedisStreams, NotificationCreated], Coroutine[Any, Any, None]],
+    stream_key: RedisStreams = RedisStreams.NOTIFICATIONS,
 ) -> None:
 
     max_retries: int = 3

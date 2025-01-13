@@ -13,7 +13,7 @@ from .routes.routes import router
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(_: FastAPI):
     print("Initializing Streams...")
     await stream_initialization.initialize_redis_stream(
         RedisStreams.NOTIFICATIONS,
