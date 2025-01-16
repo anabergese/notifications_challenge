@@ -6,7 +6,7 @@ from orchestrator import NotificationOrchestrator
 
 from config import setup_logging
 from domain.enums import RedisStreams, Topic
-from seedwork.application.redis_consumer import start_redis_consumer
+from infrastructure.redis_consumer import start_redis_consumer
 
 setup_logging()
 

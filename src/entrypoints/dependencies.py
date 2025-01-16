@@ -1,5 +1,5 @@
 from entrypoints.bootstrap import bootstrap
-from seedwork.application import redis_publisher
+from infrastructure import redis_publisher
 from service_layer.messagebus import MessageBus
 
 

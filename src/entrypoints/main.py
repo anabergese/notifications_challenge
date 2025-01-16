@@ -5,7 +5,7 @@ from fastapi import FastAPI
 
 from config import setup_logging
 from domain.enums import RedisStreams
-from seedwork.application import stream_initialization
+from infrastructure import redis_group_creator
 
 from .exception_handlers.handlers import add_error_handlers
 from .routes.routes import router
@@ -14,7 +14,7 @@ from .routes.routes import router
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     print("Initializing Streams...")
-    await stream_initialization.initialize_redis_stream(
+    await redis_group_creator.initialize_redis_stream(
         RedisStreams.NOTIFICATIONS,
         RedisStreams.NOTIFICATIONS_GROUP,
     )
