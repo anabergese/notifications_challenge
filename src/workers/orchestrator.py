@@ -1,4 +1,3 @@
-import json
 import logging
 
 from notification_channels import Notifier
@@ -19,7 +18,7 @@ class NotificationOrchestrator:
             notifier = self.notifiers.get(topic)
             if notifier:
                 logging.info("Processing notification for topic: %s", topic)
-                await notifier.notify(json.dumps(message_data))
+                await notifier.notify(message_data)
             else:
                 logging.warning("No notifier found for topic: %s", topic)
         except Exception as e:
