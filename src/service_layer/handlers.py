@@ -3,7 +3,9 @@ import logging
 from typing import Any, Callable, Coroutine, Dict, List, Type
 
 from domain.enums import RedisStreams
-from domain.events import Event, NotificationCreated, NotificationSaved
+from domain.events import Event, NotificationCreated, NotificationReceived
+
+from .handler_notification_received import handle_notification_received
 
 
 async def handle_notification_created(
@@ -39,14 +41,10 @@ async def handle_notification_created(
             break
 
 
-async def handle_notification_saved(event: NotificationSaved) -> None:
-    logging.info("NOTIFICATION SAVED IN DATABASE YEAH: %s", event)
-
-
 INITIAL_HANDLERS: Dict[
     Type[Event],
     List[Callable[..., Coroutine[Any, Any, None]]],
 ] = {
     NotificationCreated: [handle_notification_created],
-    NotificationSaved: [handle_notification_saved],
+    NotificationReceived: [handle_notification_received],
 }

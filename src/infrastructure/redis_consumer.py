@@ -2,14 +2,15 @@ import logging
 
 from config import get_redis_client
 from domain.enums import RedisStreams
-from workers.orchestrator import NotificationOrchestrator
+from domain.events import NotificationReceived
+from service_layer.messagebus import MessageBus
 
 
 async def start_redis_consumer(
     stream_key: RedisStreams,
     group: RedisStreams,
     consumer: RedisStreams,
-    orchestrator: NotificationOrchestrator,
+    message_bus: MessageBus,
 ):
     logging.info("Starting Redis Consumer on stream: %s", stream_key)
     redis_client = get_redis_client()
@@ -27,10 +28,15 @@ async def start_redis_consumer(
             if messages:
                 for stream, entries in messages:
                     for message_id, message_data in entries:
-                        await orchestrator.process_message(message_data)
-                        await redis_client.xack(
-                            stream_key.value, group.value, message_id
+                        event = NotificationReceived(
+                            topic=message_data["topic"],
+                            description=message_data["description"],
+                            version=message_data.get("version", "1.0"),
                         )
+                        await message_bus.handle(event)
+                        # await redis_client.xack(
+                        #     stream_key.value, group.value, message_id
+                        # )
             else:
                 logging.info("No new messages in stream: %s", stream_key)
         except Exception as e:

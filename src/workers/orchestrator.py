@@ -1,6 +1,6 @@
 import logging
 
-from notification_channels import Notifier
+from .notification_channels import Notifier
 
 
 class NotificationOrchestrator:
