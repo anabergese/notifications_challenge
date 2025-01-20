@@ -1,17 +1,23 @@
 import inspect
-from typing import Any, Callable, Coroutine
+from typing import Any, Callable, Coroutine, List
 
 from application.handlers import EVENT_HANDLERS
 from application.messagebus import MessageBus
 from domain.enums import RedisStreams, Topic
 from domain.events import NotificationCreated
 from infrastructure.redis import redis_publisher
-from workers.notification_channels import EmailNotifier, Notifier, SlackNotifier
+from workers.notification_channels import (
+    EmailNotifier,
+    NewNotifier,
+    Notifier,
+    SlackNotifier,
+)
 from workers.orchestrator import NotificationOrchestrator
 
-notifiers_mapping: dict[str, Notifier] = {
-    Topic.SALES: SlackNotifier(),
-    Topic.PRICING: EmailNotifier(),
+notifiers_mapping: dict[Topic, List[Notifier]] = {
+    Topic.SALES: [SlackNotifier()],
+    Topic.PRICING: [EmailNotifier()],
+    Topic.NEWTOPIC: [SlackNotifier(), EmailNotifier(), NewNotifier()],
 }
 
 

@@ -4,6 +4,7 @@ from enum import Enum
 class Topic(str, Enum):
     SALES = "sales"
     PRICING = "pricing"
+    NEWTOPIC = "newtopic"
 
 
 class RedisStreams(str, Enum):

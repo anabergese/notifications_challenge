@@ -1,5 +1,7 @@
 import logging
+from typing import List
 
+from domain.enums import Topic
 from domain.events import NotificationReceived
 
 from .notification_channels import Notifier
@@ -8,7 +10,7 @@ from .notification_channels import Notifier
 class NotificationOrchestrator:
     def __init__(
         self,
-        notifiers: dict[str, Notifier],
+        notifiers: dict[Topic, List[Notifier]],
     ):
         self.notifiers = notifiers
 
@@ -16,10 +18,11 @@ class NotificationOrchestrator:
         try:
             logging.info("Received: %s, and data type: %s", event, type(event))
             topic = event.topic
-            notifier = self.notifiers.get(topic)
-            if notifier:
+            notifiers = self.notifiers.get(topic, [])
+            if notifiers:
                 logging.info("Processing notification for topic: %s", topic)
-                await notifier.notify(event)
+                for notifier in notifiers:  # Iterate through all notifiers
+                    await notifier.notify(event)
             else:
                 logging.warning("No notifier found for topic: %s", topic)
         except Exception as e:

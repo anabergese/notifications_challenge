@@ -27,3 +27,12 @@ class SlackNotifier(Notifier):
         success_message = f"Event with topic {event.topic} sent to SLACK successfully: {event.description}"
         logging.info(success_message)
         return success_message
+
+
+class NewNotifier(Notifier):
+    async def notify(self, event: DomainEvent) -> str:
+        logging.info("Processing event...: %s", event)
+        await asyncio.sleep(3)
+        success_message = f"Event with topic {event.topic} sent to NEW CHANNEL successfully: {event.description}"
+        logging.info(success_message)
+        return success_message
