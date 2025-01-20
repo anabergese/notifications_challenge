@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from config import get_redis_client
+from infrastructure.redis.redis_initialization import get_redis_client
 
 
 @pytest.mark.asyncio

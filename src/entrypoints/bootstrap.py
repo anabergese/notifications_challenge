@@ -3,7 +3,7 @@ from typing import Any, Callable, Coroutine, Optional
 
 from domain.enums import RedisStreams, Topic
 from domain.events import NotificationCreated
-from infrastructure import redis_publisher
+from infrastructure.redis import redis_publisher
 from service_layer.handlers import INITIAL_HANDLERS
 from service_layer.messagebus import MessageBus
 from workers.notification_channels import EmailNotifier, Notifier, SlackNotifier
@@ -12,7 +12,7 @@ from workers.orchestrator import NotificationOrchestrator
 
 async def bootstrap(
     publish: Callable[
-        [RedisStreams, NotificationCreated], Coroutine[Any, Any, None]
+        [NotificationCreated, RedisStreams], Coroutine[Any, Any, None]
     ] = redis_publisher.publish,
     orchestrator: Optional[NotificationOrchestrator] = None,
 ) -> MessageBus:

@@ -2,8 +2,8 @@ import logging
 
 import pytest
 
-from config import get_redis_client
 from domain import enums
+from infrastructure.redis.redis_initialization import get_redis_client
 
 
 async def custom_publish(stream_key: enums.RedisStreams.NOTIFICATIONS, event):  # type: ignore

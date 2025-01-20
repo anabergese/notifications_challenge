@@ -1,12 +1,14 @@
 import logging
 from dataclasses import asdict
 
-from config import get_redis_client
 from domain.enums import RedisStreams
 from domain.events import NotificationCreated
+from infrastructure.redis.redis_initialization import get_redis_client
 
 
-async def publish(stream_key: RedisStreams, event: NotificationCreated) -> None:
+async def publish(
+    event: NotificationCreated, stream_key: RedisStreams = RedisStreams.NOTIFICATIONS
+) -> None:
     try:
         redis = get_redis_client()
         logging.info("Data type received by redis before publishing: %s", type(event))

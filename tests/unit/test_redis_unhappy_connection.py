@@ -5,7 +5,7 @@ from redis.exceptions import BusyLoadingError
 from redis.exceptions import ConnectionError as RedisConnectionError
 from redis.exceptions import TimeoutError as RedisTimeoutError
 
-from config import get_redis_client
+from infrastructure.redis.redis_initialization import get_redis_client
 
 
 @pytest.mark.asyncio

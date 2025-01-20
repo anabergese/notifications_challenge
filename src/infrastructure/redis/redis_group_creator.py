@@ -1,14 +1,12 @@
 from typing import Union
 
-from config import get_redis_client
 from domain.enums import RedisStreams
-
-redis = get_redis_client()
+from infrastructure.redis.redis_initialization import get_redis_client
 
 
 async def initialize_redis_stream(
-    stream_key: RedisStreams,
-    consumer_group: RedisStreams,
+    stream_key: RedisStreams = RedisStreams.NOTIFICATIONS,
+    consumer_group: RedisStreams = RedisStreams.NOTIFICATIONS_GROUP,
     last_id_delivered: Union[int, bytes, str, memoryview] = "$",
     auto_create: bool = True,
 ):
@@ -16,6 +14,7 @@ async def initialize_redis_stream(
     Creates the stream and consumer group in Redis if they do not exist.
     """
     try:
+        redis = get_redis_client()
         await redis.xgroup_create(
             stream_key, consumer_group, last_id_delivered, auto_create
         )

@@ -1,4 +1,3 @@
-import logging
 import os
 
 from redis.asyncio import Redis
@@ -30,11 +29,4 @@ def get_redis_client() -> Redis:
             RedisConnectionError,
             RedisTimeoutError,
         ],
-    )
-
-
-def setup_logging() -> None:
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - - %(module)s - %(message)s",
     )

@@ -1,5 +1,4 @@
-from pydantic import Field
-from pydantic.dataclasses import dataclass
+from dataclasses import dataclass
 
 from .enums import Topic
 
