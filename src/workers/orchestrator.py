@@ -1,5 +1,7 @@
 import logging
 
+from domain.events import NotificationReceived
+
 from .notification_channels import Notifier
 
 
@@ -10,11 +12,10 @@ class NotificationOrchestrator:
     ):
         self.notifiers = notifiers
 
-    async def process_message(self, event: dict[str, str]):
+    async def process_message(self, event: NotificationReceived):
         try:
-            logging.info("Tipo de dato recibido por stream: %s", type(event))
-            logging.info("El dato recibido por stream: %s", event)
-            topic = event.get("topic", "")
+            logging.info("Received: %s, and data type: %s", event, type(event))
+            topic = event.topic
             notifier = self.notifiers.get(topic)
             if notifier:
                 logging.info("Processing notification for topic: %s", topic)

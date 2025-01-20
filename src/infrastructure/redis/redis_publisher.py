@@ -11,7 +11,7 @@ async def publish(
 ) -> None:
     try:
         redis = get_redis_client()
-        logging.info("Data type received by redis before publishing: %s", type(event))
+        logging.info("Publishing event in Redis Streams...")
         serialized_event = asdict(event)
         await redis.xadd(stream_key.value, serialized_event)
     except Exception as e:
