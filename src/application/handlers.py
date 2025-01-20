@@ -3,8 +3,7 @@ import logging
 from typing import Any, Callable, Coroutine, Dict, List, Type
 
 from domain.events import DomainEvent, NotificationCreated, NotificationReceived
-
-from .handler_notification_received import handle_notification_received
+from workers.orchestrator import NotificationOrchestrator
 
 
 async def handle_notification_created(
@@ -37,6 +36,12 @@ async def handle_notification_created(
                 unexpected_error,
             )
             break
+
+
+async def handle_notification_received(
+    event: NotificationReceived, orchestrator: NotificationOrchestrator
+):
+    await orchestrator.process_message(event)
 
 
 EVENT_HANDLERS: Dict[
