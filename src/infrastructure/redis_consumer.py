@@ -1,24 +1,24 @@
 import logging
 
-from application.messagebus import MessageBus
 from domain.enums import RedisStreams
 from domain.events import NotificationReceived
 from infrastructure.redis.redis_initialization import get_redis_client
+from application.messagebus import MessageBus
 
 
 async def start_redis_consumer(
+    stream_key: RedisStreams,
+    group: RedisStreams,
+    consumer: RedisStreams,
     message_bus: MessageBus,
-    stream_key: RedisStreams = RedisStreams.NOTIFICATIONS,
-    group: RedisStreams = RedisStreams.NOTIFICATIONS_GROUP,
-    consumer: RedisStreams = RedisStreams.NOTIFICATIONS_CONSUMER,
 ):
     logging.info("Starting Redis Consumer on stream: %s", stream_key)
-    redis = get_redis_client()
+    redis_client = get_redis_client()
     from_id, count, block = ">", 10, 5000
 
     while True:
         try:
-            messages = await redis.xreadgroup(
+            messages = await redis_client.xreadgroup(
                 group,
                 consumer,
                 {stream_key: from_id},

@@ -39,7 +39,7 @@ async def handle_notification_created(
             break
 
 
-INITIAL_HANDLERS: Dict[
+EVENT_HANDLERS: Dict[
     Type[DomainEvent],
     List[Callable[..., Coroutine[Any, Any, None]]],
 ] = {

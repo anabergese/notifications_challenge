@@ -4,9 +4,9 @@ from typing import Any
 
 import pytest
 
+from src.application.handlers import handle_notification_received
+from src.application.messagebus import MessageBus
 from src.domain.events import DomainEvent, NotificationReceived
-from src.service_layer.handlers import handle_notification_received
-from src.service_layer.messagebus import MessageBus
 
 EVENT_HANDLERS: dict[
     type[DomainEvent], list[Callable[..., Coroutine[Any, Any, None]]]

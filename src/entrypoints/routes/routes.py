@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Response, status
 
+from application.messagebus import MessageBus
 from entrypoints.dependencies import get_message_bus
-from service_layer.messagebus import MessageBus
 
 from .models import ErrorResponse, NotificationRequest, NotificationResponse
 

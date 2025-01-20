@@ -1,11 +1,11 @@
 import inspect
 from typing import Any, Callable, Coroutine, Optional
 
+from application.handlers import EVENT_HANDLERS
+from application.messagebus import MessageBus
 from domain.enums import RedisStreams, Topic
 from domain.events import NotificationCreated
 from infrastructure.redis import redis_publisher
-from service_layer.handlers import INITIAL_HANDLERS
-from service_layer.messagebus import MessageBus
 from workers.notification_channels import EmailNotifier, Notifier, SlackNotifier
 from workers.orchestrator import NotificationOrchestrator
 
@@ -33,7 +33,7 @@ async def bootstrap(
         event_type: [
             inject_dependencies(handler, dependencies) for handler in event_handlers
         ]
-        for event_type, event_handlers in INITIAL_HANDLERS.items()
+        for event_type, event_handlers in EVENT_HANDLERS.items()
     }
 
     return MessageBus(handlers=injected_event_handlers)
