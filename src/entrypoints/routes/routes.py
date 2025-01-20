@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, Response, status
 from entrypoints.dependencies import get_message_bus
 from service_layer.messagebus import MessageBus
 
-from .models import ErrorResponse, NotificationCreatedResponse, NotificationRequest
+from .models import ErrorResponse, NotificationRequest, NotificationResponse
 
 router = APIRouter()
 
@@ -25,7 +25,7 @@ def read_root() -> Response:
     responses={
         status.HTTP_201_CREATED: {
             "description": "Notification created successfully.",
-            "model": NotificationCreatedResponse,
+            "model": NotificationResponse,
         },
         status.HTTP_422_UNPROCESSABLE_ENTITY: {
             "description": "Validation error in the request.",
@@ -40,8 +40,8 @@ def read_root() -> Response:
 async def create_notification(
     notification: NotificationRequest,
     message_bus: MessageBus = Depends(get_message_bus),
-) -> NotificationCreatedResponse:
+) -> NotificationResponse:
     await message_bus.handle(notification.map_to())
-    return NotificationCreatedResponse(
+    return NotificationResponse(
         message="Notification created successfully.", topic=notification.topic
     )

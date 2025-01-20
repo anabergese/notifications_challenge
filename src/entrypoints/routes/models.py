@@ -12,7 +12,7 @@ class NotificationRequest(BaseModel):
         return NotificationCreated(topic=self.topic, description=self.description)
 
 
-class NotificationCreatedResponse(BaseModel):
+class NotificationResponse(BaseModel):
     message: str
     topic: str
 
