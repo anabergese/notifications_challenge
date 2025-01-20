@@ -1,19 +1,19 @@
 import logging
 from typing import Any, Callable, Coroutine, Dict, List, Type
 
-from domain import events
+from domain.events import DomainEvent
 
 
 class MessageBus:
     def __init__(
         self,
         handlers: Dict[
-            Type[events.Event], List[Callable[..., Coroutine[Any, Any, None]]]
+            Type[DomainEvent], List[Callable[..., Coroutine[Any, Any, None]]]
         ],
     ):
         self.handlers = handlers
 
-    async def handle(self, event: events.Event) -> None:
+    async def handle(self, event: DomainEvent) -> None:
         event_type = type(event)
         if event_type not in self.handlers:
             logging.error("No handlers registered for event type: %s", event_type)
