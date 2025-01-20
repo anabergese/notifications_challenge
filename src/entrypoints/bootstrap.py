@@ -1,5 +1,5 @@
 import inspect
-from typing import Any, Callable, Coroutine, Optional
+from typing import Any, Callable, Coroutine
 
 from application.handlers import EVENT_HANDLERS
 from application.messagebus import MessageBus
@@ -9,20 +9,20 @@ from infrastructure.redis import redis_publisher
 from workers.notification_channels import EmailNotifier, Notifier, SlackNotifier
 from workers.orchestrator import NotificationOrchestrator
 
+notifiers_mapping: dict[str, Notifier] = {
+    Topic.SALES: SlackNotifier(),
+    Topic.PRICING: EmailNotifier(),
+}
+
 
 async def bootstrap(
     publish: Callable[
         [NotificationCreated, RedisStreams], Coroutine[Any, Any, None]
     ] = redis_publisher.publish,
-    orchestrator: Optional[NotificationOrchestrator] = None,
+    orchestrator: NotificationOrchestrator = NotificationOrchestrator(
+        notifiers_mapping
+    ),
 ) -> MessageBus:
-
-    notifiers_mapping: dict[str, Notifier] = {
-        Topic.SALES: SlackNotifier(),
-        Topic.PRICING: EmailNotifier(),
-    }
-
-    orchestrator = orchestrator or NotificationOrchestrator(notifiers_mapping)
 
     dependencies = {
         "publish": publish,
