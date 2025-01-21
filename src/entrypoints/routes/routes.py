@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from fastapi import APIRouter, Depends, Response, status
 
 from application.messagebus import MessageBus
@@ -14,6 +16,11 @@ def read_root() -> Response:
         content='{"message": "Notification System is up and running."}',
         media_type="application/json",
     )
+
+
+@router.get("/health")
+async def health() -> Dict[str, Any]:
+    return {"status": "pass", "description": "Notifications API"}
 
 
 @router.post(

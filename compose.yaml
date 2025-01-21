@@ -5,6 +5,11 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   api:
     build:
@@ -16,7 +21,8 @@ services:
     volumes:
       - ./src:/app/src
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     environment:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
@@ -24,6 +30,11 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - PYTHONPATH=/app/src
     command: uvicorn src.entrypoints.main:app --host 0.0.0.0 --port 80 --reload
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   workers:
     build:
@@ -31,8 +42,8 @@ services:
       dockerfile: Dockerfile
     container_name: workers
     depends_on:
-      - api
-      - redis
+      api:
+        condition: service_healthy
     volumes:
       - ./src:/app/src
     environment:
@@ -52,9 +63,12 @@ services:
       - ./tests:/tests
       - ./src:/src
     depends_on:
-      - api
-      - workers
-      - redis
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+      workers:  
+        condition: service_healthy
     environment:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}

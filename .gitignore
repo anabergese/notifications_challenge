@@ -1,24 +1,22 @@
-# Ignore local development files for FastAPI and pipenv
+# Python cache files
 __pycache__/
-*.pyc
-*.env
+*.py[cod]
 
-# Ignore Docker related files
-.dockerignore
+# Virtual environment
+.venv/
+venv/
 
-# Ignore Redis RDB and AOF files
-*.rdb
-*.aof
+# Editor configurations
+.vscode/
 
-# Ignore Redis dump files
-dump.rdb
-
-# Ignore RQ worker logs
-.rq/
-
-# Ignore pipenv virtual environment
-/.venv/
-Pipfile.lock
+# pytest
+.pytest_cache/
 
 # mypy
 .mypy_cache/
+
+# Type checking
+.pytype/
+
+# Docker
+.dockerignore
