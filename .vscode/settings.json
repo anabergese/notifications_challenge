@@ -11,5 +11,14 @@
     "mypy-type-checker.ignorePatterns": [
         "${workspaceFolder:tests}",
         "${notifications:tests}"
-    ]
+    ],
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.analysis.exclude": [
+        "**/tests",
+        "**/tests/**"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }

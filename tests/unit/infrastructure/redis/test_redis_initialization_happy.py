@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from infrastructure.redis.redis_initialization import get_redis_client

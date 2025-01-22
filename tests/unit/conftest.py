@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pytest
 
 
@@ -43,7 +41,6 @@ def valid_inputs():
 def invalid_topic_inputs(request):
     """Provide invalid input data for the 'topic' field."""
     payload = request.param
-    payload["timestamp"] = datetime.now()
     return payload
 
 
@@ -66,7 +63,6 @@ def invalid_topic_inputs(request):
 def invalid_description_inputs(request):
     """Provide invalid input data for the 'description' field."""
     payload = request.param
-    payload["timestamp"] = datetime.now()
     return payload
 
 
