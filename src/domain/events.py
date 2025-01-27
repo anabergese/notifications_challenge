@@ -1,7 +1,7 @@
 from pydantic import Field
 from pydantic.dataclasses import dataclass
 
-from .enums import Topic
+from .topic_enums import Topic
 
 
 @dataclass(frozen=True)

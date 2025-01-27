@@ -1,10 +1,10 @@
 import logging
 from typing import List
 
-from domain.enums import Topic
 from domain.events import NotificationReceived
+from domain.topic_enums import Topic
 
-from .notification_channels import Notifier
+from .notifier import Notifier
 
 
 class NotificationOrchestrator:
@@ -27,3 +27,4 @@ class NotificationOrchestrator:
                 logging.warning("No notifier found for topic: %s", topic)
         except Exception as e:
             logging.error("Error processing message: %s", str(e))
+            raise

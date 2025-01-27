@@ -1,6 +1,6 @@
 from typing import Union
 
-from domain.enums import RedisStreams
+from domain.publisher_enums import RedisStreams
 from infrastructure.redis.redis_initialization import get_redis_client
 
 

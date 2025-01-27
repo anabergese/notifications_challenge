@@ -1,10 +1,10 @@
-from src.domain.enums import RedisStreams, Topic
+from src.domain.publisher_enums import RedisStreams
+from src.domain.topic_enums import Topic
 
 
 def test_topic_values():
     assert Topic.SALES.value == "sales"
     assert Topic.PRICING.value == "pricing"
-    assert Topic.NEWTOPIC.value == "newtopic"
     assert len(Topic) == 3
 
 

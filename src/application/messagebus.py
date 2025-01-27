@@ -3,6 +3,8 @@ from typing import Any, Callable, Coroutine, Dict, List, Type
 
 from domain.events import DomainEvent
 
+from .retry_mechanism import retry_with_backoff
+
 
 class MessageBus:
     def __init__(
@@ -22,9 +24,15 @@ class MessageBus:
         for handler in self.handlers[type(event)]:
             try:
                 logging.debug("Handling event %s with handler %s", event, handler)
-                await handler(event)
+                await retry_with_backoff(
+                    func=handler,
+                    args=(event,),
+                    exceptions=(TimeoutError, OSError, ConnectionError, Exception),
+                    max_retries=5,
+                    backoff_strategy=lambda attempt: attempt * 2,  # Linear backoff
+                )
             except Exception:
                 logging.exception(
-                    "Exception handling event %s with handler %s", event, handler
+                    " DLQ: Exception handling event %s with handler %s", event, handler
                 )
                 continue

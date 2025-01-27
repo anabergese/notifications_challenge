@@ -3,8 +3,8 @@ from typing import Any, Callable, Coroutine
 
 from application.handlers import EVENT_HANDLERS
 from application.messagebus import MessageBus
-from domain.enums import RedisStreams
 from domain.events import NotificationCreated
+from domain.publisher_enums import RedisStreams
 from workers.orchestrator import NotificationOrchestrator
 
 

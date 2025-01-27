@@ -1,8 +1,8 @@
 import logging
 from dataclasses import asdict
 
-from domain.enums import RedisStreams
 from domain.events import NotificationCreated
+from domain.publisher_enums import RedisStreams
 from infrastructure.redis.redis_initialization import get_redis_client
 
 

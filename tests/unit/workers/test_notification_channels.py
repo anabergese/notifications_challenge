@@ -1,7 +1,7 @@
 import pytest
 
 from domain.events import DomainEvent
-from workers.notification_channels import EmailNotifier, NewNotifier, SlackNotifier
+from workers.notification_channels import EmailNotifier, SlackNotifier
 
 
 class TestNotificationChannels:
@@ -29,7 +29,7 @@ class TestNotificationChannels:
 
     @pytest.mark.asyncio
     async def test_new_notifier_notify(self, sample_event):
-        notifier = NewNotifier()
+        notifier = SlackNotifier()
         result = await notifier.notify(sample_event)
         expected = "Event with topic pricing sent to NEW CHANNEL successfully: test description"
         assert result == expected
@@ -43,12 +43,11 @@ class TestNotificationChannels:
                 self.description = description
 
         special_event = MockEvent(topic="test!@#$%", description="desc<>&")
-        notifiers = [EmailNotifier(), SlackNotifier(), NewNotifier()]
+        notifiers = [EmailNotifier(), SlackNotifier()]
 
         expected_results = {
             EmailNotifier: "Event with topic test!@#$% sent to EMAIL successfully: desc<>&",
             SlackNotifier: "Event with topic test!@#$% sent to SLACK successfully: desc<>&",
-            NewNotifier: "Event with topic test!@#$% sent to NEW CHANNEL successfully: desc<>&",
         }
 
         for notifier in notifiers:

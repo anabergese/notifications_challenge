@@ -3,16 +3,13 @@ from typing import Annotated, Any, Callable, Coroutine
 from fastapi import Depends
 
 from application.messagebus import MessageBus
-from domain.enums import RedisStreams, Topic
 from domain.events import NotificationCreated
+from domain.publisher_enums import RedisStreams
+from domain.topic_enums import Topic
 from entrypoints.bootstrap import bootstrap
 from infrastructure.redis.redis_publisher import publish
-from workers.notification_channels import (
-    EmailNotifier,
-    NewNotifier,
-    Notifier,
-    SlackNotifier,
-)
+from workers.notification_channels import EmailNotifier, SlackNotifier
+from workers.notifier import Notifier
 from workers.orchestrator import NotificationOrchestrator
 
 
@@ -26,7 +23,6 @@ def get_notifiers_mapping() -> dict[Topic, list[Notifier]]:
     return {
         Topic.SALES: [SlackNotifier()],
         Topic.PRICING: [EmailNotifier()],
-        Topic.NEWTOPIC: [SlackNotifier(), EmailNotifier(), NewNotifier()],
     }
 
 

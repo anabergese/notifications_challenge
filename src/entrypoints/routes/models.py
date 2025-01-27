@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
-from domain.enums import Topic
 from domain.events import NotificationCreated
+from domain.topic_enums import Topic
 
 
 class NotificationRequest(BaseModel):

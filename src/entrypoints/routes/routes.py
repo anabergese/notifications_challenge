@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Dict
 
 from fastapi import APIRouter, Depends, Response, status
@@ -48,7 +49,9 @@ async def create_notification(
     notification: NotificationRequest,
     message_bus: MessageBus = Depends(get_message_bus),
 ) -> NotificationResponse:
-    await message_bus.handle(notification.map_to())
+    notification_created = notification.map_to()
+    logging.info("notification_created data type: %s", type(notification_created))
+    await message_bus.handle(notification_created)
     return NotificationResponse(
         message="Notification created successfully.", topic=notification.topic
     )

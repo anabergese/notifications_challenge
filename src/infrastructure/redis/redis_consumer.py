@@ -1,8 +1,11 @@
 import logging
 
+import redis
+from redis.exceptions import RedisError
+
 from application.messagebus import MessageBus
-from domain.enums import RedisStreams
 from domain.events import NotificationReceived
+from domain.publisher_enums import RedisStreams
 from infrastructure.redis.redis_initialization import get_redis_client
 
 
@@ -34,12 +37,10 @@ async def start_redis_consumer(
                             version=message_data.get("version", "1.0"),
                         )
                         await message_bus.handle(event)
-                        # await redis_client.xack(
-                        #     stream_key.value, group.value, message_id
-                        # )
+                        await redis.xack(stream_key.value, group.value, message_id)
             else:
                 logging.info("No new messages in stream: %s", stream_key)
-        except Exception as e:
+        except (RedisError, TypeError) as e:
             logging.error(
                 "Error reading from Redis stream '%s' with group '%s' and consumer '%s': %s",
                 stream_key.value,
