@@ -21,18 +21,19 @@ class MessageBus:
             logging.error("No handlers registered for event type: %s", event_type)
             raise ValueError(f"No handlers registered for event type: {event_type}")
 
-        for handler in self.handlers[type(event)]:
+        for handler in self.handlers[event_type]:
             try:
-                logging.debug("Handling event %s with handler %s", event, handler)
+                logging.info("Handling event %s with handler %s", event, handler)
                 await retry_with_backoff(
                     func=handler,
                     args=(event,),
                     exceptions=(TimeoutError, OSError, ConnectionError, Exception),
-                    max_retries=5,
-                    backoff_strategy=lambda attempt: attempt * 2,  # Linear backoff
                 )
-            except Exception:
-                logging.exception(
-                    " DLQ: Exception handling event %s with handler %s", event, handler
+            except Exception as e:
+                logging.critical(
+                    "GOING TO DLQ: Exception handling event %s with handler %s, wirh error %s",
+                    event,
+                    handler,
+                    e,
                 )
                 continue

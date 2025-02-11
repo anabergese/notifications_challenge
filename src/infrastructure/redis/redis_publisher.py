@@ -14,6 +14,6 @@ async def publish(
         logging.info("Publishing event in Redis Streams...")
         serialized_event = asdict(event)
         await redis.xadd(stream_key.value, serialized_event)
-    except Exception as e:
+    except Exception as e:  # catch redis exceptions
         logging.error("Error publishing to stream: %s", str(e))
         raise

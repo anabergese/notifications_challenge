@@ -8,17 +8,25 @@ from .notifier import Notifier
 
 class EmailNotifier(Notifier):
     async def notify(self, event: DomainEvent) -> str:
-        logging.info("Processing event...: %s", event)
-        await asyncio.sleep(3)
-        success_message = f"Event with topic {event.topic} sent to EMAIL successfully: {event.description}"
-        logging.info(success_message)
-        return success_message
+        try:
+            logging.info("Processing event...: %s", event)
+            await asyncio.sleep(3)
+            success_message = f"Event with topic {event.topic} sent to EMAIL successfully: {event.description}"
+            logging.info(success_message)
+            return success_message
+        except Exception as e:
+            logging.error("Event cannot be sent to EMAIL: %s", e)
+            raise
 
 
 class SlackNotifier(Notifier):
     async def notify(self, event: DomainEvent) -> str:
-        logging.info("Processing event...: %s", event)
-        await asyncio.sleep(3)
-        success_message = f"Event with topic {event.topic} sent to SLACK successfully: {event.description}"
-        logging.info(success_message)
-        return success_message
+        try:
+            logging.info("Processing event...: %s", event)
+            await asyncio.sleep(3)
+            success_message = f"Event with topic {event.topic} sent to SLACK successfully: {event.description}"
+            logging.info(success_message)
+            return success_message
+        except Exception as e:
+            logging.error("Event cannot be sent to SLACK: %s", e)
+            raise

@@ -9,17 +9,12 @@ async def handle_notification_created(
     event: NotificationCreated,
     publish: Callable[[NotificationCreated], Coroutine[Any, Any, None]],
 ) -> None:
-    try:
-        await publish(event)
-        logging.info("Event published: %s", event)
-    except (AttributeError, TypeError, ValueError) as data_error:
-        logging.error("Data-related error during publish: %s", data_error)
+    await publish(event)
 
 
 async def handle_notification_received(
     event: NotificationReceived, orchestrator: NotificationOrchestrator
 ):
-    logging.info("Notificacion recibida y por ser enviada a orchestrator: %s", event)
     await orchestrator.process_message(event)
 
 

@@ -6,11 +6,13 @@ T = TypeVar("T")
 
 
 async def retry_with_backoff(
-    *args,
     func: Callable[..., Coroutine[Any, Any, T]],
-    exceptions: Union[Type[BaseException], tuple[Type[BaseException], ...]],
-    max_retries: int = 3,
-    backoff_strategy: Callable[[int], int] = lambda attempt: 2**attempt,
+    args: tuple = (),
+    exceptions: Union[Type[BaseException], tuple[Type[BaseException], ...]] = (
+        Exception,
+    ),
+    max_retries: int = 5,
+    backoff_strategy: Callable[[int], int] = lambda attempt: attempt * 2,
     **kwargs,
 ) -> T:
     for attempt in range(1, max_retries + 1):
@@ -26,12 +28,12 @@ async def retry_with_backoff(
                 )
                 await asyncio.sleep(backoff_strategy(attempt))
             else:
-                logging.error(
-                    "Max retries reached for function %s: %s", func.__name__, exc
-                )
+                logging.error("Max retries reached for %s:", exc)
                 raise
         except Exception as unexpected_error:
-            logging.critical(
-                "Unexpected error in function %s: %s", func.__name__, unexpected_error
+            logging.error(
+                "Unexpected error in function %s: %s",
+                getattr(func, "__name__", "<unknown>"),
+                unexpected_error,
             )
             raise

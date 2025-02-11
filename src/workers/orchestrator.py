@@ -21,7 +21,7 @@ class NotificationOrchestrator:
             notifiers = self.notifiers.get(topic, [])
             if notifiers:
                 logging.info("Processing notification for topic: %s", topic)
-                for notifier in notifiers:  # Iterate through all notifiers
+                for notifier in notifiers:
                     await notifier.notify(event)
             else:
                 logging.warning("No notifier found for topic: %s", topic)

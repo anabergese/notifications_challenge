@@ -1,12 +1,12 @@
 import logging
 
-import redis
-from redis.exceptions import RedisError
+from redis.exceptions import ResponseError
 
 from application.messagebus import MessageBus
-from domain.events import NotificationReceived
 from domain.publisher_enums import RedisStreams
 from infrastructure.redis.redis_initialization import get_redis_client
+
+from .process_notification import map_to_message_bus
 
 
 async def start_redis_consumer(
@@ -14,37 +14,38 @@ async def start_redis_consumer(
     stream_key: RedisStreams = RedisStreams.NOTIFICATIONS,
     group: RedisStreams = RedisStreams.NOTIFICATIONS_GROUP,
     consumer: RedisStreams = RedisStreams.NOTIFICATIONS_CONSUMER,
+    count: int = 1,
+    block: int = 5000,
+    redis_client=None,
 ):
     logging.info("Starting Redis Consumer on stream: %s", stream_key)
-    redis = get_redis_client()
-    from_id, count, block = ">", 10, 5000
+
+    if redis_client is None:
+        redis_client = get_redis_client()
+
+    last_id = ">"
 
     while True:
         try:
-            messages = await redis.xreadgroup(
+            notifications = await redis_client.xreadgroup(
                 group,
                 consumer,
-                {stream_key: from_id},
+                {stream_key: last_id},
                 count=count,
                 block=block,
             )
-            if messages:
-                for stream, entries in messages:
-                    for message_id, message_data in entries:
-                        event = NotificationReceived(
-                            topic=message_data["topic"],
-                            description=message_data["description"],
-                            version=message_data.get("version", "1.0"),
-                        )
-                        await message_bus.handle(event)
-                        await redis.xack(stream_key.value, group.value, message_id)
+            if notifications:
+                await map_to_message_bus(
+                    redis_client, message_bus, stream_key, group, notifications
+                )
             else:
-                logging.info("No new messages in stream: %s", stream_key)
-        except (RedisError, TypeError) as e:
+                logging.info("No new notifications in stream: %s", stream_key)
+        except ResponseError as e:
             logging.error(
-                "Error reading from Redis stream '%s' with group '%s' and consumer '%s': %s",
+                "Error reading from Redis stream '%s' with group '%s' and consumer '%s', details: %s",
                 stream_key.value,
                 group.value,
                 consumer.value,
                 str(e),
             )
+            raise

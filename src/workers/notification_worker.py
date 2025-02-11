@@ -8,6 +8,7 @@ from entrypoints.dependencies import (
     get_publisher,
 )
 from infrastructure.redis.redis_consumer import start_redis_consumer
+from infrastructure.redis.redis_group_creator import create_consumer_group
 
 
 async def main() -> None:
@@ -15,6 +16,7 @@ async def main() -> None:
     publisher = get_publisher()
     orchestrator = get_orchestrator(get_notifiers_mapping())
     message_bus = await bootstrap(publish=publisher, orchestrator=orchestrator)
+    await create_consumer_group()
     await start_redis_consumer(message_bus=message_bus)
 
 
