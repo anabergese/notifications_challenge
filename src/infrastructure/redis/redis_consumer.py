@@ -1,7 +1,5 @@
 import logging
 
-from redis.exceptions import ResponseError
-
 from application.messagebus import MessageBus
 from domain.publisher_enums import RedisStreams
 from infrastructure.redis.redis_initialization import get_redis_client
@@ -40,7 +38,7 @@ async def start_redis_consumer(
                 )
             else:
                 logging.info("No new notifications in stream: %s", stream_key)
-        except ResponseError as e:
+        except Exception as e:
             logging.error(
                 "Error reading from Redis stream '%s' with group '%s' and consumer '%s', details: %s",
                 stream_key.value,
