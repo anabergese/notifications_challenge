@@ -20,3 +20,6 @@ venv/
 
 # Docker
 .dockerignore
+
+# env variables
+.env
