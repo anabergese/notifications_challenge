@@ -8,9 +8,10 @@ from domain.publisher_enums import RedisStreams
 from domain.topic_enums import Topic
 from entrypoints.bootstrap import bootstrap
 from infrastructure.redis.redis_publisher import publish
-from workers.notification_channels import EmailNotifier, SlackNotifier
+from workers.email_notifier import EmailNotifier
+from workers.notification_orchestrator import NotificationOrchestrator
 from workers.notifier import Notifier
-from workers.orchestrator import NotificationOrchestrator
+from workers.slack_notifier import SlackNotifier
 
 
 def get_publisher() -> (
@@ -29,7 +30,7 @@ def get_notifiers_mapping() -> dict[Topic, list[Notifier]]:
 def get_orchestrator(
     notifiers_mapping: Annotated[
         dict[Topic, list[Notifier]], Depends(get_notifiers_mapping)
-    ]
+    ],
 ) -> NotificationOrchestrator:
     return NotificationOrchestrator(notifiers_mapping)
 

@@ -1,7 +1,8 @@
 import pytest
 
 from domain.events import DomainEvent
-from workers.notification_channels import EmailNotifier, SlackNotifier
+from workers.email_notifier import EmailNotifier
+from workers.slack_notifier import SlackNotifier
 
 
 class TestNotificationChannels:

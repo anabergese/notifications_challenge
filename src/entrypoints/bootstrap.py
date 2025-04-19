@@ -5,7 +5,7 @@ from application.handlers import EVENT_HANDLERS
 from application.messagebus import MessageBus
 from domain.events import NotificationCreated
 from domain.publisher_enums import RedisStreams
-from workers.orchestrator import NotificationOrchestrator
+from workers.notification_orchestrator import NotificationOrchestrator
 
 
 async def bootstrap(

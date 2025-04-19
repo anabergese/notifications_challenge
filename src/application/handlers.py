@@ -1,7 +1,7 @@
 from typing import Any, Callable, Coroutine, Dict, List, Type
 
 from domain.events import DomainEvent, NotificationCreated, NotificationReceived
-from workers.orchestrator import NotificationOrchestrator
+from workers.notification_orchestrator import NotificationOrchestrator
 
 
 async def handle_notification_created(

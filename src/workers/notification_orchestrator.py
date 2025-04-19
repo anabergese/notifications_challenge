@@ -8,6 +8,17 @@ from .notifier import Notifier
 
 
 class NotificationOrchestrator:
+    """NotificationOrchestrator is responsible for orchestrating the notification process.
+    It receives notifications and delegates the processing to the appropriate notifiers.
+    Attributes:
+        notifiers (dict[Topic, List[Notifier]]): A mapping of topics to their respective notifiers.
+    Methods:
+        process_message(event: NotificationReceived):
+            Processes the received notification event and notifies the appropriate notifiers.
+    Raises:
+        Exception: If an error occurs during the notification process.
+    """
+
     def __init__(
         self,
         notifiers: dict[Topic, List[Notifier]],

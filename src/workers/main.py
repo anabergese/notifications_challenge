@@ -12,6 +12,11 @@ from infrastructure.redis.redis_group_creator import create_consumer_group
 
 
 async def main() -> None:
+    """It is responsible for setting up the application.
+    It sets up logging, initializes the publisher and orchestrator,
+    bootstraps the message bus, creates the consumer group,
+    and starts the consumer.
+    """
     setup_logging()
     publisher = get_publisher()
     orchestrator = get_orchestrator(get_notifiers_mapping())

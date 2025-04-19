@@ -7,6 +7,8 @@ from .retry_mechanism import retry_with_backoff
 
 
 class MessageBus:
+    """MessageBus is responsible for handling domain events and dispatching them to the appropriate handlers."""
+
     def __init__(
         self,
         handlers: Dict[

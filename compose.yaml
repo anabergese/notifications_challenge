@@ -38,7 +38,7 @@ services:
       - REDIS_USERNAME=${REDIS_USERNAME}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - PYTHONPATH=/app/src
-    command: python /app/src/workers/notification_worker.py
+    command: python /app/src/workers/main.py
 
   tests:
     build:
