@@ -2,10 +2,16 @@
     "python.analysis.typeCheckingMode": "strict",
     "cSpell.words": [
         "aioredis",
+        "BUSYGROUP",
         "fastapi",
+        "levelname",
         "pydantic",
         "rpush",
-        "uvicorn"
+        "uvicorn",
+        "xack",
+        "xadd",
+        "xgroup",
+        "xreadgroup"
     ],
     "mypy-type-checker.importStrategy": "fromEnvironment",
     "mypy-type-checker.ignorePatterns": [

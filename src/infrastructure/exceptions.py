@@ -24,5 +24,5 @@ class ReadGroupError(RedisStreamsError):
     stream_key: str = field(default="")
     consumer_group: str = field(default="")
     message: str = field(
-        default="Error reading from Redis stream '{stream_key}' with group '{group}' and consumer '{consumer}'"
+        default="Error reading from stream '{stream_key}', group '{group}', consumer '{consumer}'"
     )

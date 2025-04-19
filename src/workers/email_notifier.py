@@ -13,7 +13,7 @@ class EmailNotifier(Notifier):
         try:
             logging.info("Processing event...: %s", event)
             await asyncio.sleep(3)
-            success_message = f"Event with topic {event.topic} sent to EMAIL successfully: {event.description}"
+            success_message = f"Event sent to EMAIL successfully: {event.description}"
             logging.info(success_message)
             return success_message
         except Exception as e:

@@ -40,7 +40,7 @@ async def start_redis_consumer(
                 logging.info("No new notifications in stream: %s", stream_key)
         except Exception as e:
             logging.error(
-                "Error reading from Redis stream '%s' with group '%s' and consumer '%s', details: %s",
+                "Error reading from stream '%s' with group '%s' and consumer '%s', details: %s",
                 stream_key.value,
                 group.value,
                 consumer.value,

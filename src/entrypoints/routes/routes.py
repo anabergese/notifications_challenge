@@ -28,7 +28,7 @@ async def health() -> Dict[str, Any]:
     "/notify",
     name="Create a new notification",
     summary="Create a new notification for a specific topic.",
-    description="Allows creating a new notification for a specific topic by the bot, that will be redirected to different channels.",
+    description="Creates a new notification that will be redirected to different channels.",
     status_code=status.HTTP_201_CREATED,
     responses={
         status.HTTP_201_CREATED: {
