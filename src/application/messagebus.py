@@ -27,11 +27,11 @@ class MessageBus:
                 await retry_with_backoff(
                     func=handler,
                     args=(event,),
-                    exceptions=(TimeoutError, OSError, ConnectionError, Exception),
+                    exceptions=(TimeoutError, OSError, ConnectionError),
                 )
-            except Exception as e:
+            except (TimeoutError, OSError, ConnectionError) as e:
                 logging.critical(
-                    "GOING TO DLQ: Exception handling event %s with handler %s, wirh error %s",
+                    "GOING TO DLQ: Exception handling event %s with handler %s, with error %s",
                     event,
                     handler,
                     e,
