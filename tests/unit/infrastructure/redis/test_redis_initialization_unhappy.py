@@ -1,20 +1,20 @@
-import os
+# import os
 
-import pytest
-from redis.exceptions import BusyLoadingError
-from redis.exceptions import ConnectionError as RedisConnectionError
-from redis.exceptions import TimeoutError as RedisTimeoutError
+# import pytest
+# from redis.exceptions import BusyLoadingError
+# from redis.exceptions import ConnectionError as RedisConnectionError
+# from redis.exceptions import TimeoutError as RedisTimeoutError
 
-from infrastructure.redis.redis_initialization import get_redis_client
+# from infrastructure.redis.redis_initialization import get_redis_client
 
 
-@pytest.fixture
-def mock_env_vars(monkeypatch):
-    monkeypatch.setenv("REDIS_HOST", "test-host")
-    monkeypatch.setenv("REDIS_PORT", "6380")
-    monkeypatch.setenv("REDIS_DB", "1")
-    monkeypatch.setenv("REDIS_USERNAME", "test-user")
-    monkeypatch.setenv("REDIS_PASSWORD", "test-pass")
+# @pytest.fixture
+# def mock_env_vars(monkeypatch):
+#     monkeypatch.setenv("REDIS_HOST", "test-host")
+#     monkeypatch.setenv("REDIS_PORT", "6380")
+#     monkeypatch.setenv("REDIS_DB", "1")
+#     monkeypatch.setenv("REDIS_USERNAME", "test-user")
+#     monkeypatch.setenv("REDIS_PASSWORD", "test-pass")
 
 
 # @pytest.mark.asyncio

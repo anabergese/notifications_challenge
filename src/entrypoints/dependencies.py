@@ -8,10 +8,10 @@ from domain.publisher_enums import RedisStreams
 from domain.topic_enums import Topic
 from entrypoints.bootstrap import bootstrap
 from infrastructure.redis.redis_publisher import publish
-from workers.email_notifier import EmailNotifier
 from workers.notification_orchestrator import NotificationOrchestrator
-from workers.notifier import Notifier
-from workers.slack_notifier import SlackNotifier
+from workers.notifiers.email_notifier import EmailNotifier
+from workers.notifiers.notifier import Notifier
+from workers.notifiers.slack_notifier import SlackNotifier
 
 
 def get_publisher() -> (

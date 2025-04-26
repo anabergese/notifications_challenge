@@ -4,7 +4,7 @@ from typing import List
 from domain.events import NotificationReceived
 from domain.topic_enums import Topic
 
-from .notifier import Notifier
+from .notifiers.notifier import Notifier
 
 
 class NotificationOrchestrator:
