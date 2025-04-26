@@ -8,19 +8,18 @@ from src.domain.topic_enums import Topic
 
 
 class TestNotificationReceived:
-    def test_notification_received_inherits_from_domain_event_class(
-        self, notification_received
-    ):
+    def test_inherits_from_domain_event_class(self, notification_received):
         assert isinstance(notification_received, DomainEvent)
 
-    def test_notification_received_with_valid_inputs(self, notification_received):
-        assert notification_received.topic == Topic.SALES
+    def test_with_valid_inputs(self, notification_received):
+        assert notification_received.topic == Topic.PRICING
         assert (
-            notification_received.description == "Valid description with proper length"
+            notification_received.description
+            == "I want to know how much cost AI chats."
         )
         assert notification_received.version == "1.0"
 
-    def test_notification_received_is_immutable(self, notification_received):
+    def test_is_immutable(self, notification_received):
         with pytest.raises(dataclasses.FrozenInstanceError):
             notification_received.topic = "Topic.MARKETING"
         with pytest.raises(dataclasses.FrozenInstanceError):
@@ -28,19 +27,13 @@ class TestNotificationReceived:
         with pytest.raises(dataclasses.FrozenInstanceError):
             notification_received.version = "2.0"
 
-    def test_notification_created_raises_value_error_for_too_short_description(self):
+    def test_raises_value_error_for_invalid_description(self, invalid_description):
         with pytest.raises(ValueError):
-            NotificationReceived(topic=Topic.SALES, description="short")
+            NotificationReceived(topic=Topic.SALES, description=invalid_description)
 
-    def test_notification_created_raises_value_error_for_too_long_description(self):
-        with pytest.raises(ValueError):
-            NotificationReceived(topic=Topic.SALES, description="x" * 201)
-
-    def test_notification_created_raises_pydantic_validation_error_for_invalid_topic(
-        self,
-    ):
+    def test_raises_pydantic_validation_error_for_invalid_topic(self, invalid_topic):
         with pytest.raises(ValidationError):
             NotificationReceived(
-                topic="INEXISTENT TOPIC",
+                topic=invalid_topic,
                 description="Valid description with proper length",
             )

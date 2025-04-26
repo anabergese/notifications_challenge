@@ -1,96 +1,89 @@
 import pytest
 
+from src.domain.events import DomainEvent, NotificationCreated, NotificationReceived
+
 
 @pytest.fixture
 def valid_inputs():
     return {
         "topic": "pricing",
-        "description": "New pricing update available.",
+        "description": "I want to know how much cost AI chats.",
     }
+
+
+@pytest.fixture
+def domain_event(valid_inputs):
+    return DomainEvent(
+        topic=valid_inputs["topic"],
+        description=valid_inputs["description"],
+    )
+
+
+@pytest.fixture
+def notification_created(valid_inputs):
+    return NotificationCreated(
+        topic=valid_inputs["topic"],
+        description=valid_inputs["description"],
+    )
+
+
+@pytest.fixture
+def notification_received(valid_inputs):
+    return NotificationReceived(
+        topic=valid_inputs["topic"],
+        description=valid_inputs["description"],
+    )
 
 
 @pytest.fixture(
     params=[
         # Invalid formats
-        {"topic": "", "description": "Empty string as topic"},
-        {"topic": " ", "description": "Whitespace as topic"},
-        {"topic": True, "description": "Boolean as topic"},
-        {"topic": {"key": "value"}, "description": "Object as topic"},
-        {"topic": ["sales", "pricing"], "description": "List as topic"},
-        {"topic": None, "description": "None as topic"},
+        "",
+        " ",
+        True,
+        {"key": "value"},
+        ["sales", "pricing"],
+        None,
         # Extreme values
-        {"topic": "a" * 1000, "description": "Very long string as topic"},
-        {"topic": "123pricing", "description": "String with invalid prefix"},
+        "a" * 1000,
+        "123pricing",
         # Special characters
-        {"topic": "@#$%^&*", "description": "Special characters as topic"},
-        {"topic": "sales\npricing", "description": "String with newlines"},
+        "@#$%^&*",
+        "sales\npricing",
         # Numbers
-        {"topic": 0, "description": "Zero as topic"},
-        {"topic": -1, "description": "Negative number as topic"},
-        {"topic": 1.5, "description": "Float as topic"},
-        {"topic": 2e10, "description": "Scientific notation as topic"},
+        0,
+        -1,
+        1.5,
+        2e10,
         # Injection strings
-        {"topic": "SELECT * FROM users", "description": "SQL injection as topic"},
-        {"topic": "<script>alert('hack')</script>", "description": "HTML/JS injection"},
+        "SELECT * FROM users",
+        "<script>alert('hack')</script>",
         # Case sensitivity
-        {"topic": "PRICING", "description": "Uppercase valid topic"},
-        {"topic": "Sales", "description": "Mixed-case valid topic"},
-        {"topic": "pricing ", "description": "Valid topic with trailing space"},
+        "PRICING",
+        "Sales",
+        "pricing ",
     ]
 )
-def invalid_topic_inputs(request):
+def invalid_topic(request):
     """Provide invalid input data for the 'topic' field."""
-    payload = request.param
-    return payload
+    return request.param
 
 
 @pytest.fixture(
     params=[
-        {"topic": "sales"},
-        {"topic": "pricing", "description": 123},
-        {"topic": "pricing", "description": ""},
-        {"topic": "pricing", "description": " "},
-        {"topic": "pricing", "description": "a" * 10000},
-        {"topic": "pricing", "description": True},
-        {"topic": "pricing", "description": {"key": "value"}},
-        {"topic": "pricing", "description": ["sales", "pricing"]},
-        {"topic": "pricing", "description": None},
-        {"topic": "pricing", "description": 0},
-        {"topic": "pricing", "description": -1},
-        {"topic": "pricing", "description": 1.5},
+        123,
+        "",
+        " ",
+        "a" * 201,
+        True,
+        {"key": "value"},
+        ["sales", "pricing"],
+        None,
+        0,
+        -1,
+        1.5,
     ]
 )
-def invalid_description_inputs(request):
+def invalid_description(request):
     """Provide invalid input data for the 'description' field."""
-    payload = request.param
-    return payload
-
-
-@pytest.fixture(
-    params=[
-        {
-            "topic": "pricing",
-            "description": "Valid description",
-            "timestamp": None,
-        },
-        {
-            "topic": "pricing",
-            "description": "Valid description",
-            "timestamp": "not a datetime",
-        },
-        {
-            "topic": "pricing",
-            "description": "Valid description",
-            "timestamp": True,
-        },
-        {
-            "topic": "pricing",
-            "description": "Valid description",
-            "timestamp": {"time": "now"},
-        },
-    ]
-)
-def invalid_timestamp_inputs(request):
-    """Provide invalid input data for the 'timestamp' field."""
-    payload = request.param
-    return payload
+    return request.param
